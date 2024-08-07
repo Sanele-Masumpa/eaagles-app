@@ -2,7 +2,7 @@
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
 import { useUser } from '@clerk/nextjs';
-import updateRole from '@/app/actions/updateRole'; // Update the path as needed
+import { updateRole } from '@/app/actions/updateRole'; // Update the path as needed
 
 const SelectRole = () => {
   const formRef = useRef<HTMLFormElement>(null);
