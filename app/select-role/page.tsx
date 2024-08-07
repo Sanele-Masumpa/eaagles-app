@@ -20,7 +20,7 @@ const SelectRole = () => {
     }
 
     if (window.confirm(`Do you want to save ${roleName} as your role? This cannot be changed.`)) {
-      const { data, error } = await addRole({
+      const { data, error } = await updateRole({
         role: roleName,
         email: user.primaryEmailAddress?.emailAddress,
         name: user.fullName,
