@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.clerk-wrapper {
+    border: 2px solid #0E78F9; /* Blue border color */
+    padding: 20px; /* Adjust padding as needed */
+    border-radius: 8px; /* Optional: rounded corners */
+    background-color: black; /* Ensures the background matches */
+  }
+  

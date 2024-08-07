@@ -9,6 +9,7 @@
 		"lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix"
 	},
 	"dependencies": {
+		"@clerk/nextjs": "^5.2.14",
 		"@nextui-org/button": "2.0.37",
 		"@nextui-org/code": "2.0.32",
 		"@nextui-org/input": "2.2.4",
@@ -16,10 +17,12 @@
 		"@nextui-org/link": "2.0.34",
 		"@nextui-org/listbox": "2.1.25",
 		"@nextui-org/navbar": "2.0.36",
+		"@nextui-org/react": "^2.4.6",
 		"@nextui-org/snippet": "2.0.41",
 		"@nextui-org/switch": "2.0.33",
 		"@nextui-org/system": "2.2.5",
 		"@nextui-org/theme": "2.2.9",
+		"@prisma/client": "^5.18.0",
 		"@react-aria/ssr": "3.9.4",
 		"@react-aria/visually-hidden": "3.8.12",
 		"clsx": "2.1.1",
@@ -27,8 +30,10 @@
 		"intl-messageformat": "^10.5.0",
 		"next": "14.2.4",
 		"next-themes": "^0.2.1",
+		"prisma": "^5.18.0",
 		"react": "18.3.1",
-		"react-dom": "18.3.1"
+		"react-dom": "18.3.1",
+		"react-toastify": "^10.0.5"
 	},
 	"devDependencies": {
 		"@types/node": "20.5.7",

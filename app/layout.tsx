@@ -2,9 +2,11 @@ import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { Providers } from "./providers";
-
+import { ClerkProvider } from "@clerk/nextjs";
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
@@ -34,6 +36,22 @@ export default function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning lang="en">
+      <ClerkProvider
+        appearance={{
+          layout: {
+            socialButtonsVariant: "iconButton",
+            logoImageUrl: "/EaglesRingLogoDark.png",
+          },
+          variables: {
+            colorText: "#fff",
+            colorPrimary: "#0E78F9",
+            colorBackground: "black",
+            colorInputBackground: "#252A41",
+            colorInputText: "#fff",
+          },
+        }}
+      >
+
       <head />
       <body
         className={clsx(
@@ -45,6 +63,13 @@ export default function RootLayout({
           <div className="relative flex flex-col h-screen">
             <Navbar />
             <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
+                <ToastContainer position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                closeOnClick
+                pauseOnHover
+                draggable
+                pauseOnFocusLoss />
               {children}
             </main>
             <footer className="w-full flex items-center justify-center py-3">
@@ -61,6 +86,7 @@ export default function RootLayout({
           </div>
         </Providers>
       </body>
+      </ClerkProvider>
     </html>
   );
 }
