@@ -1,69 +1,26 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Eagles ring",
-  description: "An investment platform.",
+  name: "Eagles Ring",
+  description: "An investment platform that matches aspiring entrepreneurs with investment opportunities.",
   navItems: [
-    {
-      label: "Home",
-      href: "/",
-    },
-    {
-      label: "Docs",
-      href: "/docs",
-    },
-    {
-      label: "Pricing",
-      href: "/pricing",
-    },
-    {
-      label: "Blog",
-      href: "/blog",
-    },
-    {
-      label: "About",
-      href: "/about",
-    },
+    { label: "Home", href: "/" },
+    { label: "About", href: "/about" },
+    { label: "Investors", href: "/investors" },
+    { label: "Entrepreneurs", href: "/entrepreneurs" },
+    { label: "Contact", href: "/contact" },
   ],
   navMenuItems: [
-    {
-      label: "Profile",
-      href: "/profile",
-    },
-    {
-      label: "Dashboard",
-      href: "/dashboard",
-    },
-    {
-      label: "Projects",
-      href: "/projects",
-    },
-    {
-      label: "Team",
-      href: "/team",
-    },
-    {
-      label: "Calendar",
-      href: "/calendar",
-    },
-    {
-      label: "Settings",
-      href: "/settings",
-    },
-    {
-      label: "Help & Feedback",
-      href: "/help-feedback",
-    },
-    {
-      label: "Logout",
-      href: "/logout",
-    },
+    { label: "Home", href: "/" },
+    { label: "About", href: "/about" },
+    { label: "Investors", href: "/investors" },
+    { label: "Entrepreneurs", href: "/entrepreneurs" },
+    { label: "Contact", href: "/contact" },
   ],
   links: {
-    github: "https://github.com/nextui-org/nextui",
-    twitter: "https://twitter.com/getnextui",
-    docs: "https://nextui.org",
-    discord: "https://discord.gg/9b6yyZKmH4",
-    sponsor: "https://patreon.com/jrgarciadev",
+    twitter: "https://twitter.com/eaglesring",
+    github: "https://github.com/eaglesring",
+    discord: "https://discord.com/invite/eaglesring",
+    sponsor: "https://eaglesring.com/sponsor",
   },
 };
