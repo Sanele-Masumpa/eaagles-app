@@ -18,8 +18,8 @@ export default function AboutPage() {
               Our vision is to empower entrepreneurs and investors to reach their full potential by offering a robust and user-friendly platform. We believe in driving innovation and supporting the next generation of business leaders.
             </p>
             <a
-              href="/about#vision"
               className="text-primary font-semibold hover:underline"
+              href="/about#vision"
             >
               Learn more about our vision
             </a>
@@ -31,8 +31,8 @@ export default function AboutPage() {
               Eagles Ring simplifies the investment process by providing a comprehensive suite of tools for entrepreneurs to pitch their ideas and for investors to evaluate opportunities. Our platform supports detailed profiles, secure transactions, and effective communication channels.
             </p>
             <a
-              href="/about#how-it-works"
               className="text-primary font-semibold hover:underline"
+              href="/about#how-it-works"
             >
               Discover how Eagles Ring works
             </a>
@@ -55,8 +55,8 @@ export default function AboutPage() {
               John is a visionary entrepreneur with a passion for technology and innovation. He leads the team with a focus on creating a cutting-edge platform for the investment community.
             </p>
             <a
-              href="https://linkedin.com/in/johndoe"
               className="text-primary font-semibold hover:underline"
+              href="https://linkedin.com/in/johndoe"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -69,11 +69,11 @@ export default function AboutPage() {
             <h3 className="text-xl font-semibold mb-2">Jane Smith</h3>
             <p className="text-lg mb-4">Chief Technology Officer</p>
             <p className="text-lg mb-4">
-              Jane is an expert in software development and technology. She oversees the platform's technical aspects, ensuring a seamless and secure experience for all users.
+              Jane is an expert in software development and technology. She oversees the platform&apos;s technical aspects, ensuring a seamless and secure experience for all users.
             </p>
             <a
-              href="https://linkedin.com/in/janesmith"
               className="text-primary font-semibold hover:underline"
+              href="https://linkedin.com/in/janesmith"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -89,8 +89,8 @@ export default function AboutPage() {
               Emily manages relationships with investors and ensures they have access to the best opportunities. She is dedicated to providing exceptional support and guidance.
             </p>
             <a
-              href="https://linkedin.com/in/emilyjohnson"
               className="text-primary font-semibold hover:underline"
+              href="https://linkedin.com/in/emilyjohnson"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -112,8 +112,8 @@ export default function AboutPage() {
           <li className="text-lg">Extensive user base with positive feedback</li>
         </ul>
         <a
-          href="/about#achievements"
           className="text-primary font-semibold hover:underline"
+          href="/about#achievements"
         >
           Learn more about our achievements
         </a>
@@ -122,11 +122,11 @@ export default function AboutPage() {
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">Get In Touch</h2>
         <p className="text-lg mb-4">
-          We’d love to hear from you! Whether you have questions about our platform, feedback, or partnership opportunities, feel free to reach out to us.
+          We&apos;d love to hear from you! Whether you have questions about our platform, feedback, or partnership opportunities, feel free to reach out to us.
         </p>
         <a
-          href="/contact"
           className="bg-primary text-white py-2 px-4 rounded-lg hover:bg-primary-dark block text-center"
+          href="/contact"
         >
           Contact Us
         </a>
