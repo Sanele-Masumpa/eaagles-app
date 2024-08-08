@@ -1,14 +1,85 @@
-import { title } from "@/components/primitives";
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 export default function HomePage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [role, setRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchUserRole() {
+      try {
+        const response = await fetch('/api/get-user-role');
+        if (response.ok) {
+          const data = await response.json();
+          setRole(data.role);
+          setLoading(false);
+        } else {
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Failed to fetch user role', error);
+        setLoading(false);
+      }
+    }
+
+    fetchUserRole();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (role === 'INVESTOR') {
+    return (
+      <div className="relative min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white">
+        <main className="flex flex-col items-center justify-center w-full h-full px-6 py-16 text-center">
+          <h1 className="text-4xl font-bold mb-4">Investor Dashboard</h1>
+          <p className="text-xl mb-8">
+            Welcome to your investor dashboard! Here you can find potential startups to invest in.
+          </p>
+          {/* Additional content for Investor Dashboard */}
+          <section className="mb-12 max-w-4xl mx-auto">
+            <h2 className="text-2xl font-semibold mb-4">Your Investments</h2>
+            <p className="text-lg mb-6">
+              Track and manage your investments here. View detailed information about each investment.
+            </p>
+            {/* List or other components to display investments */}
+          </section>
+        </main>
+      </div>
+    );
+  }
+
+  if (role === 'ENTREPRENEUR') {
+    return (
+      <div className="relative min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white">
+        <main className="flex flex-col items-center justify-center w-full h-full px-6 py-16 text-center">
+          <h1 className="text-4xl font-bold mb-4">Entrepreneur Dashboard</h1>
+          <p className="text-xl mb-8">
+            Welcome to your entrepreneur dashboard! Here you can pitch your ideas to potential investors.
+          </p>
+          {/* Additional content for Entrepreneur Dashboard */}
+          <section className="mb-12 max-w-4xl mx-auto">
+            <h2 className="text-2xl font-semibold mb-4">Your Pitches</h2>
+            <p className="text-lg mb-6">
+              Manage and review your pitches here. Keep track of the status and feedback from investors.
+            </p>
+            {/* List or other components to display pitches */}
+          </section>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="relative min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white">
       <main className="flex flex-col items-center justify-center w-full h-full px-6 py-16 text-center">
         <section className="mb-12 max-w-4xl mx-auto">
-          <h1 className={`${title()} text-4xl font-bold mb-4`}>
-            Welcome to Eagles Ring
-          </h1>
+          <h1 className="text-4xl font-bold mb-4">Welcome to Eagles Ring</h1>
           <h2 className="text-3xl font-semibold mb-6">
             Join the Premier Platform for Entrepreneurs and Investors
           </h2>
