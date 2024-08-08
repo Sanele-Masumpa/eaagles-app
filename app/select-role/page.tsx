@@ -1,12 +1,12 @@
 'use client';
+
 import { useRef } from 'react';
 import { toast } from 'react-toastify';
-import { useUser } from '@clerk/nextjs';
-import { updateRole } from '@/app/actions/updateRole'; // Update the path as needed
+import { useRouter } from 'next/navigation';
 
-const SelectRole = () => {
+export default function SelectRole() {
   const formRef = useRef<HTMLFormElement>(null);
-  const { user } = useUser();
+  const router = useRouter();
 
   const handleRoleAssignment = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -20,19 +20,27 @@ const SelectRole = () => {
     }
 
     if (window.confirm(`Do you want to save ${roleName} as your role? This cannot be changed.`)) {
-      const { data, error } = await updateRole({
-        role: roleName,
-        email: user.primaryEmailAddress?.emailAddress,
-        name: user.fullName,
-        clerkId: user.id,
-        imageUrl: user.profileImageUrl
-      });
+      try {
+        const response = await fetch('/api/assign-role', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ role: roleName }),
+        });
 
-      if (error) {
-        toast.error(error);
-      } else {
-        toast.success(`Role ${data?.role} assigned`);
-        formRef.current?.reset();
+        if (response.ok) {
+          const data = await response.json();
+          toast.success(data.message);
+          formRef.current?.reset();
+          router.push('/success'); // Redirect to a success page or reload
+        } else {
+          const errorData = await response.json();
+          toast.error(errorData.error || 'Failed to assign role');
+        }
+      } catch (error) {
+        toast.error('Failed to assign role');
+        console.error(error);
       }
     }
   };
@@ -64,6 +72,4 @@ const SelectRole = () => {
       </form>
     </div>
   );
-};
-
-export default SelectRole;
+}
