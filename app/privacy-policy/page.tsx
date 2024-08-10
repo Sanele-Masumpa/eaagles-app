@@ -1,6 +1,6 @@
-import React from 'react';
-import Image from 'next/image';
-import { FaShieldAlt, FaLock, FaUserShield, FaClipboardCheck, FaGlobe } from 'react-icons/fa';
+import React from "react";
+import Image from "next/image";
+import { FaShieldAlt, FaLock, FaUserShield, FaClipboardCheck, FaGlobe } from "react-icons/fa";
 
 const PrivacyPolicy = () => {
   return (

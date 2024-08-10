@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useRef, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';  // Import for client-side
+import { useRef, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 export default function SelectRole() {
   const formRef = useRef<HTMLFormElement>(null);

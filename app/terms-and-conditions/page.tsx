@@ -1,5 +1,5 @@
 // pages/terms-and-conditions.tsx
-import React from 'react';
+import React from "react";
 
 const TermsAndConditions = () => {
   const sections = [
