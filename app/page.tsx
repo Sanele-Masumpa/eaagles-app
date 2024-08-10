@@ -162,7 +162,7 @@ export default function HomePage() {
   </div>
   <a
     href="/features"
-    className="absolute bottom-0 right-0 p-4 text-blue-500 dark:text-blue-300 underline"
+    className="absolute bottom--10 right-0 p-4 text-blue-500 dark:text-blue-300 underline"
   >
     View All
   </a>
