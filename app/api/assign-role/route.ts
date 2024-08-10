@@ -8,13 +8,19 @@ export async function POST(request: Request) {
   const user = await currentUser();
 
   if (!user) {
-    return NextResponse.json({ error: 'User not found. Please log in.' }, { status: 401 });
+    return NextResponse.json(
+      { error: "User not found. Please log in." },
+      { status: 401 }
+    );
   }
 
   const { role } = await request.json();
 
   if (!role) {
-    return NextResponse.json({ error: 'Role is required' }, { status: 400 });
+    return NextResponse.json(
+      { error: "Role is required" },
+      { status: 400 }
+    );
   }
 
   try {
@@ -28,9 +34,9 @@ export async function POST(request: Request) {
       await prisma.user.create({
         data: {
           clerkId: user.id,
-          email: user.primaryEmailAddress?.emailAddress || '',
-          name: user.fullName || '',
-          imageUrl: user.imageUrl || '',
+          email: user.primaryEmailAddress?.emailAddress || "",
+          name: user.fullName || "",
+          imageUrl: user.imageUrl || "",
           role,
         },
       });
@@ -44,12 +50,18 @@ export async function POST(request: Request) {
       });
     } else {
       // If the user already has a role assigned, prevent changing
-      return NextResponse.json({ error: 'Role has already been assigned and cannot be changed' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Role has already been assigned and cannot be changed" },
+        { status: 400 }
+      );
     }
 
     return NextResponse.json({ message: `Role ${role} assigned` });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: 'Failed to assign role' }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to assign role" },
+      { status: 500 }
+    );
   }
 }

@@ -9,9 +9,9 @@ export const Footer = () => {
           {/* Footer Brand */}
           <div className="flex items-center justify-center mb-4 sm:mb-0">
             <Link
+              href="https://www.icrdgroup.com"
               isExternal
               className="flex items-center gap-1 text-current"
-              href="https://www.icrdgroup.com"
               title="ICRD Group Holdings landing page"
             >
               <span className="text-default-600">Powered by</span>
@@ -22,26 +22,26 @@ export const Footer = () => {
           {/* Social Media Icons */}
           <div className="flex gap-4 justify-center items-center mb-4 sm:mb-0">
             <Link
-              isExternal
-              href="https://www.facebook.com/eaglesring"
-              className="hover:text-primary transition-colors"
               aria-label="Facebook"
+              href="https://www.facebook.com/eaglesring"
+              isExternal
+              className="hover:text-primary transition-colors"
             >
               <FaFacebookF />
             </Link>
             <Link
-              isExternal
-              href="https://twitter.com/eaglesring"
-              className="hover:text-primary transition-colors"
               aria-label="Twitter"
+              href="https://twitter.com/eaglesring"
+              isExternal
+              className="hover:text-primary transition-colors"
             >
               <FaTwitter />
             </Link>
             <Link
-              isExternal
-              href="https://www.linkedin.com/company/eaglesring"
-              className="hover:text-primary transition-colors"
               aria-label="LinkedIn"
+              href="https://www.linkedin.com/company/eaglesring"
+              isExternal
+              className="hover:text-primary transition-colors"
             >
               <FaLinkedinIn />
             </Link>
@@ -50,21 +50,21 @@ export const Footer = () => {
           {/* Footer Links */}
           <div className="flex gap-4 sm:gap-6 justify-center items-center text-xs sm:text-sm">
             <Link
-              className="hover:text-primary transition-colors"
               href="/terms-and-conditions"
+              className="hover:text-primary transition-colors"
             >
               <span className="hidden sm:inline">Terms and Conditions</span>
-              <span className="sm:hidden">T's & C's</span>
+              <span className="sm:hidden">T&apos;s & C&apos;s</span>
             </Link>
             <Link
-              className="hover:text-primary transition-colors"
               href="/faqs"
+              className="hover:text-primary transition-colors"
             >
               FAQs
             </Link>
             <Link
-              className="hover:text-primary transition-colors"
               href="/privacy-policy"
+              className="hover:text-primary transition-colors"
             >
               Privacy Policy
             </Link>

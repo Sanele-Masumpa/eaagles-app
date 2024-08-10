@@ -5,27 +5,50 @@ interface IconProps {
 }
 
 const CheckIcon: React.FC<IconProps> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${className}`} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-    <path fillRule="evenodd" d="M14.293 6.293a1 1 0 00-1.414 0L8 9.586 7.121 8.707a1 1 0 00-1.414 1.414l1.5 1.5a1 1 0 001.414 0l5-5a1 1 0 000-1.414z" clipRule="evenodd" />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={`h-5 w-5 ${className}`}
+    viewBox="0 0 20 20"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path
+      fillRule="evenodd"
+      d="M14.293 6.293a1 1 0 00-1.414 0L8 9.586 7.121 8.707a1 1 0 00-1.414 1.414l1.5 1.5a1 1 0 001.414 0l5-5a1 1 0 000-1.414z"
+      clipRule="evenodd"
+    />
   </svg>
 );
 
 const XIcon: React.FC<IconProps> = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${className}`} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-    <path fillRule="evenodd" d="M6.293 6.293a1 1 0 011.414 0L10 7.586l2.293-2.293a1 1 0 111.414 1.414L11.414 9l2.293 2.293a1 1 0 01-1.414 1.414L10 10.414l-2.293 2.293a1 1 0 01-1.414-1.414L8.586 9 6.293 6.707a1 1 0 010-1.414z" clipRule="evenodd" />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={`h-5 w-5 ${className}`}
+    viewBox="0 0 20 20"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path
+      fillRule="evenodd"
+      d="M6.293 6.293a1 1 0 011.414 0L10 7.586l2.293-2.293a1 1 0 111.414 1.414L11.414 9l2.293 2.293a1 1 0 01-1.414 1.414L10 10.414l-2.293 2.293a1 1 0 01-1.414-1.414L8.586 9 6.293 6.707a1 1 0 010-1.414z"
+      clipRule="evenodd"
+    />
   </svg>
 );
 
 export default function PricingPage() {
   return (
     <div className="max-w-full px-6 py-8 mx-auto">
-      
       <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-4 text-center">Our Pricing Plans</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-center">
+          Our Pricing Plans
+        </h2>
         <p className="text-lg mb-8 text-center">
-          At Eagles Ring, we offer flexible pricing plans to suit the needs of both entrepreneurs and investors. Our goal is to provide excellent value and support at every stage of your investment journey.
+          At Eagles Ring, we offer flexible pricing plans to suit the needs of both entrepreneurs
+          and investors. Our goal is to provide excellent value and support at every stage of your
+          investment journey.
         </p>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto py-12 px-4 md:px-0">
           {/* Basic Plan */}
           <div className="bg-gray-100 dark:bg-[#917953] rounded-lg shadow-lg p-6">
@@ -69,10 +92,11 @@ export default function PricingPage() {
               </div>
             </div>
             <a
-                href="/sign-up"
-                className="w-full mt-6 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 transform transition duration-300 hover:scale-105 text-center py-2 px-4 rounded-lg text-white">
-                Get Started
-              </a>
+              href="/sign-up"
+              className="w-full mt-6 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 transform transition duration-300 hover:scale-105 text-center py-2 px-4 rounded-lg text-white"
+            >
+              Get Started
+            </a>
           </div>
 
           {/* Premium Plan */}
@@ -111,10 +135,11 @@ export default function PricingPage() {
               </div>
             </div>
             <a
-                href="/sign-up"
-                className="w-full mt-6 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 transform transition duration-300 hover:scale-105 text-center py-2 px-4 rounded-lg text-white">
-                Get Started
-              </a>
+              href="/sign-up"
+              className="w-full mt-6 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 transform transition duration-300 hover:scale-105 text-center py-2 px-4 rounded-lg text-white"
+            >
+              Get Started
+            </a>
           </div>
 
           {/* Enterprise Plan */}
@@ -137,52 +162,23 @@ export default function PricingPage() {
               </div>
               <div className="flex items-center space-x-2">
                 <CheckIcon className="h-5 w-5 text-accent" />
-                <span className="text-black">Custom Integrations</span>
+                <span className="text-black">Custom Solutions</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckIcon className="h-5 w-5 text-accent" />
+                <span className="text-black">On-site Support</span>
               </div>
               <div className="flex items-center space-x-2">
                 <CheckIcon className="h-5 w-5 text-accent" />
                 <span className="text-black">24/7 Support</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <CheckIcon className="h-5 w-5 text-accent" />
-                <span className="text-black">Tailored Onboarding</span>
-              </div>
             </div>
             <a
-                href="/contact"
-                className="w-full mt-6 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 transform transition duration-300 hover:scale-105 text-center py-2 px-4 rounded-lg text-white">
-                Contact Us
-              </a>
-          </div>
-        </div>
-      </section>
-      
-      <section>
-        <h2 className="text-2xl font-semibold mb-4 text-center">Frequently Asked Questions</h2>
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-lg font-semibold mb-2">What is included in each plan?</h3>
-            <p className="text-lg">
-              Each plan offers different features tailored to your needs. Please refer to the plan descriptions for detailed information on what’s included.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-2">How do I choose the right plan?</h3>
-            <p className="text-lg">
-              Consider your business needs and goals. Our Basic Plan is ideal for small teams, the Premium Plan offers advanced features, and the Enterprise Plan provides custom solutions for large organizations.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-2">Can I upgrade or downgrade my plan?</h3>
-            <p className="text-lg">
-              Yes, you can upgrade or downgrade your plan at any time. Please contact our support team for assistance with plan changes.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-2">What if I have more questions?</h3>
-            <p className="text-lg">
-              Feel free to reach out to our support team through the contact page for any additional questions or concerns.
-            </p>
+              href="/contact"
+              className="w-full mt-6 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 transform transition duration-300 hover:scale-105 text-center py-2 px-4 rounded-lg text-white"
+            >
+              Contact Us
+            </a>
           </div>
         </div>
       </section>

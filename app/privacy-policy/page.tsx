@@ -13,24 +13,96 @@ const PrivacyPolicy = () => {
       <div className="mb-12">
         <h2 className="text-3xl font-semibold mb-4 text-gold">Table of Contents</h2>
         <ul className="list-disc list-inside space-y-2">
-          <li><a href="#information-we-collect" className="text-blue-600 dark:text-blue-400 hover:underline">1. Information We Collect</a></li>
-          <li><a href="#how-we-use-your-information" className="text-blue-600 dark:text-blue-400 hover:underline">2. How We Use Your Information</a></li>
-          <li><a href="#sharing-your-information" className="text-blue-600 dark:text-blue-400 hover:underline">3. Sharing Your Information</a></li>
-          <li><a href="#security" className="text-blue-600 dark:text-blue-400 hover:underline">4. Security</a></li>
-          <li><a href="#your-rights" className="text-blue-600 dark:text-blue-400 hover:underline">5. Your Rights</a></li>
-          <li><a href="#changes-to-this-policy" className="text-blue-600 dark:text-blue-400 hover:underline">6. Changes to This Policy</a></li>
-          <li><a href="#contact-us" className="text-blue-600 dark:text-blue-400 hover:underline">7. Contact Us</a></li>
-          <li><a href="#cookies" className="text-blue-600 dark:text-blue-400 hover:underline">8. Cookies</a></li>
-          <li><a href="#third-party-services" className="text-blue-600 dark:text-blue-400 hover:underline">9. Third-Party Services</a></li>
-          <li><a href="#data-retention" className="text-blue-600 dark:text-blue-400 hover:underline">10. Data Retention</a></li>
-          <li><a href="#international-transfers" className="text-blue-600 dark:text-blue-400 hover:underline">11. International Transfers</a></li>
-          <li><a href="#children's-privacy" className="text-blue-600 dark:text-blue-400 hover:underline">12. Children's Privacy</a></li>
-          <li><a href="#user-feedback" className="text-blue-600 dark:text-blue-400 hover:underline">13. User Feedback</a></li>
-          <li><a href="#data-breach-notification" className="text-blue-600 dark:text-blue-400 hover:underline">14. Data Breach Notification</a></li>
-          <li><a href="#privacy-policy-for-partners" className="text-blue-600 dark:text-blue-400 hover:underline">15. Privacy Policy for Partners</a></li>
-          <li><a href="#legal-disclosures" className="text-blue-600 dark:text-blue-400 hover:underline">16. Legal Disclosures</a></li>
-          <li><a href="#policy-enforcement" className="text-blue-600 dark:text-blue-400 hover:underline">17. Policy Enforcement</a></li>
-          <li><a href="#privacy-policy-for-applications" className="text-blue-600 dark:text-blue-400 hover:underline">18. Privacy Policy for Applications</a></li>
+          <li>
+            <a href="#information-we-collect" className="text-blue-600 dark:text-blue-400 hover:underline">
+              1. Information We Collect
+            </a>
+          </li>
+          <li>
+            <a href="#how-we-use-your-information" className="text-blue-600 dark:text-blue-400 hover:underline">
+              2. How We Use Your Information
+            </a>
+          </li>
+          <li>
+            <a href="#sharing-your-information" className="text-blue-600 dark:text-blue-400 hover:underline">
+              3. Sharing Your Information
+            </a>
+          </li>
+          <li>
+            <a href="#security" className="text-blue-600 dark:text-blue-400 hover:underline">
+              4. Security
+            </a>
+          </li>
+          <li>
+            <a href="#your-rights" className="text-blue-600 dark:text-blue-400 hover:underline">
+              5. Your Rights
+            </a>
+          </li>
+          <li>
+            <a href="#changes-to-this-policy" className="text-blue-600 dark:text-blue-400 hover:underline">
+              6. Changes to This Policy
+            </a>
+          </li>
+          <li>
+            <a href="#contact-us" className="text-blue-600 dark:text-blue-400 hover:underline">
+              7. Contact Us
+            </a>
+          </li>
+          <li>
+            <a href="#cookies" className="text-blue-600 dark:text-blue-400 hover:underline">
+              8. Cookies
+            </a>
+          </li>
+          <li>
+            <a href="#third-party-services" className="text-blue-600 dark:text-blue-400 hover:underline">
+              9. Third-Party Services
+            </a>
+          </li>
+          <li>
+            <a href="#data-retention" className="text-blue-600 dark:text-blue-400 hover:underline">
+              10. Data Retention
+            </a>
+          </li>
+          <li>
+            <a href="#international-transfers" className="text-blue-600 dark:text-blue-400 hover:underline">
+              11. International Transfers
+            </a>
+          </li>
+          <li>
+            <a href="#childrens-privacy" className="text-blue-600 dark:text-blue-400 hover:underline">
+              12. Children's Privacy
+            </a>
+          </li>
+          <li>
+            <a href="#user-feedback" className="text-blue-600 dark:text-blue-400 hover:underline">
+              13. User Feedback
+            </a>
+          </li>
+          <li>
+            <a href="#data-breach-notification" className="text-blue-600 dark:text-blue-400 hover:underline">
+              14. Data Breach Notification
+            </a>
+          </li>
+          <li>
+            <a href="#privacy-policy-for-partners" className="text-blue-600 dark:text-blue-400 hover:underline">
+              15. Privacy Policy for Partners
+            </a>
+          </li>
+          <li>
+            <a href="#legal-disclosures" className="text-blue-600 dark:text-blue-400 hover:underline">
+              16. Legal Disclosures
+            </a>
+          </li>
+          <li>
+            <a href="#policy-enforcement" className="text-blue-600 dark:text-blue-400 hover:underline">
+              17. Policy Enforcement
+            </a>
+          </li>
+          <li>
+            <a href="#privacy-policy-for-applications" className="text-blue-600 dark:text-blue-400 hover:underline">
+              18. Privacy Policy for Applications
+            </a>
+          </li>
         </ul>
       </div>
       
@@ -105,15 +177,15 @@ const PrivacyPolicy = () => {
       <div className="flex items-center mb-4">
         <FaGlobe className="text-gold text-3xl mr-3" />
         <p>
-          Our platform may contain links to third-party services. We are not responsible for the privacy practices of these services. We encourage you to review their privacy policies before interacting with them.
+          Our application may contain links to third-party services. We are not responsible for the privacy practices or content of these third-party services. Please review their privacy policies before providing any information.
         </p>
       </div>
 
       <h2 id="data-retention" className="text-2xl font-semibold mb-4 text-gold">10. Data Retention</h2>
       <div className="flex items-center mb-4">
-        <FaLock className="text-gold text-3xl mr-3" />
+        <FaClipboardCheck className="text-gold text-3xl mr-3" />
         <p>
-          We retain your personal data for as long as necessary to fulfill the purposes outlined in this policy or as required by law. If you no longer wish to use our services, you can request the deletion of your data.
+          We retain your personal information only for as long as necessary to fulfill the purposes outlined in this privacy policy. We may also retain data to comply with legal obligations or resolve disputes.
         </p>
       </div>
 
@@ -121,15 +193,15 @@ const PrivacyPolicy = () => {
       <div className="flex items-center mb-4">
         <FaGlobe className="text-gold text-3xl mr-3" />
         <p>
-          Your data may be transferred to and processed in countries other than your own. We take measures to ensure that your data is protected in accordance with this privacy policy regardless of where it is processed.
+          Your information may be transferred to and processed in countries outside of your residence. We ensure that appropriate safeguards are in place to protect your data during these transfers.
         </p>
       </div>
 
-      <h2 id="children's-privacy" className="text-2xl font-semibold mb-4 text-gold">12. Children's Privacy</h2>
+      <h2 id="childrens-privacy" className="text-2xl font-semibold mb-4 text-gold">12. Children's Privacy</h2>
       <div className="flex items-center mb-4">
         <FaShieldAlt className="text-gold text-3xl mr-3" />
         <p>
-          Our services are not directed to children under the age of 13. If we become aware that we have collected personal information from a child without parental consent, we will take steps to delete such information.
+          Our services are not intended for children under the age of 13. We do not knowingly collect or solicit personal information from children under 13. If we become aware that we have collected such information, we will take steps to delete it.
         </p>
       </div>
 
@@ -137,7 +209,7 @@ const PrivacyPolicy = () => {
       <div className="flex items-center mb-4">
         <FaClipboardCheck className="text-gold text-3xl mr-3" />
         <p>
-          We welcome feedback from our users to improve our services. If you have any suggestions or comments, please contact us. We value your input and strive to enhance your experience with us.
+          We welcome feedback from users regarding our privacy practices. If you have suggestions or concerns, please reach out to us through the contact information provided above.
         </p>
       </div>
 
@@ -145,7 +217,7 @@ const PrivacyPolicy = () => {
       <div className="flex items-center mb-4">
         <FaShieldAlt className="text-gold text-3xl mr-3" />
         <p>
-          In the event of a data breach, we will notify affected individuals and relevant authorities as required by law. We will also take appropriate measures to mitigate the impact and prevent future breaches.
+          In the event of a data breach that affects your personal information, we will notify you as soon as possible. We will also take appropriate measures to mitigate any potential harm.
         </p>
       </div>
 
@@ -153,7 +225,7 @@ const PrivacyPolicy = () => {
       <div className="flex items-center mb-4">
         <FaUserShield className="text-gold text-3xl mr-3" />
         <p>
-          Partners who handle personal data on our behalf are required to comply with our privacy policy and data protection standards. We ensure that our partners implement adequate security measures to protect your information.
+          Partners who have access to our platform must comply with our privacy policy. We ensure that they adhere to the same standards of privacy and data protection.
         </p>
       </div>
 
@@ -161,32 +233,24 @@ const PrivacyPolicy = () => {
       <div className="flex items-center mb-4">
         <FaShieldAlt className="text-gold text-3xl mr-3" />
         <p>
-          We may disclose your information if required to do so by law or in response to legal requests, such as subpoenas or court orders. We may also disclose your data to protect our rights, privacy, safety, or property, or that of others.
+          We may disclose your information if required by law or in response to valid requests by public authorities, including to meet national security or law enforcement requirements.
         </p>
       </div>
 
       <h2 id="policy-enforcement" className="text-2xl font-semibold mb-4 text-gold">17. Policy Enforcement</h2>
       <div className="flex items-center mb-4">
-        <FaClipboardCheck className="text-gold text-3xl mr-3" />
+        <FaShieldAlt className="text-gold text-3xl mr-3" />
         <p>
-          We take privacy seriously and will enforce this policy. If you believe your privacy rights have been violated, please contact us. We will investigate and take appropriate action to address your concerns.
+          We take privacy seriously and will take appropriate action to enforce this privacy policy. If you believe your privacy rights have been violated, please contact us using the details provided.
         </p>
       </div>
 
       <h2 id="privacy-policy-for-applications" className="text-2xl font-semibold mb-4 text-gold">18. Privacy Policy for Applications</h2>
       <div className="flex items-center mb-4">
-        <FaClipboardCheck className="text-gold text-3xl mr-3" />
+        <FaGlobe className="text-gold text-3xl mr-3" />
         <p>
-          This privacy policy applies to our applications and any related services. We are committed to protecting your privacy across all platforms and ensuring that your personal information is handled with care.
+          Our privacy policy also applies to applications developed and distributed by us. We ensure that the privacy of users is maintained across all our applications.
         </p>
-      </div>
-
-      <div className="flex justify-center mt-12 relative">
-        <div className="relative w-3/5 h-12 overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center animated-text text-white text-lg">
-            <p>© 2024 Eagles Ring.All rights reserved. Unauthorized use is prohibited.</p>
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ export async function GET() {
   const user = await currentUser();
 
   if (!user) {
-    return NextResponse.json({ error: 'User not found. Please log in.' }, { status: 401 });
+    return NextResponse.json({ error: "User not found. Please log in." }, { status: 401 });
   }
 
   try {
@@ -25,6 +25,6 @@ export async function GET() {
     return NextResponse.json({ role: existingUser.role });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: 'Failed to fetch user role' }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch user role" }, { status: 500 });
   }
 }

@@ -167,13 +167,13 @@ const FAQ = () => {
   ];
 
   return (
-    <div className=" text-black dark:text-white">
-      <h1 className="text-4xl font-extrabold mb-10 text-gold">Frequently Asked Questions (FAQs)</h1>
+    <div className="text-black dark:text-white">
+      <h1 className="mb-10 text-4xl font-extrabold text-gold">Frequently Asked Questions (FAQs)</h1>
 
       <nav className="mb-10">
         <h2 className="text-3xl font-semibold text-gold">Table of Contents</h2>
-        <ul className="list-disc list-inside mt-2">
-          {faqs.map(faq => (
+        <ul className="mt-2 list-disc list-inside">
+          {faqs.map((faq) => (
             <li key={faq.id}>
               <a href={`#${faq.id}`} className="text-blue-600 dark:text-blue-400 hover:underline">
                 {faq.question}
@@ -183,10 +183,10 @@ const FAQ = () => {
         </ul>
       </nav>
 
-      {faqs.map(faq => (
-        <div key={faq.id} id={faq.id} className="mb-6 border-b border-gray-300 dark:border-gray-700 pb-6">
-          <h2 className="text-2xl font-semibold mb-2 text-gold">{faq.question}</h2>
-          <p className="text-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: faq.answer }}></p>
+      {faqs.map((faq) => (
+        <div key={faq.id} id={faq.id} className="pb-6 mb-6 border-b border-gray-300 dark:border-gray-700">
+          <h2 className="mb-2 text-2xl font-semibold text-gold">{faq.question}</h2>
+          <p className="text-lg leading-relaxed">{faq.answer}</p>
         </div>
       ))}
     </div>
