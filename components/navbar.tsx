@@ -120,13 +120,13 @@ export const Navbar = () => {
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <Link className="flex justify-start items-center gap-1" href="/">
-          <Image 
-            src={eagleSvg} 
-            alt="Eagle Logo" 
-            width={32} 
-            height={32} 
-            className="w-8 h-8 invert-on-dark" 
-          />
+            <Image 
+              src={eagleSvg} 
+              alt="Eagle Logo" 
+              width={32} 
+              height={32} 
+              className="w-8 h-8 invert-on-dark" 
+            />
             <p className="font-bold text-2xl text-inherit">Eagles Ring</p>
           </Link>
         </NavbarBrand>
