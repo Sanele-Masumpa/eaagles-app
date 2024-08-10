@@ -13,7 +13,7 @@ import { Kbd } from "@nextui-org/kbd";
 import { Link } from "@nextui-org/link";
 import { Input } from "@nextui-org/input";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { SearchIcon } from "@/components/icons"; // Removed TwitterIcon and GithubIcon
+import { TwitterIcon, DiscordIcon, SearchIcon, GithubIcon } from "@/components/icons";
 import { SignInButton, SignedIn, SignedOut, UserButton, SignOutButton } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import Image from 'next/image';
@@ -117,7 +117,6 @@ export const Navbar = () => {
 
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
-      {/* Brand and Logo */}
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <Link className="flex justify-start items-center gap-1" href="/">
@@ -131,11 +130,7 @@ export const Navbar = () => {
             <p className="font-bold text-2xl text-inherit">Eagles Ring</p>
           </Link>
         </NavbarBrand>
-      </NavbarContent>
-
-      {/* Desktop Navigation */}
-      <NavbarContent className="hidden lg:flex basis-3/5" justify="center">
-        <ul className="flex gap-3">
+        <ul className="hidden lg:flex gap-3 justify-start ml-2">
           <SignedIn>
             {roleBasedOptions(role)}
           </SignedIn>
@@ -145,37 +140,44 @@ export const Navbar = () => {
         </ul>
       </NavbarContent>
 
-      {/* Desktop Actions */}
-      <NavbarContent className="hidden lg:flex basis-1/5 justify-end">
-        <NavbarItem className="flex gap-2 items-center">
+      <NavbarContent className="hidden sm:flex basis-1/5 sm:basis-full" justify="end">
+        <NavbarItem className="hidden sm:flex gap-2">
+          
           <ThemeSwitch />
           <SignedIn>
             <UserButton />
           </SignedIn>
-          <NavbarItem className="hidden lg:flex">
-            {searchInput}
-          </NavbarItem>
+          <SignInButton>
+              Sign In
+            </SignInButton>
+        </NavbarItem>
+        <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
+        <NavbarItem className="hidden md:flex">
           <SignedIn>
             <SignOutButton>
               Log Out
             </SignOutButton>
           </SignedIn>
           <SignedOut>
-            <SignInButton>
-              Sign In
-            </SignInButton>
+            
           </SignedOut>
         </NavbarItem>
       </NavbarContent>
 
-      {/* Mobile Navigation */}
-      <NavbarContent className="sm:hidden flex basis-1/5 justify-end items-center">
+      <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
+        <ThemeSwitch />
         <NavbarMenuToggle />
       </NavbarContent>
 
-      {/* Mobile Menu */}
       <NavbarMenu>
-        <div className="p-4">
+        {searchInput}
+        <div className="mx-4 mt-2 flex flex-col gap-1">
           <SignedIn>
             {roleBasedOptions(role)}
             <NavbarMenuItem>
@@ -186,18 +188,7 @@ export const Navbar = () => {
           </SignedIn>
           <SignedOut>
             {commonLinks}
-            <NavbarMenuItem>
-              <SignInButton>
-                Sign In
-              </SignInButton>
-            </NavbarMenuItem>
           </SignedOut>
-          <div className="mt-4">
-            {searchInput}
-          </div>
-          <div className="mt-4">
-            <ThemeSwitch />
-          </div>
         </div>
       </NavbarMenu>
     </NextUINavbar>
