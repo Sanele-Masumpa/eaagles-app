@@ -196,7 +196,7 @@ const PrivacyPolicy = () => {
         </p>
       </div>
 
-      <h2 id="childrens-privacy" className="text-2xl font-semibold mb-4 text-gold">12. Children's Privacy</h2>
+      <h2 id="childrens-privacy" className="text-2xl font-semibold mb-4 text-gold">12.Children&apos;s Privacy</h2>
       <div className="flex items-center mb-4">
         <FaShieldAlt className="text-gold text-3xl mr-3" />
         <p>
