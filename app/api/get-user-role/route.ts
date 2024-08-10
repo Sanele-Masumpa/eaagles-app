@@ -24,7 +24,6 @@ export async function GET() {
 
     return NextResponse.json({ role: existingUser.role });
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ error: "Failed to fetch user role" }, { status: 500 });
   }
 }

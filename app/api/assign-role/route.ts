@@ -58,7 +58,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ message: `Role ${role} assigned` });
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
       { error: "Failed to assign role" },
       { status: 500 }
