@@ -132,7 +132,7 @@ export default function AboutPage() {
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">Get In Touch</h2>
         <p className="text-lg mb-4">
-          We'd love to hear from you! Whether you have questions about our platform, feedback, or partnership opportunities, feel free to reach out to us.
+          We&apos;d love to hear from you! Whether you have questions about our platform, feedback, or partnership opportunities, feel free to reach out to us.
         </p>
         <a
           href="/contact"
