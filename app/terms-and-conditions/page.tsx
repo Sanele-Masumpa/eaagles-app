@@ -23,7 +23,7 @@ const TermsAndConditions = () => {
             To impersonate or attempt to impersonate the company, an employee, another user, or any other person or entity.
           </li>
           <li>
-            To engage in any other conduct that restricts or inhibits anyone's use or enjoyment of our platform, or which, as determined by us, may harm the company or users of the platform or expose them to liability.
+            To engage in any other conduct that restricts or inhibits anyone&apos;s use or enjoyment of our platform, or which, as determined by us, may harm the company or users of the platform or expose them to liability.
           </li>
         </ul>
       </>

@@ -54,7 +54,7 @@ export const Footer = () => {
               className="hover:text-primary transition-colors"
             >
               <span className="hidden sm:inline">Terms and Conditions</span>
-              <span className="sm:hidden">T&apos;s & C&apos;s</span>
+              <span className="sm:hidden">T&apos;s &amp; C&apos;s</span>
             </Link>
             <Link
               href="/faqs"

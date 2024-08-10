@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { FaShieldAlt, FaLock, FaUserShield, FaClipboardCheck, FaGlobe } from "react-icons/fa";
 
 const PrivacyPolicy = () => {
@@ -169,7 +168,7 @@ const PrivacyPolicy = () => {
       <div className="flex items-center mb-4">
         <FaClipboardCheck className="text-gold text-3xl mr-3" />
         <p>
-          We use cookies to enhance your experience on our platform. Cookies help us understand how you interact with our website and provide personalized content. You can manage your cookie preferences through your browser settings.
+          We use cookies to enhance your experience on our website. Cookies are small data files that are placed on your device. You can manage your cookie preferences through your browser settings.
         </p>
       </div>
 
@@ -177,7 +176,7 @@ const PrivacyPolicy = () => {
       <div className="flex items-center mb-4">
         <FaGlobe className="text-gold text-3xl mr-3" />
         <p>
-          Our application may contain links to third-party services. We are not responsible for the privacy practices or content of these third-party services. Please review their privacy policies before providing any information.
+          Our service may contain links to third-party websites and services. We are not responsible for the privacy practices or content of these third parties. Please review their privacy policies before providing any personal information.
         </p>
       </div>
 
@@ -185,7 +184,7 @@ const PrivacyPolicy = () => {
       <div className="flex items-center mb-4">
         <FaClipboardCheck className="text-gold text-3xl mr-3" />
         <p>
-          We retain your personal information only for as long as necessary to fulfill the purposes outlined in this privacy policy. We may also retain data to comply with legal obligations or resolve disputes.
+          We retain your personal information for as long as necessary to fulfill the purposes outlined in this policy or as required by law. When your data is no longer needed, we will securely delete or anonymize it.
         </p>
       </div>
 
@@ -193,7 +192,7 @@ const PrivacyPolicy = () => {
       <div className="flex items-center mb-4">
         <FaGlobe className="text-gold text-3xl mr-3" />
         <p>
-          Your information may be transferred to and processed in countries outside of your residence. We ensure that appropriate safeguards are in place to protect your data during these transfers.
+          Your data may be transferred to and maintained on servers located outside your country. We ensure that such transfers comply with applicable data protection laws and that your information is protected.
         </p>
       </div>
 
@@ -201,7 +200,7 @@ const PrivacyPolicy = () => {
       <div className="flex items-center mb-4">
         <FaShieldAlt className="text-gold text-3xl mr-3" />
         <p>
-          Our services are not intended for children under the age of 13. We do not knowingly collect or solicit personal information from children under 13. If we become aware that we have collected such information, we will take steps to delete it.
+          Our service is not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13. If we become aware of such collection, we will take steps to delete the information.
         </p>
       </div>
 
@@ -209,7 +208,7 @@ const PrivacyPolicy = () => {
       <div className="flex items-center mb-4">
         <FaClipboardCheck className="text-gold text-3xl mr-3" />
         <p>
-          We welcome feedback from users regarding our privacy practices. If you have suggestions or concerns, please reach out to us through the contact information provided above.
+          We welcome your feedback and suggestions about our privacy practices. Please contact us to share your thoughts or concerns, and we will consider your input in our ongoing efforts to improve our services.
         </p>
       </div>
 
@@ -217,15 +216,15 @@ const PrivacyPolicy = () => {
       <div className="flex items-center mb-4">
         <FaShieldAlt className="text-gold text-3xl mr-3" />
         <p>
-          In the event of a data breach that affects your personal information, we will notify you as soon as possible. We will also take appropriate measures to mitigate any potential harm.
+          In the event of a data breach, we will notify affected users as soon as possible and take appropriate measures to mitigate any harm. We will also report the breach to relevant authorities as required by law.
         </p>
       </div>
 
       <h2 id="privacy-policy-for-partners" className="text-2xl font-semibold mb-4 text-gold">15. Privacy Policy for Partners</h2>
       <div className="flex items-center mb-4">
-        <FaUserShield className="text-gold text-3xl mr-3" />
+        <FaGlobe className="text-gold text-3xl mr-3" />
         <p>
-          Partners who have access to our platform must comply with our privacy policy. We ensure that they adhere to the same standards of privacy and data protection.
+          We may share certain information with our business partners to provide and enhance our services. Our partners are required to adhere to similar privacy standards and are prohibited from using your information for purposes other than those outlined in this policy.
         </p>
       </div>
 
@@ -233,15 +232,15 @@ const PrivacyPolicy = () => {
       <div className="flex items-center mb-4">
         <FaShieldAlt className="text-gold text-3xl mr-3" />
         <p>
-          We may disclose your information if required by law or in response to valid requests by public authorities, including to meet national security or law enforcement requirements.
+          We may disclose your personal information if required by law or in response to valid requests by public authorities, including to meet national security or law enforcement requirements.
         </p>
       </div>
 
       <h2 id="policy-enforcement" className="text-2xl font-semibold mb-4 text-gold">17. Policy Enforcement</h2>
       <div className="flex items-center mb-4">
-        <FaShieldAlt className="text-gold text-3xl mr-3" />
+        <FaClipboardCheck className="text-gold text-3xl mr-3" />
         <p>
-          We take privacy seriously and will take appropriate action to enforce this privacy policy. If you believe your privacy rights have been violated, please contact us using the details provided.
+          We regularly review and update our privacy practices to ensure compliance with this policy. If you believe we are not adhering to this policy, please contact us, and we will investigate and address any issues.
         </p>
       </div>
 
@@ -249,7 +248,7 @@ const PrivacyPolicy = () => {
       <div className="flex items-center mb-4">
         <FaGlobe className="text-gold text-3xl mr-3" />
         <p>
-          Our privacy policy also applies to applications developed and distributed by us. We ensure that the privacy of users is maintained across all our applications.
+          This privacy policy applies to all applications and services provided by our platform. If you use third-party applications or services linked from our platform, please review their privacy policies as well.
         </p>
       </div>
     </div>
