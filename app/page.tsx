@@ -15,19 +15,22 @@ export default function HomePage() {
         const response = await fetch('/api/get-user-role');
         if (response.ok) {
           const data = await response.json();
+          if (data.role === null) {
+            // Redirect to /select-role if role is not found
+            router.push('/select-role');
+            return;
+          }
           setRole(data.role);
-          setLoading(false);
-        } else {
-          setLoading(false);
         }
       } catch (error) {
         console.error('Failed to fetch user role', error);
+      } finally {
         setLoading(false);
       }
     }
 
     fetchUserRole();
-  }, []);
+  }, [router]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -35,7 +38,7 @@ export default function HomePage() {
 
   if (role === 'INVESTOR') {
     return (
-      <div className="relative min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white">
+      <div className="relative min-h-screen  text-black dark:text-white">
         <main className="flex flex-col items-center justify-center w-full h-full px-6 py-16 text-center">
           <h1 className="text-4xl font-bold mb-4">Investor Dashboard</h1>
           <p className="text-xl mb-8">
@@ -56,7 +59,7 @@ export default function HomePage() {
 
   if (role === 'ENTREPRENEUR') {
     return (
-      <div className="relative min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white">
+      <div className="relative min-h-screen text-black dark:text-white">
         <main className="flex flex-col items-center justify-center w-full h-full px-6 py-16 text-center">
           <h1 className="text-4xl font-bold mb-4">Entrepreneur Dashboard</h1>
           <p className="text-xl mb-8">
@@ -76,7 +79,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white">
+    <div className="relative min-h-screen text-gray-900 dark:text-white">
       <main className="flex flex-col items-center justify-center w-full h-full px-6 py-16 text-center">
         <section className="mb-12 max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold mb-4">Welcome to Eagles Ring</h1>
@@ -118,29 +121,54 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="mb-12 max-w-4xl mx-auto">
-          <h3 className="text-2xl font-semibold mb-6">Our Features</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="border rounded-lg shadow-lg p-6 bg-white dark:bg-black">
-              <h4 className="text-lg font-semibold mb-2">Innovative Ideas</h4>
-              <p>
-                Discover groundbreaking ideas from talented entrepreneurs looking to make an impact.
-              </p>
-            </div>
-            <div className="border rounded-lg shadow-lg p-6 bg-white dark:bg-black">
-              <h4 className="text-lg font-semibold mb-2">Secure Transactions</h4>
-              <p>
-                Ensure your investments are safe with our secure and transparent transaction processes.
-              </p>
-            </div>
-            <div className="border rounded-lg shadow-lg p-6 bg-white dark:bg-black">
-              <h4 className="text-lg font-semibold mb-2">Effective Communication</h4>
-              <p>
-                Connect easily with entrepreneurs and investors through our integrated communication tools.
-              </p>
-            </div>
-          </div>
-        </section>
+        <section className="relative mb-12 max-w-4xl mx-auto">
+  <h3 className="text-2xl font-semibold mb-6">Our Features</h3>
+  <div className="overflow-hidden relative">
+    <div className="flex animate-scroll-text">
+      <div className="flex-shrink-0 p-6 bg-white dark:bg-black border rounded-lg shadow-lg mr-8">
+        <h4 className="text-lg font-semibold mb-2">Innovative Ideas</h4>
+        <p>
+          Discover groundbreaking ideas from talented entrepreneurs looking to make an impact.
+        </p>
+      </div>
+      <div className="flex-shrink-0 p-6 bg-white dark:bg-black border rounded-lg shadow-lg mr-8">
+        <h4 className="text-lg font-semibold mb-2">Secure Transactions</h4>
+        <p>
+          Ensure your investments are safe with our secure and transparent transaction processes.
+        </p>
+      </div>
+      <div className="flex-shrink-0 p-6 bg-white dark:bg-black border rounded-lg shadow-lg mr-8">
+        <h4 className="text-lg font-semibold mb-2">Effective Communication</h4>
+        <p>
+          Connect easily with entrepreneurs and investors through our integrated communication tools.
+        </p>
+      </div>
+      <div className="flex-shrink-0 p-6 bg-white dark:bg-black border rounded-lg shadow-lg mr-8">
+        <h4 className="text-lg font-semibold mb-2">Expert Guidance</h4>
+        <p>
+          Gain insights and mentorship from industry experts to refine your business strategy.
+        </p>
+      </div>
+      <div className="flex-shrink-0 p-6 bg-white dark:bg-black border rounded-lg shadow-lg mr-8">
+        <h4 className="text-lg font-semibold mb-2">Real-Time Analytics</h4>
+        <p>
+          Monitor your investments and performance with real-time analytics and reporting tools.
+        </p>
+      </div>
+      <div className="flex-shrink-0 p-6 bg-white dark:bg-black border rounded-lg shadow-lg mr-8">
+        <h4 className="text-lg font-semibold mb-2">Customized Opportunities</h4>
+        <p>
+          Receive tailored investment opportunities that match your interests and goals.
+        </p>
+      </div>
+    </div>
+    
+  </div>
+  <a href="/features" className="absolute bottom--10 right-0 p-4 text-blue-500 dark:text-blue-300 underline">
+      View All
+    </a>
+</section>
+
 
         <section className="mb-12 max-w-4xl mx-auto">
           <h3 className="text-2xl font-semibold mb-6">Join Our Community</h3>

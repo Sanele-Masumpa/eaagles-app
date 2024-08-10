@@ -9,3 +9,48 @@
     background-color: black; /* Ensures the background matches */
   }
   
+  /* styles.css or in your global.css file */
+.invert-on-dark {
+  transition: filter 0.3s ease;
+}
+
+/* Tailwind uses dark: to apply styles in dark mode */
+.dark .invert-on-dark {
+  filter: invert(1);
+}
+
+
+/* Add this to your global CSS file or a specific module CSS file */
+@keyframes scroll-text {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animated-text {
+  position: absolute;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: scroll-text 15s linear infinite;
+  background: linear-gradient(to left, transparent, rgba(255, 2, 2, 0.87), transparent);
+}
+
+.animate-scroll-text {
+  display: flex;
+  animation: scroll-text 30s linear infinite;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
+}

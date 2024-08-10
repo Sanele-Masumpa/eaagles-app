@@ -1,109 +1,190 @@
-import { title } from "@/components/primitives";
+import React from 'react';
+
+interface IconProps {
+  className?: string;
+}
+
+const CheckIcon: React.FC<IconProps> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${className}`} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <path fillRule="evenodd" d="M14.293 6.293a1 1 0 00-1.414 0L8 9.586 7.121 8.707a1 1 0 00-1.414 1.414l1.5 1.5a1 1 0 001.414 0l5-5a1 1 0 000-1.414z" clipRule="evenodd" />
+  </svg>
+);
+
+const XIcon: React.FC<IconProps> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${className}`} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+    <path fillRule="evenodd" d="M6.293 6.293a1 1 0 011.414 0L10 7.586l2.293-2.293a1 1 0 111.414 1.414L11.414 9l2.293 2.293a1 1 0 01-1.414 1.414L10 10.414l-2.293 2.293a1 1 0 01-1.414-1.414L8.586 9 6.293 6.707a1 1 0 010-1.414z" clipRule="evenodd" />
+  </svg>
+);
 
 export default function PricingPage() {
   return (
     <div className="max-w-full px-6 py-8 mx-auto">
-      <h1 className={`${title()} text-center mb-8`}>Pricing</h1>
       
       <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-4">Our Pricing Plans</h2>
-        <p className="text-lg mb-4">
+        <h2 className="text-2xl font-semibold mb-4 text-center">Our Pricing Plans</h2>
+        <p className="text-lg mb-8 text-center">
           At Eagles Ring, we offer flexible pricing plans to suit the needs of both entrepreneurs and investors. Our goal is to provide excellent value and support at every stage of your investment journey.
         </p>
         
-        <div className="flex flex-wrap gap-6 justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto py-12 px-4 md:px-0">
           {/* Basic Plan */}
-          <div className="border rounded-lg shadow-lg p-6 max-w-sm w-full">
-            <h3 className="text-xl font-semibold mb-2">Basic Plan</h3>
-            <p className="text-lg font-bold mb-4">$49/month</p>
-            <ul className="list-disc list-inside mb-4 space-y-2">
-              <li>Access to basic pitching tools</li>
-              <li>Limited investor interactions</li>
-              <li>Email support</li>
-            </ul>
-            <a href="/sign-up" className="bg-primary text-white py-2 px-4 rounded-lg hover:bg-primary-dark block text-center">
-              Get Started
-            </a>
+          <div className="bg-gray-100 dark:bg-[#917953] rounded-lg shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-2xl font-bold text-black">Basic Plan</h3>
+              <div className="text-4xl font-bold text-black">-</div>
+            </div>
+            <p className="text-gray-700 dark:text-gray-300 mt-4">
+              Get started with our basic plan for small teams.
+            </p>
+            <div className="mt-6 space-y-3">
+              <div className="flex items-center space-x-2">
+                <CheckIcon className="h-5 w-5 text-accent" />
+                <span className="text-black">Pitch Guide Videos</span>
+              </div>
+              <div className="flex items-center space-x-2 opacity-50">
+                <XIcon className="h-5 w-5 text-destructive" />
+                <span className="line-through text-black">
+                  Unlimited Business Assistance
+                </span>
+              </div>
+              <div className="flex items-center space-x-2 opacity-50">
+                <XIcon className="h-5 w-5 text-destructive" />
+                <span className="line-through text-black">
+                  Unlimited Business Events
+                </span>
+              </div>
+              <div className="flex items-center space-x-2 opacity-50">
+                <XIcon className="h-5 w-5 text-destructive" />
+                <span className="line-through text-black">Priority Support</span>
+              </div>
+              <div className="flex items-center space-x-2 opacity-50">
+                <XIcon className="h-5 w-5 text-destructive" />
+                <span className="line-through text-black">Chat Enabled</span>
+              </div>
+              <div className="flex items-center space-x-2 opacity-50">
+                <XIcon className="h-5 w-5 text-destructive" />
+                <span className="line-through text-black">
+                  Business Pitch Guidance
+                </span>
+              </div>
+            </div>
+            <a
+                href="/sign-up"
+                className="w-full mt-6 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 transform transition duration-300 hover:scale-105 text-center py-2 px-4 rounded-lg text-white">
+                Get Started
+              </a>
           </div>
-          
-          {/* Pro Plan */}
-          <div className="border rounded-lg shadow-lg p-6 max-w-sm w-full">
-            <h3 className="text-xl font-semibold mb-2">Pro Plan</h3>
-            <p className="text-lg font-bold mb-4">$99/month</p>
-            <ul className="list-disc list-inside mb-4 space-y-2">
-              <li>Advanced pitching tools</li>
-              <li>Priority investor interactions</li>
-              <li>Phone and email support</li>
-              <li>Analytics and reporting</li>
-            </ul>
-            <a href="/sign-up" className="bg-primary text-white py-2 px-4 rounded-lg hover:bg-primary-dark block text-center">
-              Get Started
-            </a>
+
+          {/* Premium Plan */}
+          <div className="bg-gray-100 dark:bg-[#917953] rounded-lg shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-2xl font-bold text-black">Premium Plan</h3>
+              <div className="text-4xl font-bold text-black">R450</div>
+            </div>
+            <p className="text-gray-700 dark:text-gray-300 mt-4">
+              Our premium plan offers advanced features for growing teams.
+            </p>
+            <div className="mt-6 space-y-3">
+              <div className="flex items-center space-x-2">
+                <CheckIcon className="h-5 w-5 text-accent" />
+                <span className="text-black">Basic Plan</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckIcon className="h-5 w-5 text-accent" />
+                <span className="text-black">Unlimited Business Assistance</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckIcon className="h-5 w-5 text-accent" />
+                <span className="text-black">Unlimited Business Events</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckIcon className="h-5 w-5 text-accent" />
+                <span className="text-black">Priority Support</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckIcon className="h-5 w-5 text-accent" />
+                <span className="text-black">Chat Enabled</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckIcon className="h-5 w-5 text-accent" />
+                <span className="text-black">Business Pitch Guidance</span>
+              </div>
+            </div>
+            <a
+                href="/sign-up"
+                className="w-full mt-6 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 transform transition duration-300 hover:scale-105 text-center py-2 px-4 rounded-lg text-white">
+                Get Started
+              </a>
           </div>
-          
+
           {/* Enterprise Plan */}
-          <div className="border rounded-lg shadow-lg p-6 max-w-sm w-full">
-            <h3 className="text-xl font-semibold mb-2">Enterprise Plan</h3>
-            <p className="text-lg font-bold mb-4">Custom Pricing</p>
-            <ul className="list-disc list-inside mb-4 space-y-2">
-              <li>Customized pitching tools</li>
-              <li>Dedicated investor matchmaking</li>
-              <li>24/7 support</li>
-              <li>Comprehensive analytics</li>
-              <li>Integration with existing systems</li>
-            </ul>
-            <a href="/contact" className="bg-primary text-white py-2 px-4 rounded-lg hover:bg-primary-dark block text-center">
-              Contact Us
-            </a>
+          <div className="bg-gray-100 dark:bg-[#917953] rounded-lg shadow-lg p-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-2xl font-bold text-black">Enterprise Plan</h3>
+              <div className="text-4xl font-bold text-black">Custom</div>
+            </div>
+            <p className="text-gray-700 dark:text-gray-300 mt-4">
+              Tailored solutions for large organizations with advanced needs.
+            </p>
+            <div className="mt-6 space-y-3">
+              <div className="flex items-center space-x-2">
+                <CheckIcon className="h-5 w-5 text-accent" />
+                <span className="text-black">All Premium Plan Features</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckIcon className="h-5 w-5 text-accent" />
+                <span className="text-black">Dedicated Account Manager</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckIcon className="h-5 w-5 text-accent" />
+                <span className="text-black">Custom Integrations</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckIcon className="h-5 w-5 text-accent" />
+                <span className="text-black">24/7 Support</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckIcon className="h-5 w-5 text-accent" />
+                <span className="text-black">Tailored Onboarding</span>
+              </div>
+            </div>
+            <a
+                href="/contact"
+                className="w-full mt-6 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 transform transition duration-300 hover:scale-105 text-center py-2 px-4 rounded-lg text-white">
+                Contact Us
+              </a>
           </div>
         </div>
       </section>
       
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-4">Why Choose Our Pricing Plans?</h2>
-        <p className="text-lg mb-4">
-          Our pricing plans are designed to provide flexibility and value. Here’s why our plans are the best choice for you:
-        </p>
-        <ul className="list-disc list-inside mb-4 space-y-2">
-          <li className="text-lg">Access to cutting-edge tools and features tailored to your needs.</li>
-          <li className="text-lg">Dedicated support to help you maximize your investment opportunities.</li>
-          <li className="text-lg">Scalable plans that grow with your business.</li>
-          <li className="text-lg">Transparent pricing with no hidden fees.</li>
-        </ul>
-      </section>
-
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-4">Frequently Asked Questions</h2>
-        <div className="space-y-4">
+      <section>
+        <h2 className="text-2xl font-semibold mb-4 text-center">Frequently Asked Questions</h2>
+        <div className="space-y-6">
           <div>
             <h3 className="text-lg font-semibold mb-2">What is included in each plan?</h3>
             <p className="text-lg">
-              Each plan includes a set of features designed to meet the needs of different users. The Basic Plan includes essential tools, while the Pro Plan offers advanced features and priority support. The Enterprise Plan provides custom solutions tailored to large organizations.
+              Each plan offers different features tailored to your needs. Please refer to the plan descriptions for detailed information on what’s included.
             </p>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-2">Can I switch plans later?</h3>
+            <h3 className="text-lg font-semibold mb-2">How do I choose the right plan?</h3>
             <p className="text-lg">
-              Yes, you can switch between plans at any time. Our team is here to assist you with upgrading or downgrading your plan to better fit your needs.
+              Consider your business needs and goals. Our Basic Plan is ideal for small teams, the Premium Plan offers advanced features, and the Enterprise Plan provides custom solutions for large organizations.
             </p>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-2">Is there a free trial available?</h3>
+            <h3 className="text-lg font-semibold mb-2">Can I upgrade or downgrade my plan?</h3>
             <p className="text-lg">
-              We offer a free trial for the Basic Plan so you can experience our platform before committing. Contact us for more details on starting your trial.
+              Yes, you can upgrade or downgrade your plan at any time. Please contact our support team for assistance with plan changes.
+            </p>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold mb-2">What if I have more questions?</h3>
+            <p className="text-lg">
+              Feel free to reach out to our support team through the contact page for any additional questions or concerns.
             </p>
           </div>
         </div>
-      </section>
-
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-4">Get Started Today</h2>
-        <p className="text-lg mb-4">
-          Ready to take your investment journey to the next level? Choose the plan that’s right for you and start experiencing the benefits of Eagles Ring.
-        </p>
-        <a href="/sign-up" className="bg-primary text-white py-2 px-4 rounded-lg hover:bg-primary-dark block text-center">
-          Sign Up
-        </a>
       </section>
     </div>
   );

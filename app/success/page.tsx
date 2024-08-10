@@ -1,4 +1,5 @@
-'use client'
+'use client';
+
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { title } from "@/components/primitives";
@@ -7,7 +8,6 @@ export default function SuccessPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect after a few seconds
     const timer = setTimeout(() => {
       router.push('/'); // Redirect to home or another page after a delay
     }, 3000); // Adjust the delay as needed
@@ -16,8 +16,8 @@ export default function SuccessPage() {
   }, [router]);
 
   return (
-    <div className="max-w-full px-6 py-8 mx-auto flex items-center justify-center min-h-screen">
-      <div className="text-center p-8 bg-white rounded-lg shadow-md space-y-4">
+    <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-black">
+      <div className="p-8 bg-white dark:bg-black rounded-lg shadow-lg border-2 border-blue-500 space-y-6 max-w-md">
         <svg
           className="mx-auto h-16 w-16 text-green-500"
           xmlns="http://www.w3.org/2000/svg"
@@ -32,15 +32,15 @@ export default function SuccessPage() {
             d="M5 13l4 4L19 7"
           />
         </svg>
-        <h1 className={`${title()} text-center mb-4 text-3xl font-bold text-gray-900`}>
+        <h1 className={`${title()} text-center text-3xl font-bold text-gray-900 dark:text-gray-100`}>
           Success!
         </h1>
-        <p className="text-gray-600 mb-4">
+        <p className="text-gray-600 dark:text-gray-300 text-center">
           Your role has been successfully assigned. You will be redirected shortly.
         </p>
         <a
           href="/"
-          className="bg-primary text-white py-2 px-4 rounded-lg hover:bg-primary-dark"
+          className="block w-full text-center bg-blue text-white py-2 px-4 rounded-lg hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700"
         >
           Go to Home
         </a>

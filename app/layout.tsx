@@ -4,12 +4,12 @@ import { Link } from "@nextui-org/link";
 import clsx from "clsx";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import { Providers } from "./providers";
 import { ClerkProvider } from "@clerk/nextjs";
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
+import {Footer} from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: {
@@ -36,21 +36,7 @@ export default function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning lang="en">
-      <ClerkProvider
-        appearance={{
-          layout: {
-            socialButtonsVariant: "iconButton",
-            logoImageUrl: "/EaglesRingLogoDark.png",
-          },
-          variables: {
-            colorText: "#fff",
-            colorPrimary: "#0E78F9",
-            colorBackground: "black",
-            colorInputBackground: "#252A41",
-            colorInputText: "#fff",
-          },
-        }}
-      >
+      <ClerkProvider>
 
       <head />
       <body
@@ -72,17 +58,7 @@ export default function RootLayout({
                 pauseOnFocusLoss />
               {children}
             </main>
-            <footer className="w-full flex items-center justify-center py-3">
-                <Link
-                  isExternal
-                  className="flex items-center gap-1 text-current"
-                  href="https://eaglesring.vc"
-                  title="Eagles Ring homepage"
-                >
-                  <span className="text-default-600">Powered by</span>
-                  <p className="text-primary">Eagles Ring</p>
-                </Link>
-              </footer>
+            <Footer />
           </div>
         </Providers>
       </body>

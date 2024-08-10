@@ -8,14 +8,19 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  clerkId    String   @unique
-  email      String   @unique
-  name       String?
-  imageUrl   String?
-  role       Role    // Make sure this is non-nullable if role must always be assigned
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id                    Int                 @id @default(autoincrement())
+  clerkId               String              @unique
+  email                 String              @unique
+  name                  String?
+  imageUrl              String?
+  role                  Role
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  messagesSent          Message[]           @relation("MessageSender")
+  messagesReceived      Message[]           @relation("MessageReceiver")
+  investments           Investment[]        // List of investments made by the user
+  entrepreneurProfile   EntrepreneurProfile?
+  investorProfile       InvestorProfile?
 }
 
 enum Role {
@@ -23,3 +28,51 @@ enum Role {
   ENTREPRENEUR
 }
 
+model EntrepreneurProfile {
+  id                   Int                   @id @default(autoincrement())
+  userId               Int                   @unique
+  user                 User                  @relation(fields: [userId], references: [id])
+  bio                  String?
+  startups             Startup[]             // Startups managed by the entrepreneur
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+}
+
+model InvestorProfile {
+  id                   Int                   @id @default(autoincrement())
+  userId               Int                   @unique
+  user                 User                  @relation(fields: [userId], references: [id])
+  investmentStrategy   String?
+  investments          Investment[]          // Investments made by the investor
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+}
+
+model Investment {
+  id                   Int                   @id @default(autoincrement())
+  amount               Float
+  date                 DateTime              @default(now())
+  userId               Int
+  investorProfileId    Int?
+  user                 User                  @relation(fields: [userId], references: [id])
+  investorProfile      InvestorProfile?      @relation(fields: [investorProfileId], references: [id])
+}
+
+model Startup {
+  id                   Int                   @id @default(autoincrement())
+  name                 String
+  description          String?
+  entrepreneurId      Int
+  entrepreneur        EntrepreneurProfile   @relation(fields: [entrepreneurId], references: [id])
+}
+
+model Message {
+  id                   Int                   @id @default(autoincrement())
+  content              String
+  senderId             Int
+  receiverId           Int
+  sender               User                  @relation("MessageSender", fields: [senderId], references: [id])
+  receiver             User                  @relation("MessageReceiver", fields: [receiverId], references: [id])
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+}
