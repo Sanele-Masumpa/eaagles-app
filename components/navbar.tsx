@@ -78,6 +78,11 @@ export const Navbar = () => {
                 Opportunities
               </Link>
             </NavbarMenuItem>
+            <NavbarMenuItem>
+              <Link className="text-sm" color="foreground" href="/meetings">
+                Meetings
+              </Link>
+            </NavbarMenuItem>
           </>
         );
       case 'ENTREPRENEUR':
@@ -91,6 +96,11 @@ export const Navbar = () => {
             <NavbarMenuItem>
               <Link className="text-sm" color="foreground" href="/pitches">
                 Pitches
+              </Link>
+            </NavbarMenuItem>
+            <NavbarMenuItem>
+              <Link className="text-sm" color="foreground" href="/meetings">
+                Meetings
               </Link>
             </NavbarMenuItem>
           </>
