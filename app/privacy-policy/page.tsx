@@ -68,9 +68,9 @@ const PrivacyPolicy = () => {
             </a>
           </li>
           <li>
-            <a href="#childrens-privacy" className="text-blue-600 dark:text-blue-400 hover:underline">
-              12. Children's Privacy
-            </a>
+          <a href="#childrens-privacy" className="text-blue-600 dark:text-blue-400 hover:underline">
+            12. Children&apos;s Privacy
+          </a>
           </li>
           <li>
             <a href="#user-feedback" className="text-blue-600 dark:text-blue-400 hover:underline">
