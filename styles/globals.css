@@ -54,3 +54,18 @@
 .flex-shrink-0 {
   flex-shrink: 0;
 }
+
+/* globals.css or styles.css */
+
+@keyframes scrollFeatures {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-scroll-features {
+  animation: scrollFeatures 30s linear infinite;
+}

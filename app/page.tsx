@@ -37,15 +37,15 @@ export default function HomePage() {
 
   if (role === 'INVESTOR') {
     return (
-      <div className="relative min-h-screen text-black dark:text-white px-4 sm:px-6">
-        <main className="flex flex-col items-center justify-center w-full h-full py-12 text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4">Investor Dashboard</h1>
-          <p className="text-base sm:text-xl mb-8">
+      <div className="relative min-h-screen text-black dark:text-white">
+        <main className="flex flex-col items-center justify-center w-full h-full px-6 py-16 text-center">
+          <h1 className="text-4xl font-bold mb-4">Investor Dashboard</h1>
+          <p className="text-xl mb-8">
             Welcome to your investor dashboard! Here you can find potential startups to invest in.
           </p>
-          <section className="mb-12 max-w-screen-sm mx-auto">
-            <h2 className="text-xl sm:text-2xl font-semibold mb-4">Your Investments</h2>
-            <p className="text-base sm:text-lg mb-6">
+          <section className="mb-12 max-w-4xl mx-auto">
+            <h2 className="text-2xl font-semibold mb-4">Your Investments</h2>
+            <p className="text-lg mb-6">
               Track and manage your investments here. View detailed information about each investment.
             </p>
             {/* List or other components to display investments */}
@@ -57,15 +57,15 @@ export default function HomePage() {
 
   if (role === 'ENTREPRENEUR') {
     return (
-      <div className="relative min-h-screen text-black dark:text-white px-4 sm:px-6">
-        <main className="flex flex-col items-center justify-center w-full h-full py-12 text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4">Entrepreneur Dashboard</h1>
-          <p className="text-base sm:text-xl mb-8">
+      <div className="relative min-h-screen text-black dark:text-white">
+        <main className="flex flex-col items-center justify-center w-full h-full px-6 py-16 text-center">
+          <h1 className="text-4xl font-bold mb-4">Entrepreneur Dashboard</h1>
+          <p className="text-xl mb-8">
             Welcome to your entrepreneur dashboard! Here you can pitch your ideas to potential investors.
           </p>
-          <section className="mb-12 max-w-screen-sm mx-auto">
-            <h2 className="text-xl sm:text-2xl font-semibold mb-4">Your Pitches</h2>
-            <p className="text-base sm:text-lg mb-6">
+          <section className="mb-12 max-w-4xl mx-auto">
+            <h2 className="text-2xl font-semibold mb-4">Your Pitches</h2>
+            <p className="text-lg mb-6">
               Manage and review your pitches here. Keep track of the status and feedback from investors.
             </p>
             {/* List or other components to display pitches */}
@@ -76,26 +76,26 @@ export default function HomePage() {
   }
 
   return (
-    <div className="relative min-h-screen text-gray-900 dark:text-white px-4 sm:px-6">
-      <main className="flex flex-col items-center justify-center w-full h-full py-12 text-center">
-        <section className="mb-12 max-w-screen-sm mx-auto">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4">Welcome to Eagles Ring</h1>
-          <h2 className="text-2xl sm:text-3xl font-semibold mb-6">
+    <div className="relative min-h-screen text-gray-900 dark:text-white">
+      <main className="flex flex-col items-center justify-center w-full h-full px-6 py-16 text-center">
+        <section className="mb-12 max-w-4xl mx-auto">
+          <h1 className="text-4xl font-bold mb-4">Welcome to Eagles Ring</h1>
+          <h2 className="text-3xl font-semibold mb-6">
             Join the Premier Platform for Entrepreneurs and Investors
           </h2>
-          <p className="text-base sm:text-xl mb-8">
+          <p className="text-xl mb-8">
             Connect, innovate, and grow with Eagles Ring. Our platform brings together startups and investors to foster groundbreaking business ideas and opportunities.
           </p>
           <a
             href="/sign-up"
-            className="bg-primary text-white py-2 px-4 sm:py-3 sm:px-6 rounded-lg shadow-lg hover:bg-primary-dark transition duration-300"
+            className="bg-primary text-white py-3 px-6 rounded-lg shadow-lg hover:bg-primary-dark transition duration-300"
           >
             Join Now
           </a>
         </section>
 
-        <section className="flex flex-col-reverse sm:flex-row items-center gap-6 mb-12 max-w-screen-sm mx-auto">
-          <div className="w-full sm:w-1/2">
+        <section className="flex flex-col md:flex-row items-center gap-8 mb-12 max-w-4xl mx-auto">
+          <div className="md:w-1/2">
             <Image
               src="/images/networking.svg"
               alt="Networking"
@@ -104,9 +104,9 @@ export default function HomePage() {
               className="w-full h-auto"
             />
           </div>
-          <div className="w-full sm:w-1/2 text-center sm:text-left">
-            <h3 className="text-xl sm:text-2xl font-semibold mb-4">Why Choose Eagles Ring?</h3>
-            <p className="text-base sm:text-lg mb-6">
+          <div className="md:w-1/2 text-center md:text-left">
+            <h3 className="text-2xl font-semibold mb-4">Why Choose Eagles Ring?</h3>
+            <p className="text-lg mb-6">
               At Eagles Ring, we provide a user-friendly platform for entrepreneurs to pitch their innovative ideas and for investors to find promising opportunities. Our mission is to facilitate meaningful connections that drive success.
             </p>
             <a
@@ -118,64 +118,65 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="relative mb-12 max-w-screen-sm mx-auto">
-          <h3 className="text-xl sm:text-2xl font-semibold mb-6">Our Features</h3>
-          <div className="overflow-hidden relative">
-            <div className="flex flex-nowrap overflow-x-auto gap-4">
-              <div className="flex-shrink-0 p-4 bg-white dark:bg-black border rounded-lg shadow-lg w-60">
-                <h4 className="text-base sm:text-lg font-semibold mb-2">Innovative Ideas</h4>
-                <p className="text-sm sm:text-base">
-                  Discover groundbreaking ideas from talented entrepreneurs looking to make an impact.
-                </p>
-              </div>
-              <div className="flex-shrink-0 p-4 bg-white dark:bg-black border rounded-lg shadow-lg w-60">
-                <h4 className="text-base sm:text-lg font-semibold mb-2">Secure Transactions</h4>
-                <p className="text-sm sm:text-base">
-                  Ensure your investments are safe with our secure and transparent transaction processes.
-                </p>
-              </div>
-              <div className="flex-shrink-0 p-4 bg-white dark:bg-black border rounded-lg shadow-lg w-60">
-                <h4 className="text-base sm:text-lg font-semibold mb-2">Effective Communication</h4>
-                <p className="text-sm sm:text-base">
-                  Connect easily with entrepreneurs and investors through our integrated communication tools.
-                </p>
-              </div>
-              <div className="flex-shrink-0 p-4 bg-white dark:bg-black border rounded-lg shadow-lg w-60">
-                <h4 className="text-base sm:text-lg font-semibold mb-2">Expert Guidance</h4>
-                <p className="text-sm sm:text-base">
-                  Gain insights and mentorship from industry experts to refine your business strategy.
-                </p>
-              </div>
-              <div className="flex-shrink-0 p-4 bg-white dark:bg-black border rounded-lg shadow-lg w-60">
-                <h4 className="text-base sm:text-lg font-semibold mb-2">Real-Time Analytics</h4>
-                <p className="text-sm sm:text-base">
-                  Monitor your investments and performance with real-time analytics and reporting tools.
-                </p>
-              </div>
-              <div className="flex-shrink-0 p-4 bg-white dark:bg-black border rounded-lg shadow-lg w-60">
-                <h4 className="text-base sm:text-lg font-semibold mb-2">Customized Opportunities</h4>
-                <p className="text-sm sm:text-base">
-                  Receive tailored investment opportunities that match your interests and goals.
-                </p>
-              </div>
-            </div>
-          </div>
-          <a
-            href="/features"
-            className="absolute bottom-0 right-0 p-4 text-blue-500 dark:text-blue-300 underline"
-          >
-            View All
-          </a>
-        </section>
+        <section className="relative mb-12 w-full px-4">
+  <h3 className="text-2xl font-semibold mb-6">Our Features</h3>
+  <div className="overflow-hidden w-full">
+    <div className="flex flex-nowrap animate-scroll-features">
+      <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-6 bg-white dark:bg-black border rounded-lg shadow-lg mr-4 last:mr-0">
+        <h4 className="text-lg font-semibold mb-2">Innovative Ideas</h4>
+        <p>
+          Discover groundbreaking ideas from talented entrepreneurs looking to make an impact.
+        </p>
+      </div>
+      <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-6 bg-white dark:bg-black border rounded-lg shadow-lg mr-4 last:mr-0">
+        <h4 className="text-lg font-semibold mb-2">Secure Transactions</h4>
+        <p>
+          Ensure your investments are safe with our secure and transparent transaction processes.
+        </p>
+      </div>
+      <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-6 bg-white dark:bg-black border rounded-lg shadow-lg mr-4 last:mr-0">
+        <h4 className="text-lg font-semibold mb-2">Effective Communication</h4>
+        <p>
+          Connect easily with entrepreneurs and investors through our integrated communication tools.
+        </p>
+      </div>
+      <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-6 bg-white dark:bg-black border rounded-lg shadow-lg mr-4 last:mr-0">
+        <h4 className="text-lg font-semibold mb-2">Expert Guidance</h4>
+        <p>
+          Gain insights and mentorship from industry experts to refine your business strategy.
+        </p>
+      </div>
+      <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-6 bg-white dark:bg-black border rounded-lg shadow-lg mr-4 last:mr-0">
+        <h4 className="text-lg font-semibold mb-2">Real-Time Analytics</h4>
+        <p>
+          Monitor your investments and performance with real-time analytics and reporting tools.
+        </p>
+      </div>
+      <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-6 bg-white dark:bg-black border rounded-lg shadow-lg mr-4 last:mr-0">
+        <h4 className="text-lg font-semibold mb-2">Customized Opportunities</h4>
+        <p>
+          Receive tailored investment opportunities that match your interests and goals.
+        </p>
+      </div>
+    </div>
+  </div>
+  <a
+    href="/features"
+    className="absolute bottom-0 right-0 p-4 text-blue-500 dark:text-blue-300 underline"
+  >
+    View All
+  </a>
+</section>
 
-        <section className="mb-12 max-w-screen-sm mx-auto">
-          <h3 className="text-xl sm:text-2xl font-semibold mb-6">Join Our Community</h3>
-          <p className="text-base sm:text-lg mb-8">
+
+        <section className="mb-12 max-w-4xl mx-auto">
+          <h3 className="text-2xl font-semibold mb-6">Join Our Community</h3>
+          <p className="text-lg mb-8">
             Become part of a growing community of innovators and investors. Sign up today and start making meaningful connections.
           </p>
           <a
             href="/sign-up"
-            className="bg-primary text-white py-2 px-4 sm:py-3 sm:px-6 rounded-lg shadow-lg hover:bg-primary-dark transition duration-300"
+            className="bg-primary text-white py-3 px-6 rounded-lg shadow-lg hover:bg-primary-dark transition duration-300"
           >
             Get Started
           </a>
