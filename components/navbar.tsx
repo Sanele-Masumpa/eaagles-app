@@ -13,7 +13,7 @@ import { Kbd } from "@nextui-org/kbd";
 import { Link } from "@nextui-org/link";
 import { Input } from "@nextui-org/input";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { TwitterIcon, DiscordIcon, SearchIcon, GithubIcon } from "@/components/icons";
+import { SearchIcon } from "@/components/icons"; // Removed TwitterIcon and GithubIcon
 import { SignInButton, SignedIn, SignedOut, UserButton, SignOutButton } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import Image from 'next/image';
@@ -117,6 +117,7 @@ export const Navbar = () => {
 
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
+      {/* Brand and Logo */}
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <Link className="flex justify-start items-center gap-1" href="/">
@@ -130,7 +131,11 @@ export const Navbar = () => {
             <p className="font-bold text-2xl text-inherit">Eagles Ring</p>
           </Link>
         </NavbarBrand>
-        <ul className="hidden lg:flex gap-3 justify-start ml-2">
+      </NavbarContent>
+
+      {/* Desktop Navigation */}
+      <NavbarContent className="hidden lg:flex basis-3/5" justify="center">
+        <ul className="flex gap-3">
           <SignedIn>
             {roleBasedOptions(role)}
           </SignedIn>
@@ -140,18 +145,16 @@ export const Navbar = () => {
         </ul>
       </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex basis-1/5 sm:basis-full" justify="end">
-        <NavbarItem className="hidden sm:flex gap-2">
-          <Link isExternal aria-label="Twitter" href={siteConfig.links.twitter}>
-            <TwitterIcon className="text-default-500" />
-          </Link>
+      {/* Desktop Actions */}
+      <NavbarContent className="hidden lg:flex basis-1/5 justify-end">
+        <NavbarItem className="flex gap-2 items-center">
           <ThemeSwitch />
           <SignedIn>
             <UserButton />
           </SignedIn>
-        </NavbarItem>
-        <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
-        <NavbarItem className="hidden md:flex">
+          <NavbarItem className="hidden lg:flex">
+            {searchInput}
+          </NavbarItem>
           <SignedIn>
             <SignOutButton>
               Log Out
@@ -165,22 +168,14 @@ export const Navbar = () => {
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-        <SignedOut>
-          <Link isExternal aria-label="Github" href={siteConfig.links.github}>
-            <GithubIcon className="text-default-500" />
-          </Link>
-        </SignedOut>
-        <ThemeSwitch />
+      {/* Mobile Navigation */}
+      <NavbarContent className="sm:hidden flex basis-1/5 justify-end items-center">
         <NavbarMenuToggle />
       </NavbarContent>
 
+      {/* Mobile Menu */}
       <NavbarMenu>
-        {searchInput}
-        <div className="mx-4 mt-2 flex flex-col gap-1">
+        <div className="p-4">
           <SignedIn>
             {roleBasedOptions(role)}
             <NavbarMenuItem>
@@ -191,7 +186,18 @@ export const Navbar = () => {
           </SignedIn>
           <SignedOut>
             {commonLinks}
+            <NavbarMenuItem>
+              <SignInButton>
+                Sign In
+              </SignInButton>
+            </NavbarMenuItem>
           </SignedOut>
+          <div className="mt-4">
+            {searchInput}
+          </div>
+          <div className="mt-4">
+            <ThemeSwitch />
+          </div>
         </div>
       </NavbarMenu>
     </NextUINavbar>
