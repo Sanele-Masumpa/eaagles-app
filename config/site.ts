@@ -4,7 +4,7 @@ export const siteConfig = {
   name: "Eagles Ring",
   description: "An investment platform that matches aspiring entrepreneurs with investment opportunities.",
   navItems: [
-    { label: "Home", href: "/" },
+    { label: "Dashboard", href: "/" },
     { label: "About", href: "/about" },
     { label: "Investors", href: "/investors" },
     { label: "Entrepreneurs", href: "/entrepreneurs" },
