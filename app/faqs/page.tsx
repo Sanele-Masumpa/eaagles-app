@@ -162,33 +162,21 @@ const FAQ = () => {
     {
       id: 'meeting-link',
       question: 'Where can I find the meeting link?',
-      answer: 'The meeting link is accessible from the navigation bar or your dashboard under the "Schedule" section. Use this link to join or schedule meetings directly through the platform.',
+      answer: 'The meeting link is accessible from the navigation bar or your dashboard under the "Meetings" section. You can also find it in your scheduled meetings list.',
     },
   ];
 
   return (
-    <div className="text-black dark:text-white">
-      <h1 className="mb-10 text-4xl font-extrabold text-gold">Frequently Asked Questions (FAQs)</h1>
-
-      <nav className="mb-10">
-        <h2 className="text-3xl font-semibold text-gold">Table of Contents</h2>
-        <ul className="mt-2 list-disc list-inside">
-          {faqs.map((faq) => (
-            <li key={faq.id}>
-              <a href={`#${faq.id}`} className="text-blue-600 dark:text-blue-400 hover:underline">
-                {faq.question}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      {faqs.map((faq) => (
-        <div key={faq.id} id={faq.id} className="pb-6 mb-6 border-b border-gray-300 dark:border-gray-700">
-          <h2 className="mb-2 text-2xl font-semibold text-gold">{faq.question}</h2>
-          <p className="text-lg leading-relaxed">{faq.answer}</p>
-        </div>
-      ))}
+    <div className="max-w-4xl mx-auto py-12">
+      <h1 className="text-3xl font-bold mb-8">Frequently Asked Questions</h1>
+      <div className="space-y-4">
+        {faqs.map((faq) => (
+          <div key={faq.id} className="border-b pb-4">
+            <h2 className="text-xl font-semibold mb-2">{faq.question}</h2>
+            <p className="text-gray-700 dark:text-gray-300">{faq.answer}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

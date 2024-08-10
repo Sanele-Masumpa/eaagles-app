@@ -170,7 +170,11 @@ export default function PricingPage() {
               </div>
               <div className="flex items-center space-x-2">
                 <CheckIcon className="h-5 w-5 text-accent" />
-                <span className="text-black">24/7 Support</span>
+                <span className="text-black">24/7 Customer Support</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckIcon className="h-5 w-5 text-accent" />
+                <span className="text-black">Customized Training</span>
               </div>
             </div>
             <a

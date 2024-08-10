@@ -8,7 +8,7 @@ export default function ContactPage() {
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">Get in Touch</h2>
         <p className="text-lg mb-4">
-          We’d love to hear from you! Whether you have questions, feedback, or just want to say hello, feel free to reach out to us.
+          We&rsquo;d love to hear from you! Whether you have questions, feedback, or just want to say hello, feel free to reach out to us.
         </p>
 
         <form
