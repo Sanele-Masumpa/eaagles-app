@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { currentUser } from '@clerk/nextjs/server';
 
 const db = new PrismaClient(); // Initialize the Prisma client
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const user = await currentUser();
 
   if (!user) {
@@ -17,6 +17,7 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
 
+    // Extract form fields
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
     const category = formData.get("category") as string;
@@ -24,17 +25,20 @@ export async function POST(request: Request) {
     const currentFunding = formData.get("currentFunding") as string;
     const stage = formData.get("stage") as string;
     const deadline = formData.get("deadline") as string;
-    const locationId = parseInt(formData.get("locationId") as string, 10); // Ensure this is a valid integer
+    const country = formData.get("country") as string;
+    const city = formData.get("city") as string;
     const tags = formData.get("tags") as string;
     const presentationDate = formData.get("presentationDate") as string;
 
+    // Handle file uploads
     const video = formData.get("video") as File | null;
     const pitchDeck = formData.get("pitchDeck") as File | null;
     const attachments = formData.getAll("attachments") as File[];
 
-    if (!title || !description || isNaN(locationId)) {
+    // Validation
+    if (!title || !description || !country || !city) {
       return NextResponse.json(
-        { error: "Title, description, and valid location ID are required" },
+        { error: "Title, description, country, and city are required" },
         { status: 400 }
       );
     }
@@ -63,13 +67,34 @@ export async function POST(request: Request) {
       });
     }
 
-    // Handle file uploads if needed
+    // Check if the location exists
+    let location = await db.location.findUnique({
+      where: {
+        country_city: {
+          country,
+          city,
+        },
+      },
+    });
+
+    // Create the location if it does not exist
+    if (!location) {
+      location = await db.location.create({
+        data: {
+          country,
+          city,
+        },
+      });
+    }
+
+    // Handle file buffers
     const videoBuffer = video ? await video.arrayBuffer() : null;
     const pitchDeckBuffer = pitchDeck ? await pitchDeck.arrayBuffer() : null;
     const attachmentsBuffers = await Promise.all(attachments.map(async (file) => {
       return file.arrayBuffer();
     }));
 
+    // Create new pitch
     const newPitch = await db.pitch.create({
       data: {
         title,
@@ -82,7 +107,7 @@ export async function POST(request: Request) {
         pitchDeck: pitchDeckBuffer ? Buffer.from(pitchDeckBuffer) : null,
         deadline: new Date(deadline),
         location: {
-          connect: { id: locationId },  // Ensure locationId is valid
+          connect: { id: location.id },  // Use the ID of the existing or newly created location
         },
         tags: tags.split(',').map(tag => tag.trim()),
         attachments: attachmentsBuffers.map(buffer => Buffer.from(buffer)),
