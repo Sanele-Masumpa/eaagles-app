@@ -19,7 +19,7 @@ function ContactForm() {
           {state.succeeded ? (
             <div className="text-center text-green-600 mb-8">
               <h4 className="text-lg md:text-base sm:text-sm font-semibold">🎉 Email Sent Successfully!</h4>
-              <p className="mt-2 text-gray-600 dark:text-gray-300 text-base md:text-sm sm:text-xs">Thank you for reaching out to us. We'll get back to you as soon as possible.</p>
+              <p className="mt-2 text-gray-600 dark:text-gray-300 text-base md:text-sm sm:text-xs">Thank you for reaching out to us. We&apos;ll get back to you as soon as possible.</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit}>
