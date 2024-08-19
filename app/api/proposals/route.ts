@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     const currentFunding = formData.get("currentFunding") as string;
     const stage = formData.get("stage") as string;
     const deadline = formData.get("deadline") as string;
-    const locationId = parseInt(formData.get("locationId") as string); // Assuming locationId is provided
+    const locationId = parseInt(formData.get("locationId") as string); // Ensure this is a valid integer
     const tags = formData.get("tags") as string;
     const presentationDate = formData.get("presentationDate") as string;
 
@@ -32,9 +32,9 @@ export async function POST(request: Request) {
     const pitchDeck = formData.get("pitchDeck") as File | null;
     const attachments = formData.getAll("attachments") as File[];
 
-    if (!title || !description) {
+    if (!title || !description || isNaN(locationId)) {
       return NextResponse.json(
-        { error: "Title and description are required" },
+        { error: "Title, description, and valid location ID are required" },
         { status: 400 }
       );
     }
@@ -70,12 +70,6 @@ export async function POST(request: Request) {
       return file.arrayBuffer();
     }));
 
-    const videoURL = video ? `/uploads/${video.name}` : null;
-    const pitchDeckURL = pitchDeck ? `/uploads/${pitchDeck.name}` : null;
-    const attachmentsURLs = await Promise.all(attachments.map(async (file) => {
-      return `/uploads/${file.name}`;
-    }));
-
     const newPitch = await prisma.pitch.create({
       data: {
         title,
@@ -88,13 +82,13 @@ export async function POST(request: Request) {
         pitchDeck: pitchDeckBuffer ? Buffer.from(pitchDeckBuffer) : null,
         deadline: new Date(deadline),
         location: {
-          connect: { id: locationId },  // Ensure locationId is a valid integer and exists
+          connect: { id: locationId },  // Ensure locationId is valid
         },
         tags: tags.split(',').map(tag => tag.trim()),
         attachments: attachmentsBuffers.map(buffer => Buffer.from(buffer)),
         presentationDate: new Date(presentationDate),
         entrepreneur: {
-          connect: { id: entrepreneurProfile.id },  // Ensure entrepreneurProfile.id is a valid integer and exists
+          connect: { id: entrepreneurProfile.id },  // Ensure entrepreneurProfile.id is valid
         },
       },
     });
@@ -111,3 +105,4 @@ export async function POST(request: Request) {
     );
   }
 }
+
