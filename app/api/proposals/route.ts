@@ -2,15 +2,7 @@ import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { currentUser } from '@clerk/nextjs/server';
 
-declare global {
-  var prisma: PrismaClient | undefined;
-}
-
-export const db = globalThis.prisma || new PrismaClient();
-
-if (process.env.NODE_ENV !== 'production') {
-  globalThis.prisma = db;
-}
+const db = new PrismaClient(); // Initialize the Prisma client
 
 export async function POST(request: Request) {
   const user = await currentUser();
