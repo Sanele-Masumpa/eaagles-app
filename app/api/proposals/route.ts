@@ -88,14 +88,17 @@ export async function POST(request: Request) {
         pitchDeck: pitchDeckBuffer ? Buffer.from(pitchDeckBuffer) : null,
         deadline: new Date(deadline),
         location: {
-          connect: { id: locationId }, // Connect to existing location
+          connect: { id: locationId },
         },
-        tags: tags.split(',').map((tag: string) => tag.trim()),
-        attachments: attachmentsBuffers.map((buffer) => Buffer.from(buffer)),
+        tags: tags.split(',').map(tag => tag.trim()),
+        attachments: attachmentsBuffers.map(buffer => Buffer.from(buffer)),
         presentationDate: new Date(presentationDate),
-        entrepreneurId: entrepreneurProfile.id,
+        entrepreneur: {
+          connect: { id: entrepreneurProfile.id },
+        },
       },
     });
+
 
     return NextResponse.json({
       message: 'Pitch created successfully',
