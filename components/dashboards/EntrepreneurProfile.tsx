@@ -112,6 +112,7 @@ const EntrepreneurProfile: React.FC<EntrepreneurProfileProps> = ({ data, onEdit 
         <button
           onClick={() => setIsModalOpen(true)}
           className="bg-gradient-to-r from-blue-500 to-blue-700 px-8 py-4 rounded-full mt-6 shadow-md hover:from-blue-600 hover:to-blue-800 transition-transform transform hover:scale-105"
+          aria-label="Edit Profile"
         >
           Edit Profile
         </button>
@@ -120,17 +121,30 @@ const EntrepreneurProfile: React.FC<EntrepreneurProfileProps> = ({ data, onEdit 
       {isModalOpen && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80"
-          onClick={(e) => {
-            if (e.target === modalRef.current) {
-              setIsModalOpen(false);
-            }
-          }}
+          role="dialog"
+          aria-labelledby="modal-title"
+          aria-modal="true"
         >
           <div
             ref={modalRef}
             className="bg-gray-300 dark:bg-gray-700 p-8 rounded-xl shadow-2xl w-full max-w-lg border border-gray-800"
+            onClick={(e) => {
+              if (e.target === modalRef.current) {
+                setIsModalOpen(false);
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') {
+                setIsModalOpen(false);
+              }
+            }}
+            aria-label="Close modal"
           >
-            <h3 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-blue-400 mb-6">Edit Entrepreneur Profile</h3>
+            <h3 id="modal-title" className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold text-blue-400 mb-6">
+              Edit Entrepreneur Profile
+            </h3>
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 gap-6">
                 <input
