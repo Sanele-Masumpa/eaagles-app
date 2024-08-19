@@ -123,7 +123,7 @@ export default function ProposalsAnalytics() {
                   {displayedPitches.length > 0 ? (
                     <ul className="space-y-2">
                       {displayedPitches.map((pitch) => (
-                        <a
+                        <button
                           key={pitch.id}
                           className="text-lg flex justify-between cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded"
                           onClick={() => handlePitchClick(pitch)}
@@ -135,7 +135,7 @@ export default function ProposalsAnalytics() {
                           <span className="text-sm text-gray-400">
                             {new Date(pitch.createdAt).toLocaleDateString()}
                           </span>
-                        </a>
+                        </button>
                       ))}
                     </ul>
                   ) : (
