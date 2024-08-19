@@ -134,15 +134,28 @@ export default function DashboardPage() {
     setForm(item);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>, type: string, id?: number) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>, type: string, id?: number) => {
     e.preventDefault();
-    if (id) {
-      await handleUpdate(type, id, form);
-    } else {
-      await handleCreate(type, form);
+    const formData = new FormData(e.currentTarget);
+
+    try {
+      const response = await fetch(`/api/${type}-create`, {
+        method: 'POST',
+        body: formData,
+      });
+      if (response.ok) {
+        const result = await response.json();
+        setData((prevData: any) => ({
+          ...prevData,
+          [type]: [...prevData[type], result],
+        }));
+        toast.success('Proposal submitted successfully!');
+      } else {
+        throw new Error('Failed to submit proposal');
+      }
+    } catch (error) {
+      toast.error(`Error: ${error.message}`);
     }
-    setForm({});
-    setEditing({});
   };
 
   useEffect(() => {
@@ -197,7 +210,7 @@ export default function DashboardPage() {
           <EntrepreneurProfile data={data?.profile} onEdit={() => handleEdit(data?.profile)} />
           <ProposalsAnalytics />
           <NotificationsAlerts alerts={data?.alerts} />
-          <ProposalForm onSubmit={(e) => handleSubmit(e, 'proposal')} />
+          <ProposalForm onSubmit={(e) => handleSubmit(e, 'pitch')} />
         </main>
       </div>
     );
