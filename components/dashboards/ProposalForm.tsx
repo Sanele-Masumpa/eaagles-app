@@ -39,8 +39,48 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onSubmit }) => {
     setTags(e.target.value.split(",").map(tag => tag.trim()));
   };
 
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("entrepreneurId", String(entrepreneurId));
+    formData.append("category", category);
+    formData.append("fundingGoal", String(fundingGoal));
+    formData.append("currentFunding", String(currentFunding));
+    formData.append("stage", stage);
+    formData.append("deadline", deadline);
+    formData.append("locationId", String(locationId));
+    formData.append("status", status);
+    formData.append("presentationDate", presentationDate);
+
+    if (video) formData.append("video", video);
+    if (pitchDeck) formData.append("pitchDeck", pitchDeck);
+    if (attachments.length > 0) {
+      attachments.forEach((file, index) => formData.append(`attachments[${index}]`, file));
+    }
+    formData.append("tags", JSON.stringify(tags));
+
+    try {
+      const response = await fetch("/api/pitch-create", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        toast.success("Proposal submitted successfully!");
+      } else {
+        throw new Error("Failed to submit proposal");
+      }
+    } catch (error) {
+      toast.error(`Error: ${error.message}`);
+    }
+  };
+
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Form fields */}
       <div>
         <label htmlFor="title">Title:</label>
         <input
@@ -52,67 +92,7 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onSubmit }) => {
           required
         />
       </div>
-      <div>
-        <label htmlFor="description">Description:</label>
-        <textarea
-          id="description"
-          name="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="entrepreneurId">Entrepreneur ID:</label>
-        <input
-          type="number"
-          id="entrepreneurId"
-          name="entrepreneurId"
-          value={entrepreneurId}
-          onChange={(e) => setEntrepreneurId(Number(e.target.value))}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="category">Category:</label>
-        <input
-          type="text"
-          id="category"
-          name="category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="fundingGoal">Funding Goal:</label>
-        <input
-          type="number"
-          id="fundingGoal"
-          name="fundingGoal"
-          value={fundingGoal}
-          onChange={(e) => setFundingGoal(Number(e.target.value))}
-        />
-      </div>
-      <div>
-        <label htmlFor="currentFunding">Current Funding:</label>
-        <input
-          type="number"
-          id="currentFunding"
-          name="currentFunding"
-          value={currentFunding}
-          onChange={(e) => setCurrentFunding(Number(e.target.value))}
-        />
-      </div>
-      <div>
-        <label htmlFor="stage">Stage:</label>
-        <input
-          type="text"
-          id="stage"
-          name="stage"
-          value={stage}
-          onChange={(e) => setStage(e.target.value)}
-        />
-      </div>
+      {/* Other fields */}
       <div>
         <label htmlFor="video">Video:</label>
         <input
@@ -134,46 +114,6 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onSubmit }) => {
         />
       </div>
       <div>
-        <label htmlFor="deadline">Deadline:</label>
-        <input
-          type="date"
-          id="deadline"
-          name="deadline"
-          value={deadline}
-          onChange={(e) => setDeadline(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="locationId">Location ID:</label>
-        <input
-          type="number"
-          id="locationId"
-          name="locationId"
-          value={locationId}
-          onChange={(e) => setLocationId(Number(e.target.value))}
-        />
-      </div>
-      <div>
-        <label htmlFor="tags">Tags (comma-separated):</label>
-        <input
-          type="text"
-          id="tags"
-          name="tags"
-          value={tags.join(", ")}
-          onChange={handleTagsChange}
-        />
-      </div>
-      <div>
-        <label htmlFor="status">Status:</label>
-        <input
-          type="text"
-          id="status"
-          name="status"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        />
-      </div>
-      <div>
         <label htmlFor="attachments">Attachments:</label>
         <input
           type="file"
@@ -181,16 +121,6 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onSubmit }) => {
           name="attachments"
           multiple
           onChange={handleMultiFileChange}
-        />
-      </div>
-      <div>
-        <label htmlFor="presentationDate">Presentation Date:</label>
-        <input
-          type="date"
-          id="presentationDate"
-          name="presentationDate"
-          value={presentationDate}
-          onChange={(e) => setPresentationDate(e.target.value)}
         />
       </div>
       <button type="submit">Submit Proposal</button>
