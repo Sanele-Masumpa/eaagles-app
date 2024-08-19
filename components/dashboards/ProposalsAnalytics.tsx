@@ -125,7 +125,12 @@ export default function ProposalsAnalytics() {
                         <li
                           key={pitch.id}
                           className="text-lg flex justify-between cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded"
+                          role="button"
+                          tabIndex={0}
                           onClick={() => handlePitchClick(pitch)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') handlePitchClick(pitch);
+                          }}
                         >
                           <span>{pitch.title}</span>
                           <span className="text-sm text-gray-400">
@@ -224,30 +229,28 @@ export default function ProposalsAnalytics() {
 
       {/* Overlay for Selected Pitch */}
       {selectedPitch && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
-          <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg max-w-2xl w-full">
-            <h3 className="text-3xl font-bold mb-4">{selectedPitch.title}</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg max-w-lg w-full">
+            <h3 className="text-2xl font-semibold mb-4">{selectedPitch.title}</h3>
             <p className="text-lg mb-4">{selectedPitch.description}</p>
-            <div className="flex gap-4">
-              <button
-                className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-700 rounded-full shadow-lg hover:from-yellow-600 hover:to-yellow-800 transition-transform transform hover:scale-105"
-                onClick={handleEdit}
-              >
-                Edit
-              </button>
-              <button
-                className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-700 rounded-full shadow-lg hover:from-red-600 hover:to-red-800 transition-transform transform hover:scale-105"
-                onClick={handleDelete}
-              >
-                Delete
-              </button>
-              <button
-                className="px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-700 rounded-full shadow-lg hover:from-gray-600 hover:to-gray-800 transition-transform transform hover:scale-105"
-                onClick={handleCloseOverlay}
-              >
-                Close
-              </button>
-            </div>
+            <button
+              onClick={handleEdit}
+              className="mr-4 bg-gradient-to-r from-green-500 to-green-700 px-4 py-2 rounded-lg text-white"
+            >
+              Edit
+            </button>
+            <button
+              onClick={handleDelete}
+              className="bg-gradient-to-r from-red-500 to-red-700 px-4 py-2 rounded-lg text-white"
+            >
+              Delete
+            </button>
+            <button
+              onClick={handleCloseOverlay}
+              className="absolute top-2 right-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
+            >
+              &times;
+            </button>
           </div>
         </div>
       )}
