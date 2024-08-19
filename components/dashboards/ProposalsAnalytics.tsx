@@ -80,6 +80,7 @@ export default function ProposalsAnalytics() {
         <h2 className="text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-gold-500 to-yellow-400">
           Pitches Analytics
         </h2>
+
         {data ? (
           <div className="space-y-8">
             {/* Analytics Summary Cards */}
@@ -125,12 +126,11 @@ export default function ProposalsAnalytics() {
                         <li
                           key={pitch.id}
                           className="text-lg flex justify-between cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-700 p-2 rounded"
-                          role="listitem"
-                          tabIndex={0}
                           onClick={() => handlePitchClick(pitch)}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') handlePitchClick(pitch);
                           }}
+                          role="listitem" // Removed `tabIndex` as `li` is not interactive
                         >
                           <span>{pitch.title}</span>
                           <span className="text-sm text-gray-400">
@@ -228,43 +228,33 @@ export default function ProposalsAnalytics() {
 
         {/* Pitch Details Overlay */}
         {selectedPitch && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-70 z-50">
-            <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-6 rounded-lg shadow-lg max-w-lg w-full">
+          <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+            <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
               <h3 className="text-2xl font-bold mb-4">{selectedPitch.title}</h3>
               <p className="mb-4">{selectedPitch.description}</p>
-              <div className="flex justify-between">
+              <p className="text-sm text-gray-500">
+                Created At: {new Date(selectedPitch.createdAt).toLocaleDateString()}
+              </p>
+              <div className="flex gap-4 mt-4">
                 <button
                   onClick={handleEdit}
-                  className="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-4 py-2 rounded shadow-md hover:from-blue-600 hover:to-blue-800 transition-transform transform hover:scale-105"
+                  className="bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:bg-blue-600"
                 >
                   Edit
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="bg-gradient-to-r from-red-500 to-red-700 text-white px-4 py-2 rounded shadow-md hover:from-red-600 hover:to-red-800 transition-transform transform hover:scale-105"
+                  className="bg-red-500 text-white px-4 py-2 rounded shadow-md hover:bg-red-600"
                 >
                   Delete
                 </button>
-              </div>
-              <button
-                onClick={handleCloseOverlay}
-                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-              >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
+                <button
+                  onClick={handleCloseOverlay}
+                  className="bg-gray-500 text-white px-4 py-2 rounded shadow-md hover:bg-gray-600"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         )}
