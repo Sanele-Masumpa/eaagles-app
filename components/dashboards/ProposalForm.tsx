@@ -36,7 +36,7 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onSubmit }) => {
     video: null,
     pitchDeck: null,
     deadline: '',
-    location: '',
+    location: '', // Combine country and city into a single string
     tags: '',
     attachments: [],
     presentationDate: ''
@@ -188,88 +188,85 @@ const ProposalForm: React.FC<ProposalFormProps> = ({ onSubmit }) => {
             />
           </label>
           <label>
-            Video
-            <input
-              type="file"
-              name="video"
-              onChange={handleFileChange}
-              className="border border-gray-700 dark:bg-black p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-            />
-          </label>
-          <label>
-            Pitch Deck
-            <input
-              type="file"
-              name="pitchDeck"
-              onChange={handleFileChange}
-              className="border border-gray-700 dark:bg-black p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-            />
-          </label>
-          <label>
             Deadline
             <input
-              type="datetime-local"
+              type="date"
               name="deadline"
-              placeholder="Deadline"
               value={formData.deadline}
               onChange={handleChange}
               className="border border-gray-700 dark:bg-black p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
             />
           </label>
           <label>
-            Location
+            Location (Country, City)
             <input
               type="text"
               name="location"
-              placeholder="Location"
+              placeholder="Location (Country, City)"
               value={formData.location}
               onChange={handleChange}
               className="border border-gray-700 dark:bg-black p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
             />
           </label>
           <label>
-            Tags (comma-separated)
+            Tags
             <input
               type="text"
               name="tags"
-              placeholder="Tags (comma-separated)"
+              placeholder="Tags (comma separated)"
               value={formData.tags}
               onChange={handleChange}
               className="border border-gray-700 dark:bg-black p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
             />
           </label>
           <label>
-            Attachments
-            <input
-              type="file"
-              name="attachments"
-              multiple
-              onChange={handleFileChange}
-              className="border border-gray-700 dark:bg-black p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-            />
-          </label>
-          <label>
             Presentation Date
             <input
-              type="datetime-local"
+              type="date"
               name="presentationDate"
-              placeholder="Presentation Date"
               value={formData.presentationDate}
               onChange={handleChange}
               className="border border-gray-700 dark:bg-black p-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
             />
           </label>
-          <button
-            type="submit"
-            className="bg-gradient-to-r from-green-500 to-green-700 px-8 py-4 rounded-full shadow-lg hover:from-green-600 hover:to-green-800 transition-transform transform hover:scale-105"
-          >
-            Submit
-          </button>
+          <label>
+            Video (Optional)
+            <input
+              type="file"
+              name="video"
+              accept="video/*"
+              onChange={handleFileChange}
+              className="border border-gray-700 dark:bg-black p-4 rounded-lg"
+            />
+          </label>
+          <label>
+            Pitch Deck (Optional)
+            <input
+              type="file"
+              name="pitchDeck"
+              accept=".pdf,.ppt,.pptx"
+              onChange={handleFileChange}
+              className="border border-gray-700 dark:bg-black p-4 rounded-lg"
+            />
+          </label>
+          <label>
+            Attachments (Optional)
+            <input
+              type="file"
+              name="attachments"
+              multiple
+              onChange={handleFileChange}
+              className="border border-gray-700 dark:bg-black p-4 rounded-lg"
+            />
+          </label>
         </div>
+        <button type="submit" className="bg-blue-400 text-white p-4 rounded-lg mt-4">
+          Create Pitch
+        </button>
       </form>
-      <ToastContainer />
     </div>
   );
 };
 
 export default ProposalForm;
+
