@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { currentUser } from '@clerk/nextjs/server';
-import prisma from '@/lib/prisma'; // Adjust this import based on your project structure
+import { prisma } from '../../lib/prisma'; // Adjust the import path as needed
+import { currentUser } from '@clerk/nextjs';
 
 export async function POST(request: Request) {
   const user = await currentUser();
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     const currentFunding = formData.get("currentFunding") as string;
     const stage = formData.get("stage") as string;
     const deadline = formData.get("deadline") as string;
-    const locationId = parseInt(formData.get("locationId") as string); // Ensure this is a valid integer
+    const locationData = formData.get("location") as string; // Expecting location as a string in the format "country,city"
     const tags = formData.get("tags") as string;
     const presentationDate = formData.get("presentationDate") as string;
 
@@ -30,38 +30,25 @@ export async function POST(request: Request) {
     const pitchDeck = formData.get("pitchDeck") as File | null;
     const attachments = formData.getAll("attachments") as File[];
 
-    if (!title || !description || isNaN(locationId)) {
+    if (!title || !description || !locationData) {
       return NextResponse.json(
-        { error: "Title, description, and valid location ID are required" },
+        { error: "Title, description, and location are required" },
         { status: 400 }
       );
     }
 
-    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB for file uploads
+    const [country, city] = locationData.split(',').map(part => part.trim());
 
-    // Define allowed file types
-    const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/mov'];
-    const ALLOWED_PITCH_DECK_TYPES = ['application/pdf'];
-    const ALLOWED_ATTACHMENT_TYPES = ['application/pdf', 'image/png', 'image/jpeg'];
+    // Check if the location exists
+    let location = await prisma.location.findUnique({
+      where: { country_city: { country, city } },
+    });
 
-    // Validate file types and sizes
-    if (video && (!ALLOWED_VIDEO_TYPES.includes(video.type) || video.size > MAX_FILE_SIZE)) {
-      return NextResponse.json(
-        { error: `Video must be one of the following types: ${ALLOWED_VIDEO_TYPES.join(', ')} and under 5 MB.` },
-        { status: 400 }
-      );
-    }
-    if (pitchDeck && (!ALLOWED_PITCH_DECK_TYPES.includes(pitchDeck.type) || pitchDeck.size > MAX_FILE_SIZE)) {
-      return NextResponse.json(
-        { error: `Pitch deck must be one of the following types: ${ALLOWED_PITCH_DECK_TYPES.join(', ')} and under 5 MB.` },
-        { status: 400 }
-      );
-    }
-    if (attachments.some(file => !ALLOWED_ATTACHMENT_TYPES.includes(file.type) || file.size > MAX_FILE_SIZE)) {
-      return NextResponse.json(
-        { error: `Attachments must be one of the following types: ${ALLOWED_ATTACHMENT_TYPES.join(', ')} and under 5 MB.` },
-        { status: 400 }
-      );
+    // Create the location if it doesn't exist
+    if (!location) {
+      location = await prisma.location.create({
+        data: { country, city },
+      });
     }
 
     const existingUser = await prisma.user.findUnique({
@@ -107,17 +94,17 @@ export async function POST(request: Request) {
         pitchDeck: pitchDeckBuffer ? Buffer.from(pitchDeckBuffer) : null,
         deadline: new Date(deadline),
         location: {
-          connect: { id: locationId },  // Ensure locationId is valid
+          connect: { id: location.id }, // Use the ID of the location
         },
         tags: tags.split(',').map(tag => tag.trim()),
         attachments: attachmentsBuffers.map(buffer => Buffer.from(buffer)),
         presentationDate: new Date(presentationDate),
         entrepreneur: {
-          connect: { id: entrepreneurProfile.id },  // Ensure entrepreneurProfile.id is valid
+          connect: { id: entrepreneurProfile.id }, // Ensure entrepreneurProfile.id is valid
         },
       },
     });
-
+   
     return NextResponse.json({
       message: 'Pitch created successfully',
       pitch: newPitch,
