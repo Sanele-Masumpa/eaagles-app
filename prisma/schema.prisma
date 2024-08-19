@@ -8,19 +8,22 @@ datasource db {
 }
 
 model User {
-  id                    Int                 @id @default(autoincrement())
-  clerkId               String              @unique
-  email                 String              @unique
+  id                    Int                   @id @default(autoincrement())
+  clerkId               String                @unique
+  email                 String                @unique
   name                  String?
   imageUrl              String?
   role                  Role
-  createdAt             DateTime            @default(now())
-  updatedAt             DateTime            @updatedAt
-  messagesSent          Message[]           @relation("MessageSender")
-  messagesReceived      Message[]           @relation("MessageReceiver")
-  investments           Investment[]        // List of investments made by the user
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  messagesSent          Message[]             @relation("MessageSender")
+  messagesReceived      Message[]             @relation("MessageReceiver")
+  investments           Investment[]          // List of investments made by the user
   entrepreneurProfile   EntrepreneurProfile?
   investorProfile       InvestorProfile?
+  pitches               Pitch[]                // Pitches submitted by the user (if an entrepreneur)
+  feedbacks             Feedback[]             // Feedback given by the user (if an investor)
+  interests             Interest[]             // Interests shown by the user
 }
 
 enum Role {
@@ -29,13 +32,20 @@ enum Role {
 }
 
 model EntrepreneurProfile {
-  id                   Int                   @id @default(autoincrement())
-  userId               Int                   @unique
-  user                 User                  @relation(fields: [userId], references: [id])
-  bio                  String?
-  startups             Startup[]             // Startups managed by the entrepreneur
-  createdAt            DateTime              @default(now())
-  updatedAt            DateTime              @updatedAt
+  id              Int       @id @default(autoincrement())
+  userId          Int       @unique
+  user            User      @relation(fields: [userId], references: [id])
+  bio             String?
+  company         String?
+  businessStage   String?
+  fundingHistory  String?
+  linkedinUrl     String?  // Optional LinkedIn URL
+  startups        Startup[] // Startups managed by the entrepreneur
+  pitches         Pitch[]   // Pitches submitted by the entrepreneur
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  investments     Investment[]
+  notifications   Notification[]
 }
 
 model InvestorProfile {
@@ -43,7 +53,9 @@ model InvestorProfile {
   userId               Int                   @unique
   user                 User                  @relation(fields: [userId], references: [id])
   investmentStrategy   String?
+  linkedinUrl          String?               // Optional LinkedIn URL
   investments          Investment[]          // Investments made by the investor
+  feedbacks            Feedback[]            // Feedback given by the investor
   createdAt            DateTime              @default(now())
   updatedAt            DateTime              @updatedAt
 }
@@ -52,18 +64,88 @@ model Investment {
   id                   Int                   @id @default(autoincrement())
   amount               Float
   date                 DateTime              @default(now())
-  userId               Int
-  investorProfileId    Int?
-  user                 User                  @relation(fields: [userId], references: [id])
-  investorProfile      InvestorProfile?      @relation(fields: [investorProfileId], references: [id])
+  investorProfileId    Int
+  entrepreneurProfileId Int
+  investorProfile      InvestorProfile       @relation(fields: [investorProfileId], references: [id])
+  entrepreneurProfile  EntrepreneurProfile   @relation(fields: [entrepreneurProfileId], references: [id])
+  investmentOpportunityId Int
+  investmentOpportunity InvestmentOpportunity @relation(fields: [investmentOpportunityId], references: [id])
+  User User[]
+}
+
+model Pitch {
+  id                   Int                   @id @default(autoincrement())
+  title                String
+  description          String
+  entrepreneurId       Int
+  entrepreneur         EntrepreneurProfile   @relation(fields: [entrepreneurId], references: [id])
+  feedbacks            Feedback[]            // Feedback given by investors
+  interests            Interest[]            // Interests shown by users
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  category             String?
+  fundingGoal          Float?
+  currentFunding       Float?
+  stage                String?
+  video                Bytes?                 // For storing video data
+  pitchDeck            Bytes?                 // For storing pitch deck data
+  deadline             DateTime?
+  locationId           Int?                   // Foreign key reference
+  location             Location?              @relation(fields: [locationId], references: [id])
+  tags                 String[]
+  status               String?
+  attachments          Bytes[]                // For storing attachments
+  presentationDate     DateTime?
+  User                 User[]
+}
+
+model Location {
+  id      Int    @id @default(autoincrement())
+  country String
+  city    String
+
+  pitches Pitch[]
+
+  @@unique([country, city]) // This adds a composite unique constraint
+}
+
+
+model Feedback {
+  id                   Int                   @id @default(autoincrement())
+  content              String
+  investorId           Int
+  pitchId              Int
+  investor             InvestorProfile       @relation(fields: [investorId], references: [id])
+  pitch                Pitch                 @relation(fields: [pitchId], references: [id])
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  User User[]
 }
 
 model Startup {
   id                   Int                   @id @default(autoincrement())
   name                 String
   description          String?
-  entrepreneurId      Int
-  entrepreneur        EntrepreneurProfile   @relation(fields: [entrepreneurId], references: [id])
+  entrepreneurId       Int
+  entrepreneur         EntrepreneurProfile   @relation(fields: [entrepreneurId], references: [id])
+  investmentOpportunities InvestmentOpportunity[]
+  businessPlan         Bytes?                 // For storing business plan data
+  pitchDeck            Bytes?                 // For storing pitch deck data
+  financialProjections Bytes?                 // For storing financial projections data
+}
+
+model InvestmentOpportunity {
+  id                   Int                   @id @default(autoincrement())
+  startupId            Int
+  startup              Startup               @relation(fields: [startupId], references: [id])
+  amountRequested      Float
+  description          String
+  businessPlan         Bytes?                 // For storing business plan data
+  pitchDeck            Bytes?                 // For storing pitch deck data
+  financialProjections Bytes?                 // For storing financial projections data
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  Investment Investment[]
 }
 
 model Message {
@@ -75,4 +157,28 @@ model Message {
   receiver             User                  @relation("MessageReceiver", fields: [receiverId], references: [id])
   createdAt            DateTime              @default(now())
   updatedAt            DateTime              @updatedAt
+}
+
+model Interest {
+  id                   Int                   @id @default(autoincrement())
+  userId               Int
+  pitchId              Int
+  user                 User                  @relation(fields: [userId], references: [id])
+  pitch                Pitch                 @relation(fields: [pitchId], references: [id])
+  createdAt            DateTime              @default(now())
+}
+
+model Notification {
+  id                   Int                   @id @default(autoincrement())
+  type                 NotificationType
+  content              String
+  entrepreneurId       Int
+  entrepreneur         EntrepreneurProfile   @relation(fields: [entrepreneurId], references: [id])
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+}
+
+enum NotificationType {
+  FEEDBACK_RECEIVED
+  INVESTOR_INTEREST
 }

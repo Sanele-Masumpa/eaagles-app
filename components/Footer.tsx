@@ -19,6 +19,45 @@ export const Footer = () => {
             </Link>
           </div>
 
+          {/* Footer Links */}
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center text-xs sm:text-sm mb-4 sm:mb-0">
+            <Link
+              href="/terms-and-conditions"
+              className="hover:text-primary transition-colors"
+            >
+              <span className="hidden sm:inline">Terms and Conditions</span>
+              <span className="sm:hidden">T&apos;s &amp; C&apos;s</span>
+            </Link>
+            <span className="text-gray-400 hidden sm:inline">|</span>
+            <Link
+              href="/faqs"
+              className="hover:text-primary transition-colors"
+            >
+              FAQs
+            </Link>
+            <span className="text-gray-400 hidden sm:inline">|</span>
+            <Link
+              href="/privacy-policy"
+              className="hover:text-primary transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <span className="text-gray-400 hidden sm:inline">|</span>
+            <Link
+              href="/contact"
+              className="hover:text-primary transition-colors"
+            >
+              Contact
+            </Link>
+            <span className="text-gray-400 hidden sm:inline">|</span>
+            <Link
+              href="/pricing"
+              className="hover:text-primary transition-colors"
+            >
+              Pricing
+            </Link>
+          </div>
+
           {/* Social Media Icons */}
           <div className="flex gap-4 justify-center items-center mb-4 sm:mb-0">
             <Link
@@ -44,29 +83,6 @@ export const Footer = () => {
               className="hover:text-primary transition-colors"
             >
               <FaLinkedinIn />
-            </Link>
-          </div>
-
-          {/* Footer Links */}
-          <div className="flex gap-4 sm:gap-6 justify-center items-center text-xs sm:text-sm">
-            <Link
-              href="/terms-and-conditions"
-              className="hover:text-primary transition-colors"
-            >
-              <span className="hidden sm:inline">Terms and Conditions</span>
-              <span className="sm:hidden">T&apos;s &amp; C&apos;s</span>
-            </Link>
-            <Link
-              href="/faqs"
-              className="hover:text-primary transition-colors"
-            >
-              FAQs
-            </Link>
-            <Link
-              href="/privacy-policy"
-              className="hover:text-primary transition-colors"
-            >
-              Privacy Policy
             </Link>
           </div>
         </div>
