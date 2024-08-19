@@ -1,8 +1,6 @@
-import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-import { currentUser } from "@clerk/nextjs/server";
-
-const prisma = new PrismaClient();
+import { NextResponse } from 'next/server';
+import { currentUser } from '@clerk/nextjs/server';
+import prisma from '@/lib/prisma'; // Adjust this import based on your project structure
 
 export async function POST(request: Request) {
   const user = await currentUser();
@@ -35,6 +33,33 @@ export async function POST(request: Request) {
     if (!title || !description || isNaN(locationId)) {
       return NextResponse.json(
         { error: "Title, description, and valid location ID are required" },
+        { status: 400 }
+      );
+    }
+
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB for file uploads
+
+    // Define allowed file types
+    const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/mov'];
+    const ALLOWED_PITCH_DECK_TYPES = ['application/pdf'];
+    const ALLOWED_ATTACHMENT_TYPES = ['application/pdf', 'image/png', 'image/jpeg'];
+
+    // Validate file types and sizes
+    if (video && (!ALLOWED_VIDEO_TYPES.includes(video.type) || video.size > MAX_FILE_SIZE)) {
+      return NextResponse.json(
+        { error: `Video must be one of the following types: ${ALLOWED_VIDEO_TYPES.join(', ')} and under 5 MB.` },
+        { status: 400 }
+      );
+    }
+    if (pitchDeck && (!ALLOWED_PITCH_DECK_TYPES.includes(pitchDeck.type) || pitchDeck.size > MAX_FILE_SIZE)) {
+      return NextResponse.json(
+        { error: `Pitch deck must be one of the following types: ${ALLOWED_PITCH_DECK_TYPES.join(', ')} and under 5 MB.` },
+        { status: 400 }
+      );
+    }
+    if (attachments.some(file => !ALLOWED_ATTACHMENT_TYPES.includes(file.type) || file.size > MAX_FILE_SIZE)) {
+      return NextResponse.json(
+        { error: `Attachments must be one of the following types: ${ALLOWED_ATTACHMENT_TYPES.join(', ')} and under 5 MB.` },
         { status: 400 }
       );
     }
@@ -92,7 +117,7 @@ export async function POST(request: Request) {
         },
       },
     });
-   
+
     return NextResponse.json({
       message: 'Pitch created successfully',
       pitch: newPitch,
@@ -105,4 +130,3 @@ export async function POST(request: Request) {
     );
   }
 }
-
