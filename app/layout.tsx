@@ -47,15 +47,15 @@ export default function RootLayout({
             <div className="relative flex flex-col h-screen">
               <Navbar />
               <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
-                <ToastContainer 
-                  position="top-right"
-                  autoClose={5000}
-                  hideProgressBar={false}
-                  closeOnClick
-                  pauseOnHover
-                  draggable
-                  pauseOnFocusLoss 
-                />
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                closeOnClick
+                pauseOnHover
+                draggable
+                pauseOnFocusLoss
+              />
                 {children}
               </main>
               <Footer />
