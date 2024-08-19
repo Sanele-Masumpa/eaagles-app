@@ -130,7 +130,6 @@ export default function ProposalsAnalytics() {
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') handlePitchClick(pitch);
                           }}
-                          role="listitem" // Removed `tabIndex` as `li` is not interactive
                         >
                           <span>{pitch.title}</span>
                           <span className="text-sm text-gray-400">
@@ -223,7 +222,7 @@ export default function ProposalsAnalytics() {
             </div>
           </div>
         ) : (
-          <p className="text-lg text-gray-400">Loading analytics data...</p>
+          <p className="text-center text-gray-500">Loading analytics data...</p>
         )}
 
         {/* Pitch Details Overlay */}
