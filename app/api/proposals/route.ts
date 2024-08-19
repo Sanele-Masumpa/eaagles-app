@@ -1,6 +1,16 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma'; // Adjust the import path as needed
+import { PrismaClient } from '@prisma/client';
 import { currentUser } from '@clerk/nextjs';
+
+declare global {
+  var prisma: PrismaClient | undefined;
+}
+
+export const db = globalThis.prisma || new PrismaClient();
+
+if (process.env.NODE_ENV !== 'production') {
+  globalThis.prisma = db;
+}
 
 export async function POST(request: Request) {
   const user = await currentUser();
@@ -22,7 +32,7 @@ export async function POST(request: Request) {
     const currentFunding = formData.get("currentFunding") as string;
     const stage = formData.get("stage") as string;
     const deadline = formData.get("deadline") as string;
-    const locationData = formData.get("location") as string; // Expecting location as a string in the format "country,city"
+    const locationId = parseInt(formData.get("locationId") as string, 10); // Ensure this is a valid integer
     const tags = formData.get("tags") as string;
     const presentationDate = formData.get("presentationDate") as string;
 
@@ -30,28 +40,14 @@ export async function POST(request: Request) {
     const pitchDeck = formData.get("pitchDeck") as File | null;
     const attachments = formData.getAll("attachments") as File[];
 
-    if (!title || !description || !locationData) {
+    if (!title || !description || isNaN(locationId)) {
       return NextResponse.json(
-        { error: "Title, description, and location are required" },
+        { error: "Title, description, and valid location ID are required" },
         { status: 400 }
       );
     }
 
-    const [country, city] = locationData.split(',').map(part => part.trim());
-
-    // Check if the location exists
-    let location = await prisma.location.findUnique({
-      where: { country_city: { country, city } },
-    });
-
-    // Create the location if it doesn't exist
-    if (!location) {
-      location = await prisma.location.create({
-        data: { country, city },
-      });
-    }
-
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await db.user.findUnique({
       where: { clerkId: user.id },
     });
 
@@ -62,12 +58,12 @@ export async function POST(request: Request) {
       );
     }
 
-    let entrepreneurProfile = await prisma.entrepreneurProfile.findUnique({
+    let entrepreneurProfile = await db.entrepreneurProfile.findUnique({
       where: { userId: existingUser.id },
     });
 
     if (!entrepreneurProfile) {
-      entrepreneurProfile = await prisma.entrepreneurProfile.create({
+      entrepreneurProfile = await db.entrepreneurProfile.create({
         data: {
           userId: existingUser.id,
           bio: "", // Default or empty value
@@ -82,7 +78,7 @@ export async function POST(request: Request) {
       return file.arrayBuffer();
     }));
 
-    const newPitch = await prisma.pitch.create({
+    const newPitch = await db.pitch.create({
       data: {
         title,
         description,
@@ -94,17 +90,17 @@ export async function POST(request: Request) {
         pitchDeck: pitchDeckBuffer ? Buffer.from(pitchDeckBuffer) : null,
         deadline: new Date(deadline),
         location: {
-          connect: { id: location.id }, // Use the ID of the location
+          connect: { id: locationId },  // Ensure locationId is valid
         },
         tags: tags.split(',').map(tag => tag.trim()),
         attachments: attachmentsBuffers.map(buffer => Buffer.from(buffer)),
         presentationDate: new Date(presentationDate),
         entrepreneur: {
-          connect: { id: entrepreneurProfile.id }, // Ensure entrepreneurProfile.id is valid
+          connect: { id: entrepreneurProfile.id },  // Ensure entrepreneurProfile.id is valid
         },
       },
     });
-   
+
     return NextResponse.json({
       message: 'Pitch created successfully',
       pitch: newPitch,
