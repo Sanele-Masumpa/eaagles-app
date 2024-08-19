@@ -9,6 +9,8 @@
 		"lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix"
 	},
 	"dependencies": {
+		"formidable": "^3.5.1",
+  		"fs": "0.0.1-security",
 		"@clerk/nextjs": "^5.2.14",
 		"@formspree/react": "^2.5.1",
 		"@heroicons/react": "^2.1.5",
