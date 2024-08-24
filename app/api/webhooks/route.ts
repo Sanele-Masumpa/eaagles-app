@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 import { buffer } from 'micro';
 import Stripe from 'stripe';
 import { PrismaClient } from '@prisma/client';
@@ -6,13 +6,9 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' });
 
-const handleStripeWebhook = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== 'POST') {
-    return res.status(405).send('Method Not Allowed');
-  }
-
-  const sig = req.headers['stripe-signature'] as string;
-  const buf = await buffer(req);
+export async function POST(request: NextRequest) {
+  const sig = request.headers.get('stripe-signature') as string;
+  const buf = await buffer(request);
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
   let event: Stripe.Event;
@@ -22,10 +18,10 @@ const handleStripeWebhook = async (req: NextApiRequest, res: NextApiResponse) =>
   } catch (err) {
     if (err instanceof Error) {
       console.error('Webhook error:', err.message);
-      return res.status(400).send(`Webhook Error: ${err.message}`);
+      return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
     } else {
       console.error('Webhook error:', err);
-      return res.status(400).send('Webhook Error: An unknown error occurred.');
+      return NextResponse.json({ error: 'Webhook Error: An unknown error occurred.' }, { status: 400 });
     }
   }
 
@@ -46,8 +42,8 @@ const handleStripeWebhook = async (req: NextApiRequest, res: NextApiResponse) =>
       console.warn(`Unhandled event type ${event.type}`);
   }
 
-  res.json({ received: true });
-};
+  return NextResponse.json({ received: true });
+}
 
 // Handle checkout session completed
 const handleCheckoutSessionCompleted = async (event: Stripe.Event) => {
@@ -124,5 +120,3 @@ const handleSubscriptionDeleted = async (event: Stripe.Event) => {
     data: { status: 'canceled' },
   });
 };
-
-export default handleStripeWebhook;
