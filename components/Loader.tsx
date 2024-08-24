@@ -1,6 +1,4 @@
-// components/Loader.tsx
-
-"use client";
+'use client';
 
 import React from "react";
 
@@ -46,31 +44,6 @@ const Loader: React.FC = () => {
           </div>
         </div>
       </div>
-      <style jsx>{`
-        @keyframes spin {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
-
-        @keyframes pulse {
-          0% {
-            transform: scale(0.95);
-            opacity: 0.6;
-          }
-          50% {
-            transform: scale(1);
-            opacity: 1;
-          }
-          100% {
-            transform: scale(0.95);
-            opacity: 0.6;
-          }
-        }
-      `}</style>
     </div>
   );
 };
