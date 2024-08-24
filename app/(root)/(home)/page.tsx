@@ -10,7 +10,6 @@ import InvestmentForm from '@/components/dashboards/CreateInvestmentForm';
 import InvestorProfile from '@/components/dashboards/InvestorProfile';
 import InvestmentAnalytics from '@/components/dashboards/InvestmentAnalytics';
 import NotificationsAlerts from '@/components/dashboards/NotificationsAndAlerts';
-import ProposalForm from '@/components/dashboards/ProposalForm';
 import EntrepreneurProfile from '@/components/dashboards/EntrepreneurProfile';
 import ProposalsAnalytics from '@/components/dashboards/ProposalsAnalytics';
 
