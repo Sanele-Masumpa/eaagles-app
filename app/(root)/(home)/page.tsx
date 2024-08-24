@@ -218,7 +218,6 @@ export default function DashboardPage() {
           <EntrepreneurProfile data={data?.profile} onEdit={() => handleEdit(data?.profile)} />
           <ProposalsAnalytics />
           <NotificationsAlerts alerts={data?.alerts} />
-          <ProposalForm onSubmit={(e) => handleSubmit(e, 'pitch')} />
         </main>
       </div>
     );
