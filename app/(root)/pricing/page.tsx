@@ -153,7 +153,6 @@ const SubscriptionForm = () => {
               tabIndex={0}
               onClick={() => handlePlanSelect(plan.name)}
               onKeyPress={(e) => e.key === 'Enter' && handlePlanSelect(plan.name)}
-              aria-selected={selectedPlan === plan.name}
               aria-label={`Select ${plan.name} plan`}
             >
               <h2 className="text-2xl font-semibold mb-4">{plan.name}</h2>
@@ -213,13 +212,13 @@ const SubscriptionForm = () => {
         >
           {isLoading ? (
             <span className="flex items-center justify-center">
-              <svg className="animate-spin h-6 w-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <svg className="animate-spin h-6 w-6 mr-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v8l4 4" />
               </svg>
-              Loading...
+              Processing...
             </span>
           ) : (
-            'Proceed to Payment'
+            'Subscribe'
           )}
         </button>
       </form>
