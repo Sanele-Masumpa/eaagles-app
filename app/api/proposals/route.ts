@@ -13,10 +13,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "User not found. Please log in." }, { status: 401 });
   }
 
+  // Parsing the form data
   const form = new formidable.IncomingForm();
   form.uploadDir = './uploads'; // Directory to save uploaded files
   form.keepExtensions = true; // Keep original file extensions
 
+  // Use a promise to handle the form parsing
   return new Promise((resolve, reject) => {
     form.parse(request, async (err, fields, files) => {
       if (err) {
