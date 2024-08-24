@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Pusher from "pusher-js";
+import Loader from "@/components/Loader";
+
 
 interface Pitch {
   id: number;
@@ -27,6 +29,8 @@ export default function PitchesPage() {
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const [expandedPitchId, setExpandedPitchId] = useState<number | null>(null);
   const router = useRouter();
+  const [loading,setLoading] = useState(true);
+  
 
   useEffect(() => {
     async function fetchPitches() {
@@ -61,6 +65,14 @@ export default function PitchesPage() {
     };
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 3000);
+  }, []);
+
+  if (loading) {
+    return < Loader />;
+  }
+
   const handleCreate = async () => {
     try {
       const response = await fetch("/api/pitches", {
@@ -77,6 +89,7 @@ export default function PitchesPage() {
       setNewPitch({ title: "", description: "" });
       setIsCreating(false);
       toast.success("Pitch created successfully");
+      window.location.reload();
       router.refresh(); // Refresh the page
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to create pitch";
@@ -104,7 +117,7 @@ export default function PitchesPage() {
       setSelectedPitch(null);
       setIsEditing(false);
       toast.success("Pitch updated successfully");
-      router.refresh(); // Refresh the page
+      window.location.reload();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to update pitch";
       setSelectedPitch(null);
@@ -124,6 +137,7 @@ export default function PitchesPage() {
       setPitches(pitches.filter((pitch) => pitch.id !== id));
       toast.success("Pitch deleted successfully");
       router.refresh(); // Refresh the page
+      window.location.reload();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to delete pitch";
       toast.error(errorMessage);
@@ -170,7 +184,7 @@ export default function PitchesPage() {
                   <div className="flex justify-between items-center">
                     <div>
                       <h4 className="text-xl font-semibold">{pitch.title}</h4>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 dark:text-gray-200">
                         {new Date(pitch.createdAt).toLocaleDateString()}
                       </p>
                     </div>
@@ -198,7 +212,7 @@ export default function PitchesPage() {
                   {expandedPitchId === pitch.id && (
                     <div className="mt-4 p-4 border-t border-gray-200">
                       <h5 className="text-lg font-semibold">Description</h5>
-                      <p className="text-gray-800">{pitch.description}</p>
+                      <p className="text-gray-800 dark:text-gray-200">{pitch.description}</p>
                     </div>
                   )}
                 </li>
@@ -213,7 +227,7 @@ export default function PitchesPage() {
       {/* Create Pitch Modal */}
       {isCreating && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+          <div className="bg-gray-100 dark:bg-gray-900 p-8 rounded-lg shadow-lg max-w-md w-full">
             <h3 className="text-2xl font-bold mb-4">Create New Pitch</h3>
             <input
               type="text"

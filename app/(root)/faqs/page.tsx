@@ -1,6 +1,17 @@
+"use client";
 import React from "react";
+import Loader from "@/components/Loader";
+import { useState, useEffect } from "react";
 
 const FAQ = () => {
+  const [loading,setLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 3000);
+  }, []);
+
+if (loading) {
+  return < Loader />;
+}
   const faqs = [
     {
       id: 'eagles-ring',
@@ -167,9 +178,9 @@ const FAQ = () => {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto py-12">
+    <div className="max-w-4xl mx-auto py-12 ">
       <h1 className="text-3xl font-bold mb-8">Frequently Asked Questions</h1>
-      <div className="space-y-4">
+      <div className="space-y-4 w-full">
         {faqs.map((faq) => (
           <div key={faq.id} className="border-b pb-4">
             <h2 className="text-xl font-semibold mb-2">{faq.question}</h2>

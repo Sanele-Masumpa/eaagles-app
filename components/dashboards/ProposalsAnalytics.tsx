@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import Loader from "@/components/Loader";
 
 interface Pitch {
   id: number;
@@ -222,7 +223,7 @@ export default function ProposalsAnalytics() {
             </div>
           </div>
         ) : (
-          <p className="text-center text-gray-500">Loading analytics data...</p>
+          < Loader />
         )}
 
         {/* Pitch Details Overlay */}

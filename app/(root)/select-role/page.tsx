@@ -1,5 +1,5 @@
-"use client";
-
+'use client';
+import Loader from "@/components/Loader";
 import { useRef, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
@@ -10,6 +10,14 @@ export default function SelectRole() {
   const router = useRouter();
   const { user, isLoaded, isSignedIn } = useUser();  // Use useUser hook for client-side
   const [userName, setUserName] = useState<string | null>(null);
+  const [loading,setLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 3000);
+  }, []);
+
+  if (loading) {
+    return < Loader />;
+  }
 
   useEffect(() => {
     if (isLoaded && isSignedIn) {
@@ -44,7 +52,7 @@ export default function SelectRole() {
           const data = await response.json();
           toast.success(data.message);
           formRef.current?.reset();
-          router.push('/success'); // Redirect to a success page or reload
+          router.push('/role-assigned');
         } else {
           const errorData = await response.json();
           toast.error(errorData.error || 'Failed to assign role');

@@ -1,6 +1,17 @@
+"use client";
+import { useEffect, useState } from "react";
 import { title } from "@/components/primitives";
+import Loader from "@/components/Loader";
 
 export default function AboutPage() {
+  const [loading,setLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 3000);
+  }, []);
+
+if (loading) {
+  return < Loader />;
+}
   return (
     <div className="max-w-full px-6 py-8 mx-auto">
       <h1 className={`${title()} text-center mb-8`}>About Eagles Ring</h1>

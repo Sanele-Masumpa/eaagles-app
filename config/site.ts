@@ -1,3 +1,4 @@
+
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
@@ -21,6 +22,6 @@ export const siteConfig = {
     twitter: "https://twitter.com/eaglesring",
     github: "https://github.com/eaglesring",
     discord: "https://discord.com/invite/eaglesring",
-    sponsor: "https://eaglesring.com/sponsor",
+    sponsor: "https://icrdgroupholdings.com",
   },
 };

@@ -6,7 +6,6 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
 model User {
   id                    Int                   @id @default(autoincrement())
   clerkId               String                @unique
@@ -21,10 +20,28 @@ model User {
   investments           Investment[]          // List of investments made by the user
   entrepreneurProfile   EntrepreneurProfile?
   investorProfile       InvestorProfile?
-  pitches               Pitch[]                // Pitches submitted by the user (if an entrepreneur)
-  feedbacks             Feedback[]             // Feedback given by the user (if an investor)
-  interests             Interest[]             // Interests shown by the user
+  pitches               Pitch[]               // Pitches submitted by the user (if an entrepreneur)
+  feedbacks             Feedback[]            // Feedback given by the user (if an investor)
+  interests             Interest[]            // Interests shown by the user
+  subscription          Subscription?         // One-to-one relationship with Subscription
+  stripeCustomerId      String?   @unique     // Make sure this is unique
 }
+
+model Subscription {
+  id                    Int      @id @default(autoincrement())
+  userId                Int      @unique
+  user                  User     @relation(fields: [userId], references: [id])
+  planName              String
+  planType              String   // "monthly" or "yearly"
+  startDate             DateTime @default(now())
+  endDate               DateTime @default(now()) // This should be calculated based on the plan
+  status                String   @default("active") // Default status is "active"
+  stripeSubscriptionId  String?  @unique
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+
 
 enum Role {
   INVESTOR
@@ -182,3 +199,4 @@ enum NotificationType {
   FEEDBACK_RECEIVED
   INVESTOR_INTEREST
 }
+

@@ -44,19 +44,21 @@ export default function RootLayout({
           )}
         >
           <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-            <div className="relative flex flex-col h-screen">
+            <div className="flex flex-col min-h-screen">
               <Navbar />
-              <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
-              <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                closeOnClick
-                pauseOnHover
-                draggable
-                pauseOnFocusLoss
-              />
-                {children}
+              <main className="flex-grow w-full py-8">
+                <div className="container mx-auto  px-4 sm:px-6 lg:px-8">
+                  <ToastContainer
+                    position="bottom-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    closeOnClick
+                    pauseOnHover
+                    draggable
+                    pauseOnFocusLoss
+                  />
+                  {children}
+                </div>
               </main>
               <Footer />
             </div>

@@ -1,7 +1,22 @@
-/* Import Tailwind's base, components, and utilities */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-family: var(--font-sans);
+  font-weight: 400; /* Adjust to suit your design */
+  font-style: normal; /* Adjust to suit your design */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 700; /* Adjust to suit your design */
+}
+
+code, pre {
+  font-family: var(--font-mono);
+  font-weight: 400; /* Adjust to suit your design */
+}
 
 .clerk-wrapper {
   border: 2px solid #0E78F9; /* Blue border color */
@@ -56,20 +71,20 @@ display: flex;
 flex-shrink: 0;
 }
 
-/* globals.css or styles.css */
-
 @keyframes scrollFeatures {
-0% {
-  transform: translateX(0);
-}
-100% {
-  transform: translateX(-100%);
-}
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 .animate-scroll-features {
-animation: scrollFeatures 300s linear infinite;
+  display: flex; /* Ensure child elements are in a row */
+  animation: scrollFeatures 30s linear infinite;
 }
+
 
 /* styles/globals.css or a CSS module */
 .no-scroll {

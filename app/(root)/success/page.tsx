@@ -1,50 +1,36 @@
-"use client";
+'use client';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { title } from "@/components/primitives";
-
-export default function SuccessPage() {
+const Success = () => {
   const router = useRouter();
 
   useEffect(() => {
+    // Redirect after 3 seconds or handle any post-subscription logic
     const timer = setTimeout(() => {
-      router.push('/'); // Redirect to home or another page after a delay
-    }, 3000); // Adjust the delay as needed
+      router.push('/');
+    }, 3000);
 
-    return () => clearTimeout(timer); // Cleanup timer on unmount
+    return () => clearTimeout(timer);
   }, [router]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-black">
-      <div className="p-8 bg-white dark:bg-black rounded-lg shadow-lg border-2 border-blue-500 space-y-6 max-w-md">
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="text-center p-4 shadow-lg rounded-lg max-w-md w-full">
         <svg
-          className="mx-auto h-16 w-16 text-green-500"
-          xmlns="http://www.w3.org/2000/svg"
+          className="w-16 h-16 mx-auto text-green-500 mb-4"
           fill="none"
-          viewBox="0 0 24 24"
           stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M5 13l4 4L19 7"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
         </svg>
-        <h1 className={`${title()} text-center text-3xl font-bold text-gray-900 dark:text-gray-100`}>
-          Success!
-        </h1>
-        <p className="text-gray-600 dark:text-gray-300 text-center">
-          Your role has been successfully assigned. You will be redirected shortly.
-        </p>
-        <a
-          href="/"
-          className="block w-full text-center bg-blue text-white py-2 px-4 rounded-lg hover:bg-yellow-600 dark:bg-yellow-600 dark:hover:bg-yellow-700"
-        >
-          Go to Home
-        </a>
+        <h1 className="text-2xl font-semibold mb-2">Subscription Successful!</h1>
+        <p className="text-lg mb-4">Thank you for subscribing. We are redirecting you shortly.</p>
       </div>
     </div>
   );
-}
+};
+
+export default Success;

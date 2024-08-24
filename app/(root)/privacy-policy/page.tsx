@@ -1,7 +1,18 @@
-import React from "react";
+'use client';
+import {useState, useEffect} from 'react';
+import Loader from "@/components/Loader";
 import { FaShieldAlt, FaLock, FaUserShield, FaClipboardCheck, FaGlobe } from "react-icons/fa";
 
 const PrivacyPolicy = () => {
+  const [loading,setLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 3000);
+  }, []);
+
+  if (loading) {
+    return < Loader />;
+  }
+  
   return (
     <div className="p-6 py-24 text-black dark:text-white">
       <h1 className="text-4xl font-extrabold mb-8 text-gold">Privacy Policy</h1>

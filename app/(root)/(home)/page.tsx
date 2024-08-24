@@ -1,11 +1,11 @@
 "use client";
 
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Image from 'next/image';
-
+import Loader from "@/components/Loader";
 import InvestmentForm from '@/components/dashboards/CreateInvestmentForm';
 import InvestorProfile from '@/components/dashboards/InvestorProfile';
 import InvestmentAnalytics from '@/components/dashboards/InvestmentAnalytics';
@@ -154,7 +154,11 @@ export default function DashboardPage() {
         throw new Error('Failed to submit proposal');
       }
     } catch (error) {
-      toast.error(`Error: ${error.message}`);
+      if (error instanceof Error) {
+        toast.error(`Error: ${error.message}`);
+      } else {
+        toast.error('An unknown error occurred.');
+      }
     }
   };
 
@@ -178,8 +182,12 @@ export default function DashboardPage() {
       }, []);
 
 
+      useEffect(() => {
+        setTimeout(() => setLoading(false), 3000);
+      }, []);
+  
   if (loading) {
-    return <div className="text-center py-16">Loading...</div>;
+      return < Loader />;
   }
 
   if (role === 'INVESTOR') {

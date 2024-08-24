@@ -1,11 +1,20 @@
 'use client';
-import React from 'react';
+import {useState, useEffect} from 'react';
+import Loader from "@/components/Loader";
 import { useForm, ValidationError } from '@formspree/react';
 import { EnvelopeIcon, ChatBubbleLeftEllipsisIcon, PhoneIcon, MapPinIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
 import { FaFacebookF, FaTwitter, FaLinkedinIn } from 'react-icons/fa';
 
 function ContactForm() {
   const [state, handleSubmit] = useForm("xrbzlwpr");
+  const [loading,setLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 3000);
+  }, []);
+
+if (loading) {
+  return < Loader />;
+}
 
   return (
     <div className="max-w-4xl mx-auto p-8 bg-gray-100 dark:bg-gray-800 shadow-xl rounded-lg mb-12">

@@ -3,60 +3,90 @@ import { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-type PriceId = string | { monthly: string; yearly: string };
+interface Feature {
+  description: string;
+  included: boolean;
+}
 
 interface Plan {
   name: string;
-  monthlyPrice: number;
-  yearlyPrice: number;
-  features: string[];
-  unavailable: string[];
+  priceMonthly: string;
+  priceYearly: string;
+  features: Feature[];
+  stripePriceId: string | { monthly: string; yearly: string };
   buttonLabel: string;
-  stripePriceId: PriceId;
 }
 
 const plans: Plan[] = [
   {
-    name: 'Basic',
-    monthlyPrice: 0,
-    yearlyPrice: 0,
-    features: ['Access to forums', 'Basic support', 'Free Plan'],
-    unavailable: [],
-    buttonLabel: 'Join for Free',
+    name: 'Free',
+    priceMonthly: '0 ZAR',
+    priceYearly: '0 ZAR',
+    features: [
+      { description: 'Basic access to the platform', included: true },
+      { description: 'Limited number of pitches', included: true },
+      { description: 'Access to community forums', included: true },
+      { description: 'Priority support', included: false },
+      { description: 'Enhanced pitch visibility', included: false },
+      { description: 'Monthly performance insights', included: false },
+      { description: 'Dedicated account manager', included: false },
+      { description: 'Custom analytics reports', included: false },
+      { description: 'Exclusive networking events', included: false },
+      { description: 'Early access to new features', included: false },
+    ],
     stripePriceId: process.env.NEXT_PUBLIC_BASIC_PLAN_PRICE_ID!,
+    buttonLabel: 'Join for Free',
   },
   {
     name: 'Pro',
-    monthlyPrice: 450,
-    yearlyPrice: 4500,
-    features: ['Access to forums', 'Premium content', 'Priority support'],
-    unavailable: ['Dedicated account manager'],
-    buttonLabel: 'Subscribe Now',
+    priceMonthly: '450 ZAR',
+    priceYearly: '4500 ZAR',
+    features: [
+      { description: 'Basic access to the platform', included: true },
+      { description: 'Limited number of pitches', included: true },
+      { description: 'Access to community forums', included: true },
+      { description: 'Priority support', included: true },
+      { description: 'Enhanced pitch visibility', included: true },
+      { description: 'Monthly performance insights', included: true },
+      { description: 'Dedicated account manager', included: false },
+      { description: 'Custom analytics reports', included: false },
+      { description: 'Exclusive networking events', included: false },
+      { description: 'Early access to new features', included: false },
+    ],
     stripePriceId: {
       monthly: process.env.NEXT_PUBLIC_PRO_PLAN_PRICE_ID!,
       yearly: process.env.NEXT_PUBLIC_PRO_ANNUAL_PRICE_ID!,
     },
+    buttonLabel: 'Subscribe Now',
   },
   {
     name: 'Premium',
-    monthlyPrice: 800,
-    yearlyPrice: 8000,
-    features: ['Access to forums', 'Premium content', 'Priority support', 'Dedicated account manager'],
-    unavailable: [],
-    buttonLabel: 'Subscribe Now',
+    priceMonthly: '800 ZAR',
+    priceYearly: '8000 ZAR',
+    features: [
+      { description: 'Basic access to the platform', included: true },
+      { description: 'Limited number of pitches', included: true },
+      { description: 'Access to community forums', included: true },
+      { description: 'Priority support', included: true },
+      { description: 'Enhanced pitch visibility', included: true },
+      { description: 'Monthly performance insights', included: true },
+      { description: 'Dedicated account manager', included: true },
+      { description: 'Custom analytics reports', included: true },
+      { description: 'Exclusive networking events', included: true },
+      { description: 'Early access to new features', included: true },
+    ],
     stripePriceId: {
       monthly: process.env.NEXT_PUBLIC_PREMIUM_PLAN_PRICE_ID!,
       yearly: process.env.NEXT_PUBLIC_PREMIUM_ANNUAL_PRICE_ID!,
     },
+    buttonLabel: 'Subscribe Now',
   },
 ];
 
 const SubscriptionForm = () => {
-  const { user } = useUser();
   const [selectedPlan, setSelectedPlan] = useState<string>('');
   const [isYearly, setIsYearly] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -69,8 +99,8 @@ const SubscriptionForm = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!selectedPlan || !user?.id) {
-      toast.error('Please select a plan and ensure you are logged in.');
+    if (!selectedPlan) {
+      toast.error('Please select a plan.');
       return;
     }
 
@@ -99,7 +129,7 @@ const SubscriptionForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ priceId, userId: user.id }),
+        body: JSON.stringify({ priceId }),
       });
 
       const data = await response.json();
@@ -150,38 +180,33 @@ const SubscriptionForm = () => {
             >
               <h2 className="text-2xl font-semibold mb-4">{plan.name}</h2>
               <p className="text-3xl font-extrabold mb-4">
-                {isYearly ? `R${plan.yearlyPrice}` : `R${plan.monthlyPrice}`} {isYearly ? 'per year' : 'per month'}
-                {isYearly && plan.yearlyPrice < (plan.monthlyPrice * 12) ? (
-                  <span className="text-red-500 text-sm ml-2">(Save {(plan.monthlyPrice * 12 - plan.yearlyPrice).toFixed(2)})</span>
-                ) : null}
+                {isYearly ? `${plan.priceYearly}` : `${plan.priceMonthly}`} {isYearly ? 'per year' : 'per month'}
               </p>
               <ul className="mb-6">
                 {plan.features.map(feature => (
-                  <li key={feature} className="flex items-center mb-2 text-green-600">
-                    <svg
-                      className="w-6 h-6 mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                    {feature}
-                  </li>
-                ))}
-                {plan.unavailable.map(item => (
-                  <li key={item} className="flex items-center mb-2 text-gray-500">
-                    <svg
-                      className="w-6 h-6 mr-3 text-red-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    {item}
+                  <li key={feature.description} className="flex items-center mb-2">
+                    {feature.included ? (
+                      <svg
+                        className="w-6 h-6 mr-3 text-green-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                    ) : (
+                      <svg
+                        className="w-6 h-6 mr-3 text-red-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    )}
+                    {feature.description}
                   </li>
                 ))}
               </ul>

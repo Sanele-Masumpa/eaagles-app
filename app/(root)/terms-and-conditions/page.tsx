@@ -1,6 +1,17 @@
-import React from "react";
+'use client';
+import {useState, useEffect} from 'react';
+import Loader from "@/components/Loader";
 
 const TermsAndConditions = () => {
+  const [loading,setLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 3000);
+  }, []);
+
+  if (loading) {
+    return < Loader />;
+  }
+  
   const sections = [
     { id: 'acceptance', title: 'Acceptance of Terms', content: 'By accessing and using our platform, you accept and agree to be bound by these terms and conditions. If you do not agree to these terms, you must not use our platform.' },
     { id: 'user-accounts', title: 'User Accounts', content: 'To use certain features of our platform, you may be required to create an account. You agree to provide accurate, current, and complete information during the registration process and to update such information to keep it accurate, current, and complete.' },
@@ -44,7 +55,7 @@ const TermsAndConditions = () => {
   ];
 
   return (
-    <div className="bg-bg-dark-1 dark:bg-dark-1 text-black dark:text-white">
+    <div className="text-align-center">
       <h1 className="text-3xl font-bold mb-4">Terms and Conditions</h1>
 
       <h2 className="text-2xl font-semibold mb-2">Table of Contents</h2>
