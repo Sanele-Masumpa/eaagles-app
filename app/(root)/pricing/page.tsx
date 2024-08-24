@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { toast } from 'react-toastify';
@@ -130,12 +131,14 @@ const SubscriptionForm = () => {
         <button
           className={`px-6 py-3 rounded-l-md text-lg font-medium transition-all duration-300 ${!isYearly ? 'bg-gradient-to-r from-blue-600 to-blue-800 text-white' : 'bg-gray-200 text-gray-700'}`}
           onClick={() => setIsYearly(false)}
+          aria-pressed={!isYearly}
         >
           Monthly
         </button>
         <button
           className={`px-6 py-3 rounded-r-md text-lg font-medium transition-all duration-300 ${isYearly ? 'bg-gradient-to-r from-blue-600 to-blue-800 text-white' : 'bg-gray-200 text-gray-700'}`}
           onClick={() => setIsYearly(true)}
+          aria-pressed={isYearly}
         >
           Yearly
         </button>
@@ -146,7 +149,12 @@ const SubscriptionForm = () => {
             <div
               key={plan.name}
               className={`border rounded-lg p-6 transition-transform duration-300 ${selectedPlan === plan.name ? 'border-blue-600 shadow-lg transform scale-105' : 'border-gray-300'}`}
+              role="button"
+              tabIndex={0}
               onClick={() => handlePlanSelect(plan.name)}
+              onKeyPress={(e) => e.key === 'Enter' && handlePlanSelect(plan.name)}
+              aria-selected={selectedPlan === plan.name}
+              aria-label={`Select ${plan.name} plan`}
             >
               <h2 className="text-2xl font-semibold mb-4">{plan.name}</h2>
               <p className="text-3xl font-extrabold mb-4">
@@ -189,6 +197,8 @@ const SubscriptionForm = () => {
                 type="button"
                 className={`w-full py-3 rounded-lg text-white font-bold transition-all duration-300 ${selectedPlan === plan.name ? 'bg-gradient-to-r from-green-500 to-green-700' : 'bg-gray-300 text-gray-700'}`}
                 onClick={() => handlePlanSelect(plan.name)}
+                aria-pressed={selectedPlan === plan.name}
+                aria-label={`Select ${plan.name} plan`}
               >
                 {plan.buttonLabel}
               </button>
@@ -199,6 +209,7 @@ const SubscriptionForm = () => {
           type="submit"
           className={`w-full py-3 rounded-full bg-gradient-to-r from-blue-600 to-blue-800 text-white font-bold shadow-lg hover:opacity-90 transition-opacity duration-300 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           disabled={isLoading}
+          aria-label="Proceed to payment"
         >
           {isLoading ? (
             <span className="flex items-center justify-center">
