@@ -1,4 +1,5 @@
 'use client';
+
 import Loader from "@/components/Loader";
 import { useRef, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -8,20 +9,17 @@ import { useUser } from "@clerk/nextjs";
 export default function SelectRole() {
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
-  const { user, isLoaded, isSignedIn } = useUser();  // Use useUser hook for client-side
+  const { user, isLoaded, isSignedIn } = useUser();
   const [userName, setUserName] = useState<string | null>(null);
-  const [loading,setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
     setTimeout(() => setLoading(false), 3000);
   }, []);
 
-  if (loading) {
-    return < Loader />;
-  }
-
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      setUserName(user?.fullName || '');  // Assuming `fullName` is available
+      setUserName(user?.fullName || '');
     } else {
       console.log('User not loaded or not signed in');
     }
@@ -63,6 +61,10 @@ export default function SelectRole() {
       }
     }
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="max-w-md mx-auto my-20 p-6 bg-white dark:bg-black rounded-xl border-2 border-blue-500 shadow-md space-y-4">
