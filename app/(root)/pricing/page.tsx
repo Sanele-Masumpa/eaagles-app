@@ -70,12 +70,14 @@ const SubscriptionForm = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!selectedPlan || !user?.id) {
+    const userEmail = user?.primaryEmailAddress?.emailAddress;
+
+    if (!selectedPlan || !user?.id || !userEmail) {
       toast.error('Please select a plan and ensure you are logged in.');
       return;
     }
 
-    const selectedPlanData = plans.find(plan => plan.name === selectedPlan);
+    const selectedPlanData = plans.find((plan) => plan.name === selectedPlan);
     if (!selectedPlanData) {
       toast.error('Invalid plan selected.');
       return;
@@ -100,7 +102,7 @@ const SubscriptionForm = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ priceId, userId: user.id }),
+        body: JSON.stringify({ priceId, userId: user.id, email: userEmail }),
       });
 
       const data = await response.json();
@@ -112,7 +114,7 @@ const SubscriptionForm = () => {
       }
 
       const stripe = await stripePromise;
-      const { error } = await stripe?.redirectToCheckout({ sessionId: data.id }) || {};
+      const { error } = (await stripe?.redirectToCheckout({ sessionId: data.id })) || {};
 
       if (error) {
         toast.error(error.message);
@@ -123,6 +125,7 @@ const SubscriptionForm = () => {
       setIsLoading(false);
     }
   };
+  
 
   return (
     <div className="container mx-auto px-4 py-8">
