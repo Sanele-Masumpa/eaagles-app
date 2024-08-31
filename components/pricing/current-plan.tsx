@@ -278,11 +278,6 @@ const CurrentPlan = () => {
                   <p className="text-center text-gray-700 dark:text-gray-300">No payment methods available.</p>
                 )}
               </div>
-            ))
-                ) : (
-                  <p className="text-center text-gray-700 dark:text-gray-300">No payment methods available.</p>
-                )}
-              </div>
             ) : null}
           </div>
         </div>
