@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { useUser } from "@clerk/nextjs";
 import { plans, Plan } from "@/constants/plans";
 import Loader from "@/components/Loader";
-import { FaCheckCircle, FaTimesCircle, FaCreditCard, FaListAlt, FaCog, FaCalendarAlt, FaCalendarCheck, FaStar } from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle, FaCreditCard, FaListAlt, FaCog } from "react-icons/fa";
 
 const CurrentPlan = () => {
   const { user } = useUser();
@@ -159,169 +159,123 @@ const CurrentPlan = () => {
               currentPlan ? (
                 <div className="space-y-6">
                   <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-                    <div className="flex items-center">
-                      <FaListAlt className="text-blue-500 mr-3" />
-                      <div>
-                        <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                          Plan: <span className="font-bold">{currentPlan.name}</span>
-                        </div>
-                        <div className="text-lg text-gray-600 dark:text-gray-400">
-                          {isYearly
-                            ? `Yearly - R${currentPlan.yearlyPrice} per year`
-                            : `Monthly - R${currentPlan.monthlyPrice} per month`}
-                        </div>
-                      </div>
+                    <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                      Plan: <span className="font-bold">{currentPlan.name}</span>
+                    </div>
+                    <div className="text-lg text-gray-600 dark:text-gray-400">
+                      {isYearly
+                        ? `Yearly - R$${currentPlan.yearlyPrice} per year`
+                        : `Monthly - R$${currentPlan.monthlyPrice} per month`}
                     </div>
                   </div>
                   <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-                    <div className="flex items-center">
-                      <FaCalendarAlt className="text-blue-500 mr-3" />
-                      <div>
-                        <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Next Billing Date</div>
-                        <div className="text-lg text-gray-600 dark:text-gray-400">{subscriptionDetails?.nextBillingDate}</div>
-                      </div>
-                    </div>
+                    <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Next Billing Date</div>
+                    <div className="text-lg text-gray-600 dark:text-gray-400">{subscriptionDetails?.nextBillingDate}</div>
                   </div>
                   <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-                    <div className="flex items-center">
-                      <FaCalendarCheck className="text-blue-500 mr-3" />
-                      <div>
-                        <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Subscription Start Date</div>
-                        <div className="text-lg text-gray-600 dark:text-gray-400">{subscriptionDetails?.subscriptionStartDate}</div>
-                      </div>
-                    </div>
+                    <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Subscription Start Date</div>
+                    <div className="text-lg text-gray-600 dark:text-gray-400">{subscriptionDetails?.subscriptionStartDate}</div>
                   </div>
                   <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-                    <div className="flex items-center">
-                      <FaStar className="text-blue-500 mr-3" />
-                      <div>
-                        <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Status</div>
-                        <div
-                          className={`text-lg font-bold ${
-                            subscriptionDetails?.status === "active" ? "text-green-500" : "text-red-500"
-                          } flex items-center`}
-                        >
-                          {subscriptionDetails?.status === "active" ? (
-                            <>
-                              <FaCheckCircle className="mr-2" />
-                              {subscriptionDetails?.status}
-                            </>
-                          ) : (
-                            <>
-                              <FaTimesCircle className="mr-2" />
-                              {subscriptionDetails?.status}
-                            </>
-                          )}
-                        </div>
-                      </div>
+                    <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Status</div>
+                    <div
+                      className={`text-lg font-bold ${
+                        subscriptionDetails?.status === "active" ? "text-green-500" : "text-red-500"
+                      } flex items-center`}
+                    >
+                      {subscriptionDetails?.status === "active" ? (
+                        <>
+                          <FaCheckCircle className="mr-2" /> Active
+                        </>
+                      ) : (
+                        <>
+                          <FaTimesCircle className="mr-2" /> Inactive
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="text-center text-gray-600 dark:text-gray-400">No current plan available.</div>
+                <p className="text-center text-gray-700 dark:text-gray-300">You do not have an active plan.</p>
               )
             ) : activeTab === "details" ? (
-              <div className="space-y-4">
-                <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6">
-                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Subscription Details</h3>
-                  <div className="flex items-center mb-4">
-                    <FaListAlt className="text-blue-500 mr-3" />
-                    <div>
-                      <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                        Plan: <span className="font-bold">{currentPlan?.name}</span>
-                      </div>
-                      <div className="text-lg text-gray-600 dark:text-gray-400">
-                        {isYearly
-                          ? `Yearly - R${currentPlan?.yearlyPrice} per year`
-                          : `Monthly - R${currentPlan?.monthlyPrice} per month`}
-                      </div>
+              currentPlan ? (
+                <div className="space-y-6">
+                  <div className="flex flex-col sm:flex-row items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
+                    <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Plan Details</div>
+                    <div className="text-lg text-gray-600 dark:text-gray-400">
+                      {isYearly
+                        ? `R$${currentPlan.yearlyPrice} per year`
+                        : `R$${currentPlan.monthlyPrice} per month`}
                     </div>
                   </div>
-                  <div className="flex items-center mb-4">
-                    <FaCalendarAlt className="text-blue-500 mr-3" />
-                    <div>
-                      <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Next Billing Date</div>
-                      <div className="text-lg text-gray-600 dark:text-gray-400">{subscriptionDetails?.nextBillingDate}</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center mb-4">
-                    <FaCalendarCheck className="text-blue-500 mr-3" />
-                    <div>
-                      <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Subscription Start Date</div>
-                      <div className="text-lg text-gray-600 dark:text-gray-400">{subscriptionDetails?.subscriptionStartDate}</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center mb-4">
-                    <FaStar className="text-blue-500 mr-3" />
-                    <div>
-                      <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Status</div>
-                      <div
-                        className={`text-lg font-bold ${
-                          subscriptionDetails?.status === "active" ? "text-green-500" : "text-red-500"
-                        } flex items-center`}
-                      >
-                        {subscriptionDetails?.status === "active" ? (
-                          <>
-                            <FaCheckCircle className="mr-2" />
-                            {subscriptionDetails?.status}
-                          </>
-                        ) : (
-                          <>
-                            <FaTimesCircle className="mr-2" />
-                            {subscriptionDetails?.status}
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <ul className="space-y-4">
+                    {currentPlan.features.map((feature, index) => (
+                      <li key={index} className="flex items-center">
+                        <FaCheckCircle className="text-green-500 mr-2" />
+                        <span className="text-gray-800 dark:text-gray-200">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
+              ) : (
+                <p className="text-center text-gray-700 dark:text-gray-300">You do not have an active plan.</p>
+              )
             ) : activeTab === "manage" ? (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <button
                   onClick={handleCancelSubscription}
-                  className="px-6 py-3 bg-red-600 text-white rounded-full shadow-md hover:bg-red-700 transition duration-300"
+                  className="w-full py-3 px-6 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full shadow-md transition-colors duration-300"
+                  aria-label="Cancel Subscription"
                 >
                   Cancel Subscription
                 </button>
-                <button
-                  onClick={() => handleUpdatePlan(isYearly ? availablePlans.find(plan => plan.id === "basic")?.stripePriceId.yearly || '' : availablePlans.find(plan => plan.id === "basic")?.stripePriceId.monthly || '')}
-                  className="px-6 py-3 bg-green-600 text-white rounded-full shadow-md hover:bg-green-700 transition duration-300"
-                >
-                  Update to Basic Plan
-                </button>
-                <button
-                  onClick={() => handleUpdatePlan(isYearly ? availablePlans.find(plan => plan.id === "pro")?.stripePriceId.yearly || '' : availablePlans.find(plan => plan.id === "pro")?.stripePriceId.monthly || '')}
-                  className="px-6 py-3 bg-blue-600 text-white rounded-full shadow-md hover:bg-blue-700 transition duration-300"
-                >
-                  Update to Pro Plan
-                </button>
-                <button
-                  onClick={() => handleUpdatePlan(isYearly ? availablePlans.find(plan => plan.id === "premium")?.stripePriceId.yearly || '' : availablePlans.find(plan => plan.id === "premium")?.stripePriceId.monthly || '')}
-                  className="px-6 py-3 bg-purple-600 text-white rounded-full shadow-md hover:bg-purple-700 transition duration-300"
-                >
-                  Update to Premium Plan
-                </button>
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Switch Plan</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {availablePlans.map((plan) => (
+                      <div
+                        key={plan.name}
+                        className={`p-6 rounded-lg shadow-md cursor-pointer ${
+                          currentPlan?.name === plan.name ? "border-2 border-blue-500" : "border"
+                        } bg-white dark:bg-gray-900 hover:shadow-lg transition-shadow duration-300`}
+                        onClick={() => handleUpdatePlan(plan.stripePriceId)}
+                        role="button"
+                        aria-label={`Switch to ${plan.name} plan`}
+                      >
+                        <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{plan.name}</h4>
+                        <p className="text-gray-600 dark:text-gray-400">
+                          {isYearly ? `R$${plan.yearlyPrice} per year` : `R$${plan.monthlyPrice} per month`}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             ) : activeTab === "payment" ? (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Payment Methods</h3>
                 {paymentMethods.length > 0 ? (
                   paymentMethods.map((method, index) => (
-                    <div key={index} className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-4">
+                    <div
+                      key={index}
+                      className="p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md flex items-center justify-between"
+                    >
                       <div className="flex items-center">
-                        <FaCreditCard className="text-blue-500 mr-3" />
+                        <FaCreditCard className="text-blue-500 mr-4" />
                         <div>
-                          <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Card Ending in {method.last4}</div>
-                          <div className="text-lg text-gray-600 dark:text-gray-400">
-                            {method.brand} - Expires {method.expiryMonth}/{method.expiryYear}
+                          <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                            {method.brand} {method.cardNumber} (ends in {method.last4})
+                          </div>
+                          <div className="text-gray-600 dark:text-gray-400">
+                            Expires {method.expiry}
                           </div>
                         </div>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <div className="text-center text-gray-600 dark:text-gray-400">No payment methods found.</div>
+                  <p className="text-center text-gray-700 dark:text-gray-300">No payment methods available.</p>
                 )}
               </div>
             ) : null}
