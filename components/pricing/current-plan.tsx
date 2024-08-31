@@ -128,31 +128,30 @@ const CurrentPlan = () => {
         </div>
         <div className="p-4 sm:p-6">
           <div className="border-b border-gray-300 dark:border-gray-700">
-  <div className="flex flex-col sm:flex-row sm:justify-between">
-    {[
-      { name: "Overview", icon: FaListAlt, tab: "overview" },
-      { name: "Details", icon: FaCog, tab: "details" },
-      { name: "Manage", icon: FaTimesCircle, tab: "manage" },
-      { name: "Payment Methods", icon: FaCreditCard, tab: "payment" },
-    ].map((item) => (
-      <button
-        key={item.tab}
-        className={`text-base sm:text-lg font-semibold py-2 sm:py-3 px-4 sm:px-6 border-b-2 ${
-          activeTab === item.tab
-            ? "border-blue-500 text-blue-600 dark:text-blue-400"
-            : "border-transparent text-gray-700 dark:text-gray-200"
-        } hover:border-blue-500 focus:outline-none flex items-center`}
-        onClick={() => setActiveTab(item.tab as 'overview' | 'details' | 'manage' | 'payment')}
-        role="tab"
-        aria-selected={activeTab === item.tab}
-      >
-        <item.icon className="mr-2 text-xl sm:text-2xl" />
-        <span className="hidden sm:inline">{item.name}</span>
-      </button>
-    ))}
-  </div>
-</div>
-
+            <div className="flex flex-col sm:flex-row sm:justify-between">
+              {[
+                { name: "Overview", icon: FaListAlt, tab: "overview" },
+                { name: "Details", icon: FaCog, tab: "details" },
+                { name: "Manage", icon: FaTimesCircle, tab: "manage" },
+                { name: "Payment Methods", icon: FaCreditCard, tab: "payment" },
+              ].map((item) => (
+                <button
+                  key={item.tab}
+                  className={text-base sm:text-lg font-semibold py-2 sm:py-3 px-4 sm:px-6 border-b-2 ${
+                    activeTab === item.tab
+                      ? "border-blue-500 text-blue-600 dark:text-blue-400"
+                      : "border-transparent text-gray-700 dark:text-gray-200"
+                  } hover:border-blue-500 focus:outline-none flex items-center}
+                  onClick={() => setActiveTab(item.tab as 'overview' | 'details' | 'manage' | 'payment')}
+                  role="tab"
+                  aria-selected={activeTab === item.tab}
+                >
+                  <item.icon className="mr-2" />
+                  {item.name}
+                </button>
+              ))}
+            </div>
+          </div>
 
           <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 max-h-[calc(100vh-12rem)] sm:max-h-[calc(100vh-15rem)] overflow-y-auto">
             {loading ? (
@@ -168,8 +167,8 @@ const CurrentPlan = () => {
                     </div>
                     <div className="text-base sm:text-lg text-gray-600 dark:text-gray-400">
                       {isYearly
-                        ? `Yearly - R${currentPlan.yearlyPrice} per year`
-                        : `Monthly - R${currentPlan.monthlyPrice} per month`}
+                        ? Yearly - R${currentPlan.yearlyPrice} per year
+                        : Monthly - R${currentPlan.monthlyPrice} per month}
                     </div>
                   </div>
                   <div className="flex flex-col sm:flex-row items-start justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
@@ -183,9 +182,9 @@ const CurrentPlan = () => {
                   <div className="flex flex-col sm:flex-row items-start justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
                     <div className="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200">Status</div>
                     <div
-                      className={`text-base sm:text-lg font-bold ${
+                      className={text-base sm:text-lg font-bold ${
                         subscriptionDetails?.status === "active" ? "text-green-500" : "text-red-500"
-                      } flex items-center`}
+                      } flex items-center}
                     >
                       {subscriptionDetails?.status === "active" ? (
                         <>
@@ -275,7 +274,7 @@ const CurrentPlan = () => {
                         <div className="text-gray-800 dark:text-gray-200 font-semibold mt-2">Card Last 4 Digits:</div>
                         <div className="text-gray-600 dark:text-gray-400">{method.last4}</div>
                         <div className="text-gray-800 dark:text-gray-200 font-semibold mt-2">Expiration Date:</div>
-                        <div className="text-gray-600 dark:text-gray-400">{`${method.expMonth}/${method.expYear}`}</div>
+                        <div className="text-gray-600 dark:text-gray-400">{${method.expMonth}/${method.expYear}}</div>
                       </div>
                     </div>
                   ))
