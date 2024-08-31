@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import CurrentPlan from '@/components/pricing/current-plan';
 import { plans, Plan } from '@/constants/plans'; // Adjust the import path as necessary
+import { FaCheck, FaTimes, FaCog, FaChartLine, FaUserTie, FaMoneyBillWave } from 'react-icons/fa'; // Import icons
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -18,9 +19,7 @@ const SubscriptionForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  useEffect(() => {
-    // Add any necessary side effects here
-  }, [user?.primaryEmailAddress?.emailAddress]);
+  useEffect(() => {}, [user?.primaryEmailAddress?.emailAddress]);
 
   const handlePlanSelect = (planName: string) => {
     setSelectedPlan(planName);
@@ -94,14 +93,14 @@ const SubscriptionForm = () => {
       
       <div className="flex justify-center mb-6 space-x-2">
         <button
-          className={`px-6 py-3 rounded-l-md text-lg font-medium transition-all duration-300 ${!isYearly ? 'bg-gradient-to-r from-blue-600 to-blue-800 text-white' : 'bg-gray-200 text-gray-700'}`}
+          className={`px-6 py-3 rounded-l-md text-lg font-medium transition-all duration-300 ${!isYearly ? 'bg-gradient-to-r from-green-400 to-green-600 text-white' : 'bg-gray-200 text-gray-700'}`}
           onClick={() => setIsYearly(false)}
           aria-pressed={!isYearly}
         >
           Monthly
         </button>
         <button
-          className={`px-6 py-3 rounded-r-md text-lg font-medium transition-all duration-300 ${isYearly ? 'bg-gradient-to-r from-blue-600 to-blue-800 text-white' : 'bg-gray-200 text-gray-700'}`}
+          className={`px-6 py-3 rounded-r-md text-lg font-medium transition-all duration-300 ${isYearly ? 'bg-gradient-to-r from-green-400 to-green-600 text-white' : 'bg-gray-200 text-gray-700'}`}
           onClick={() => setIsYearly(true)}
           aria-pressed={isYearly}
         >
@@ -114,28 +113,34 @@ const SubscriptionForm = () => {
           {plans.map(plan => (
             <div
               key={plan.name}
-              className={`border rounded-lg p-6 transition-transform duration-300 ${selectedPlan === plan.name ? 'border-blue-600 shadow-lg transform scale-105' : 'border-gray-300'}`}
+              className={`border rounded-lg p-6 transition-transform duration-300 ${selectedPlan === plan.name ? 'border-green-600 shadow-lg transform scale-105' : 'border-gray-300'}`}
               role="button"
               tabIndex={0}
               onClick={() => handlePlanSelect(plan.name)}
               onKeyPress={(e) => e.key === 'Enter' && handlePlanSelect(plan.name)}
               aria-label={`Select ${plan.name} plan`}
             >
-              <h2 className="text-2xl font-semibold mb-2">{plan.name}</h2>
+              <h2 className="text-2xl font-semibold mb-2 flex items-center">
+                <span className="mr-2 text-green-600">{plan.name}</span>
+              </h2>
               <p className="text-lg font-bold mb-4">
                 {isYearly ? `R${plan.yearlyPrice}` : `R${plan.monthlyPrice}`} {isYearly ? 'per year' : 'per month'}
               </p>
-              <ul className="list-disc list-inside mb-4">
+              <ul className="list-disc list-inside mb-4 space-y-2">
                 {plan.features.map((feature, index) => (
-                  <li key={index} className="text-green-600">{feature}</li>
+                  <li key={index} className="flex items-center">
+                    <FaCheck className="text-green-500 mr-2" /> {feature}
+                  </li>
                 ))}
                 {plan.unavailable.map((feature, index) => (
-                  <li key={index} className="text-red-500 line-through">{feature}</li>
+                  <li key={index} className="flex items-center text-gray-500 line-through">
+                    <FaTimes className="text-red-500 mr-2" /> {feature}
+                  </li>
                 ))}
               </ul>
               <button
                 type="button"
-                className={`w-full py-2 px-4 rounded-lg font-bold transition-colors duration-300 ${selectedPlan === plan.name ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                className={`w-full py-2 px-4 rounded-lg font-bold transition-colors duration-300 ${selectedPlan === plan.name ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'}`}
                 onClick={() => handlePlanSelect(plan.name)}
               >
                 {plan.buttonLabel}
@@ -146,7 +151,7 @@ const SubscriptionForm = () => {
 
         <button
           type="submit"
-          className={`w-full py-3 px-4 rounded-lg font-bold transition-colors duration-300 ${selectedPlan ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+          className={`w-full py-3 px-4 rounded-lg font-bold transition-colors duration-300 ${selectedPlan ? 'bg-green-600 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
           disabled={!selectedPlan || isLoading}
         >
           {isLoading ? 'Processing...' : 'Subscribe'}
