@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { useUser } from "@clerk/nextjs";
 import { plans, Plan } from "@/constants/plans";
 import Loader from "@/components/Loader";
-import { FaCheckCircle, FaTimesCircle, FaCreditCard, FaListAlt, FaCog, FaCalendarAlt, FaCalendarCheck, FaStatusCompleted } from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle, FaCreditCard, FaListAlt, FaCog, FaCalendarAlt, FaCalendarCheck, FaStar } from "react-icons/fa";
 
 const CurrentPlan = () => {
   const { user } = useUser();
@@ -193,7 +193,7 @@ const CurrentPlan = () => {
                   </div>
                   <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
                     <div className="flex items-center">
-                      <FaStatusCompleted className="text-blue-500 mr-3" />
+                      <FaStar className="text-blue-500 mr-3" />
                       <div>
                         <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Status</div>
                         <div
@@ -252,7 +252,7 @@ const CurrentPlan = () => {
                     </div>
                   </div>
                   <div className="flex items-center mb-4">
-                    <FaStatusCompleted className="text-blue-500 mr-3" />
+                    <FaStar className="text-blue-500 mr-3" />
                     <div>
                       <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Status</div>
                       <div
