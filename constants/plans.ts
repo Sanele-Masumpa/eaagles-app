@@ -18,52 +18,54 @@ export const plans: Plan[] = [
     monthlyPrice: 0,
     yearlyPrice: 0,
     features: [
-      { feature: 'Access to forums', available: true },
-      { feature: 'Basic support', available: true },
-      { feature: 'Free Plan', available: true },
-      { feature: 'Premium content', available: false },
-      { feature: 'Priority support', available: false },
-      { feature: 'Dedicated account manager', available: false },
+      'Access to forums - Available',
+      'Basic support - Available',
+      'Free Plan - Available'
     ],
+    unavailable: [],
     buttonLabel: 'Join for Free',
     stripePriceId: process.env.NEXT_PUBLIC_BASIC_PLAN_PRICE_ID!,
-    description: 'Perfect for getting started with the basics.',
-    details: 'The Basic plan offers fundamental features at no cost.'
+    description: undefined,
+    details: undefined
   },
   {
     name: 'Pro',
     monthlyPrice: 450,
     yearlyPrice: 4500,
     features: [
-      { feature: 'Access to forums', available: true },
-      { feature: 'Premium content', available: true },
-      { feature: 'Priority support', available: true },
-      { feature: 'Dedicated account manager', available: false },
+      'Access to forums - Available',
+      'Premium content - Available',
+      'Priority support - Available'
+    ],
+    unavailable: [
+      'Dedicated account manager - Not Available'
     ],
     buttonLabel: 'Subscribe Now',
     stripePriceId: {
       monthly: process.env.NEXT_PUBLIC_PRO_PLAN_PRICE_ID!,
       yearly: process.env.NEXT_PUBLIC_PRO_ANNUAL_PRICE_ID!,
     },
-    description: 'Ideal for professionals who need more features and support.',
-    details: 'The Pro plan provides access to premium content and priority support.'
+    description: undefined,
+    details: undefined
   },
   {
     name: 'Premium',
     monthlyPrice: 800,
     yearlyPrice: 8000,
     features: [
-      { feature: 'Access to forums', available: true },
-      { feature: 'Premium content', available: true },
-      { feature: 'Priority support', available: true },
-      { feature: 'Dedicated account manager', available: true },
+      'Access to forums - Available',
+      'Premium content - Available',
+      'Priority support - Available',
+      'Dedicated account manager - Available'
     ],
+    unavailable: [],
     buttonLabel: 'Subscribe Now',
     stripePriceId: {
       monthly: process.env.NEXT_PUBLIC_PREMIUM_PLAN_PRICE_ID!,
       yearly: process.env.NEXT_PUBLIC_PREMIUM_ANNUAL_PRICE_ID!,
     },
-    description: 'Best for businesses or individuals needing full access and support.',
-    details: 'The Premium plan includes all features, including a dedicated account manager.'
+    description: undefined,
+    details: undefined
   },
 ];
+
