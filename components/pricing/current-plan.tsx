@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { useUser } from "@clerk/nextjs";
 import { plans, Plan } from "@/constants/plans";
 import Loader from "@/components/Loader";
-import { FaCheckCircle, FaTimesCircle, FaCreditCard, FaListAlt, FaCog } from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle, FaCreditCard, FaListAlt, FaCog, FaCalendarAlt, FaCalendarCheck, FaStatusCompleted } from "react-icons/fa";
 
 const CurrentPlan = () => {
   const { user } = useUser();
@@ -159,45 +159,67 @@ const CurrentPlan = () => {
               currentPlan ? (
                 <div className="space-y-6">
                   <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-                    <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                      Plan: <span className="font-bold">{currentPlan.name}</span>
+                    <div className="flex items-center">
+                      <FaListAlt className="text-blue-500 mr-3" />
+                      <div>
+                        <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                          Plan: <span className="font-bold">{currentPlan.name}</span>
+                        </div>
+                        <div className="text-lg text-gray-600 dark:text-gray-400">
+                          {isYearly
+                            ? `Yearly - R${currentPlan.yearlyPrice} per year`
+                            : `Monthly - R${currentPlan.monthlyPrice} per month`}
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-lg text-gray-600 dark:text-gray-400">
-                      {isYearly
-                        ? `Yearly - R${currentPlan.yearlyPrice} per year`
-                        : `Monthly - R${currentPlan.monthlyPrice} per month`}
+                  </div>
+                  <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
+                    <div className="flex items-center">
+                      <FaCalendarAlt className="text-blue-500 mr-3" />
+                      <div>
+                        <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Next Billing Date</div>
+                        <div className="text-lg text-gray-600 dark:text-gray-400">{subscriptionDetails?.nextBillingDate}</div>
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-                    <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Next Billing Date</div>
-                    <div className="text-lg text-gray-600 dark:text-gray-400">{subscriptionDetails?.nextBillingDate}</div>
+                    <div className="flex items-center">
+                      <FaCalendarCheck className="text-blue-500 mr-3" />
+                      <div>
+                        <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Subscription Start Date</div>
+                        <div className="text-lg text-gray-600 dark:text-gray-400">{subscriptionDetails?.subscriptionStartDate}</div>
+                      </div>
+                    </div>
                   </div>
                   <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-                    <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Subscription Start Date</div>
-                    <div className="text-lg text-gray-600 dark:text-gray-400">{subscriptionDetails?.subscriptionStartDate}</div>
-                  </div>
-                  <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-                    <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Status</div>
-                    <div
-                      className={`text-lg font-bold ${
-                        subscriptionDetails?.status === "active" ? "text-green-500" : "text-red-500"
-                      } flex items-center`}
-                    >
-                      {subscriptionDetails?.status === "active" ? (
-                        <>
-                          <FaCheckCircle className="mr-2" /> Active
-                        </>
-                      ) : (
-                        <>
-                          <FaTimesCircle className="mr-2" /> Inactive
-                        </>
-                      )}
+                    <div className="flex items-center">
+                      <FaStatusCompleted className="text-blue-500 mr-3" />
+                      <div>
+                        <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Status</div>
+                        <div
+                          className={`text-lg font-bold ${
+                            subscriptionDetails?.status === "active" ? "text-green-500" : "text-red-500"
+                          } flex items-center`}
+                        >
+                          {subscriptionDetails?.status === "active" ? (
+                            <>
+                              <FaCheckCircle className="mr-2" /> Active
+                            </>
+                          ) : (
+                            <>
+                              <FaTimesCircle className="mr-2" /> Inactive
+                            </>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               ) : (
                 <p className="text-center text-gray-700 dark:text-gray-300">You do not have an active plan.</p>
               )
+            )
+
             ) : activeTab === "details" ? (
               currentPlan ? (
                 <div className="space-y-6">
