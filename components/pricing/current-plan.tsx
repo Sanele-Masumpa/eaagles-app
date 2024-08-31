@@ -121,7 +121,7 @@ const CurrentPlan = () => {
   };
 
   return (
-    <div className="max-w-full px-6 py-12 mx-auto">
+    <div className="max-w-5xl px-6 py-12 mx-auto">
       <div className="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
         <div className="flex justify-center items-center bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4">
           <h2 className="text-3xl font-bold">Current Plan</h2>
@@ -232,14 +232,28 @@ const CurrentPlan = () => {
                 </button>
                 <div>
                   <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Switch Plan</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <button
+                    onClick={() => setIsYearly(!isYearly)}
+                    className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-md transition-colors duration-300"
+                    aria-label={`Show ${isYearly ? "monthly" : "yearly"} plans`}
+                  >
+                    {isYearly ? "Show Monthly Plans" : "Show Yearly Plans"}
+                  </button>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
                     {availablePlans.map((plan) => (
                       <div
                         key={plan.name}
                         className={`p-6 rounded-lg shadow-md cursor-pointer ${
                           currentPlan?.name === plan.name ? "border-2 border-blue-500" : "border"
                         } bg-white dark:bg-gray-900 hover:shadow-lg transition-shadow duration-300`}
-                        onClick={() => handleUpdatePlan(plan.stripePriceId)}
+                        onClick={() => {
+                          const confirmed = window.confirm(
+                            `Are you sure you want to switch to the ${plan.name} plan? The last added payment method will be used to complete this transaction.`
+                          );
+                          if (confirmed) {
+                            handleUpdatePlan(plan.stripePriceId);
+                          }
+                        }}
                         role="button"
                         aria-label={`Switch to ${plan.name} plan`}
                       >
@@ -251,32 +265,6 @@ const CurrentPlan = () => {
                     ))}
                   </div>
                 </div>
-              </div>
-            ) : activeTab === "payment" ? (
-              <div className="space-y-6">
-                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Payment Methods</h3>
-                {paymentMethods.length > 0 ? (
-                  paymentMethods.map((method, index) => (
-                    <div
-                      key={index}
-                      className="p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md flex items-center justify-between"
-                    >
-                      <div className="flex items-center">
-                        <FaCreditCard className="text-blue-500 mr-4" />
-                        <div>
-                          <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                            {method.brand} {method.cardNumber} (ends in {method.last4})
-                          </div>
-                          <div className="text-gray-600 dark:text-gray-400">
-                            Expires {method.expiry}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-center text-gray-700 dark:text-gray-300">No payment methods available.</p>
-                )}
               </div>
             ) : null}
           </div>
