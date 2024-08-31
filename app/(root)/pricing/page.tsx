@@ -89,6 +89,11 @@ const SubscriptionForm = () => {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-extrabold mb-8 text-center">Subscription Plans</h1>
 
+      
+      <SignedIn>
+        <CurrentPlan />
+      </SignedIn>
+
       <div className="flex justify-center mb-6 space-x-2">
         <button
           className={`px-6 py-3 rounded-l-md text-lg font-medium transition-all duration-300 ${!isYearly ? 'bg-gradient-to-r from-blue-600 to-blue-800 text-white' : 'bg-gray-200 text-gray-700'}`}
@@ -149,10 +154,6 @@ const SubscriptionForm = () => {
           {isLoading ? 'Processing...' : 'Subscribe'}
         </button>
       </form>
-
-      <SignedIn>
-        <CurrentPlan />
-      </SignedIn>
     </div>
   );
 };
