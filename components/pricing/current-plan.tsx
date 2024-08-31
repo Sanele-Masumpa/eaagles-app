@@ -164,8 +164,8 @@ const CurrentPlan = () => {
                     </div>
                     <div className="text-lg text-gray-600 dark:text-gray-400">
                       {isYearly
-                        ? `Yearly - R$${currentPlan.yearlyPrice} per year`
-                        : `Monthly - R$${currentPlan.monthlyPrice} per month`}
+                        ? `Yearly - R${currentPlan.yearlyPrice} per year`
+                        : `Monthly - R${currentPlan.monthlyPrice} per month`}
                     </div>
                   </div>
                   <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
@@ -205,8 +205,8 @@ const CurrentPlan = () => {
                     <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Plan Details</div>
                     <div className="text-lg text-gray-600 dark:text-gray-400">
                       {isYearly
-                        ? `R$${currentPlan.yearlyPrice} per year`
-                        : `R$${currentPlan.monthlyPrice} per month`}
+                        ? `R${currentPlan.yearlyPrice} per year`
+                        : `R${currentPlan.monthlyPrice} per month`}
                     </div>
                   </div>
                   <ul className="space-y-4">
@@ -259,7 +259,7 @@ const CurrentPlan = () => {
                       >
                         <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{plan.name}</h4>
                         <p className="text-gray-600 dark:text-gray-400">
-                          {isYearly ? `R$${plan.yearlyPrice} per year` : `R$${plan.monthlyPrice} per month`}
+                          {isYearly ? `R${plan.yearlyPrice} per year` : `R${plan.monthlyPrice} per month`}
                         </p>
                       </div>
                     ))}
