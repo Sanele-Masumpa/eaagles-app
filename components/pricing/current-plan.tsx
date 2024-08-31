@@ -154,11 +154,7 @@ const CurrentPlan = () => {
           </div>
 
           <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 max-h-[calc(100vh-12rem)] sm:max-h-[calc(100vh-15rem)] overflow-y-auto">
-            {loading ? (
-              <div className="flex justify-center items-center h-40 sm:h-48">
-                <Loader />
-              </div>
-            ) : activeTab === "overview" ? (
+            {activeTab === "overview" ? (
               currentPlan ? (
                 <div className="space-y-4 sm:space-y-6">
                   <div className="flex flex-col sm:flex-row items-start justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
