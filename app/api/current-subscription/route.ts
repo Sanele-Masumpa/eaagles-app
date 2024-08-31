@@ -40,12 +40,21 @@ export async function GET(request: Request) {
       type: 'card',
     });
 
+    // Map payment methods to include last 4 digits and expiration date
+    const paymentMethodsWithDetails = paymentMethods.data.map(pm => ({
+      id: pm.id,
+      brand: pm.card?.brand,
+      last4: pm.card?.last4,
+      expMonth: pm.card?.exp_month,
+      expYear: pm.card?.exp_year,
+    }));
+
     return NextResponse.json({
       currentPlan: activeSubscription?.items.data[0]?.price.id,
       nextBillingDate: activeSubscription?.current_period_end,
       subscriptionStartDate: activeSubscription?.current_period_start,
       status: activeSubscription?.status,
-      paymentMethods: paymentMethods.data,
+      paymentMethods: paymentMethodsWithDetails,
     });
   } catch (err) {
     console.error("Error fetching subscription:", err);
