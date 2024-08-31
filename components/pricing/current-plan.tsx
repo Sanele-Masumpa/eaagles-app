@@ -162,118 +162,80 @@ const CurrentPlan = () => {
                     <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
                       Plan: <span className="font-bold">{currentPlan.name}</span>
                     </div>
-                    <div className="text-lg text-gray-600 dark:text-gray-400">
-                      {isYearly
-                        ? `Yearly - R$${currentPlan.yearlyPrice} per year`
-                        : `Monthly - R$${currentPlan.monthlyPrice} per month`}
+                    <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                      Status: <span className="font-bold capitalize">{subscriptionDetails?.status}</span>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-                    <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Next Billing Date</div>
-                    <div className="text-lg text-gray-600 dark:text-gray-400">{subscriptionDetails?.nextBillingDate}</div>
-                  </div>
-                  <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-                    <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Subscription Start Date</div>
-                    <div className="text-lg text-gray-600 dark:text-gray-400">{subscriptionDetails?.subscriptionStartDate}</div>
-                  </div>
-                  <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-                    <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Status</div>
-                    <div
-                      className={`text-lg font-bold ${
-                        subscriptionDetails?.status === "active" ? "text-green-500" : "text-red-500"
-                      } flex items-center`}
-                    >
-                      {subscriptionDetails?.status === "active" ? (
-                        <>
-                          <FaCheckCircle className="mr-2" /> Active
-                        </>
-                      ) : (
-                        <>
-                          <FaTimesCircle className="mr-2" /> Inactive
-                        </>
-                      )}
-                    </div>
+                  <div className="p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
+                    <h3 className="text-xl font-semibold mb-4">Subscription Details</h3>
+                    <p className="text-gray-700 dark:text-gray-300">
+                      <strong>Start Date:</strong> {subscriptionDetails?.subscriptionStartDate}
+                    </p>
+                    <p className="text-gray-700 dark:text-gray-300">
+                      <strong>Next Billing Date:</strong> {subscriptionDetails?.nextBillingDate}
+                    </p>
                   </div>
                 </div>
               ) : (
-                <p className="text-center text-gray-700 dark:text-gray-300">You do not have an active plan.</p>
+                <p className="text-gray-700 dark:text-gray-300">You are not currently subscribed to any plan.</p>
               )
             ) : activeTab === "details" ? (
-              currentPlan ? (
-                <div className="space-y-6">
-                  <div className="p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-                    <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Plan Details</div>
-                    <div className="mt-4">
-                      <p className="text-gray-600 dark:text-gray-400">
-                        You are currently subscribed to the <span className="font-semibold">{currentPlan.name}</span> plan.
-                      </p>
-                      <p className="text-gray-600 dark:text-gray-400 mt-2">
-                        Monthly price: R${currentPlan.monthlyPrice}
-                      </p>
-                      <p className="text-gray-600 dark:text-gray-400 mt-2">
-                        Yearly price: R${currentPlan.yearlyPrice}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <p className="text-center text-gray-700 dark:text-gray-300">You do not have an active plan.</p>
-              )
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Plan Details</h3>
+                <p className="text-gray-700 dark:text-gray-300">
+                  {/* Additional details about the plan can be added here */}
+                </p>
+              </div>
             ) : activeTab === "manage" ? (
-              currentPlan ? (
-                <div className="space-y-6">
-                  <button
-                    className="w-full bg-red-600 text-white py-3 rounded-lg shadow-md hover:bg-red-700 focus:outline-none"
-                    onClick={handleCancelSubscription}
-                  >
-                    Cancel Subscription
-                  </button>
-                  <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
+              <div>
+                {currentPlan ? (
+                  <div className="flex flex-col gap-4">
                     <button
-                      className={`w-full ${
-                        isYearly
-                          ? "bg-blue-600 text-white"
-                          : "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"
-                      } py-3 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none`}
-                      onClick={() => setIsYearly(false)}
+                      onClick={handleCancelSubscription}
+                      className="bg-red-500 text-white px-6 py-3 rounded-full shadow-lg hover:opacity-90 transition-opacity duration-300"
                     >
-                      Monthly Plan
+                      Cancel Subscription
                     </button>
                     <button
-                      className={`w-full ${
-                        !isYearly
-                          ? "bg-blue-600 text-white"
-                          : "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"
-                      } py-3 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none`}
-                      onClick={() => setIsYearly(true)}
+                      onClick={() => handleUpdatePlan(currentPlan.stripePriceId)}
+                      className="bg-blue-500 text-white px-6 py-3 rounded-full shadow-lg hover:opacity-90 transition-opacity duration-300"
                     >
-                      Yearly Plan
+                      Update Plan
                     </button>
                   </div>
-                </div>
-              ) : (
-                <p className="text-center text-gray-700 dark:text-gray-300">You do not have an active plan.</p>
-              )
-            ) : (
-              <div className="space-y-6">
-                {paymentMethods.length > 0 ? (
-                  paymentMethods.map((method, index) => (
-                    <div key={index} className="p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-                      <div className="flex items-center justify-between">
-                        <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                          {method.brand} •••• {method.last4}
-                        </div>
-                        <div className="text-lg text-gray-600 dark:text-gray-400">
-                          Expires {method.exp_month}/{method.exp_year}
-                        </div>
-                      </div>
-                    </div>
-                  ))
                 ) : (
-                  <p className="text-center text-gray-700 dark:text-gray-300">No payment methods available.</p>
+                  <p className="text-gray-700 dark:text-gray-300">You are not currently subscribed to any plan.</p>
                 )}
               </div>
-            )}
+            ) : activeTab === "payment" ? (
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Payment Methods</h3>
+                {paymentMethods.length > 0 ? (
+                  <ul className="space-y-4">
+                    {paymentMethods.map((pm) => (
+                      <li key={pm.id} className="flex items-center justify-between bg-white dark:bg-gray-900 p-4 rounded-lg shadow-md">
+                        <div className="flex items-center space-x-4">
+                          <FaCreditCard className="text-gray-700 dark:text-gray-300" />
+                          <div>
+                            <p className="text-gray-800 dark:text-gray-200">
+                              <strong>Card Brand:</strong> {pm.brand}
+                            </p>
+                            <p className="text-gray-800 dark:text-gray-200">
+                              <strong>Last 4 Digits:</strong> {pm.last4}
+                            </p>
+                            <p className="text-gray-800 dark:text-gray-200">
+                              <strong>Expiration Date:</strong> {pm.expMonth}/{pm.expYear}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-gray-700 dark:text-gray-300">No payment methods found.</p>
+                )}
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
