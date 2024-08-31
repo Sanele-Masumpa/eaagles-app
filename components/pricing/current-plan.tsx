@@ -265,10 +265,10 @@ const CurrentPlan = () => {
                         <FaCreditCard className="text-blue-500 mr-4" />
                         <div>
                           <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                            {method.brand} {method.cardNumber} (ends in {method.last4})
+                            {method.card.brand} {method.card.last4} (ends in {method.card.last4})
                           </div>
                           <div className="text-gray-600 dark:text-gray-400">
-                            Expires {method.expiry}
+                            Expires {method.card.exp_month}/{method.card.exp_year}
                           </div>
                         </div>
                       </div>
