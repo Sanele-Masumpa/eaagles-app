@@ -19,7 +19,6 @@ const SubscriptionForm = () => {
   const router = useRouter();
 
   useEffect(() => {
-    // Function to fetch current plan logic (if needed)
   }, [user?.primaryEmailAddress?.emailAddress]);
 
   const handlePlanSelect = (planName: string) => {
@@ -88,10 +87,6 @@ const SubscriptionForm = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <SignedIn>
-        <CurrentPlan />
-      </SignedIn>
-
       <h1 className="text-4xl font-extrabold mb-8 text-center">Subscription Plans</h1>
 
       <div className="flex justify-center mb-6 space-x-2">
@@ -154,6 +149,10 @@ const SubscriptionForm = () => {
           {isLoading ? 'Processing...' : 'Subscribe'}
         </button>
       </form>
+
+      <SignedIn>
+        <CurrentPlan />
+      </SignedIn>
     </div>
   );
 };
