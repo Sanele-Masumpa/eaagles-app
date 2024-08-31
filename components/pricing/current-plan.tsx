@@ -141,7 +141,7 @@ const CurrentPlan = () => {
                     ? "border-blue-500 text-blue-600 dark:text-blue-400"
                     : "border-transparent text-gray-700 dark:text-gray-200"
                 } hover:border-blue-500 focus:outline-none flex items-center justify-center`}
-                onClick={() => setActiveTab(item.tab)}
+                onClick={() => setActiveTab(item.tab as 'overview' | 'details' | 'manage' | 'payment')}
                 role="tab"
                 aria-selected={activeTab === item.tab}
               >
