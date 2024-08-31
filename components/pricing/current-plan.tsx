@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { useUser } from "@clerk/nextjs";
 import { plans, Plan } from "@/constants/plans";
 import Loader from "@/components/Loader";
-import { FaListAlt, FaCalendarAlt, FaCalendarCheck, FaStatusCompleted, FaCreditCard, FaCog, FaTimesCircle } from "react-icons/fa";
+import { FaListAlt, FaCalendarAlt, FaCalendarCheck, FaCreditCard, FaCog, FaTimesCircle } from "react-icons/fa";
 
 const CurrentPlan = () => {
   const { user } = useUser();
