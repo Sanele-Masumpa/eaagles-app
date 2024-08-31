@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Configure body parser settings for API routes
-  api: {
-    bodyParser: false,
-  },
+  reactStrictMode: true,
+  swcMinify: true,
 };
 
 module.exports = nextConfig;

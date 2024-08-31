@@ -1,60 +1,14 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
+import CurrentPlan from '@/components/pricing/current-plan';
+import { plans, Plan } from '@/constants/plans'; // Adjust the import path as necessary
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
-
-type PriceId = string | { monthly: string; yearly: string };
-
-interface Plan {
-  name: string;
-  monthlyPrice: number;
-  yearlyPrice: number;
-  features: string[];
-  unavailable: string[];
-  buttonLabel: string;
-  stripePriceId: PriceId;
-}
-
-const plans: Plan[] = [
-  {
-    name: 'Basic',
-    monthlyPrice: 0,
-    yearlyPrice: 0,
-    features: ['Access to forums', 'Basic support', 'Free Plan'],
-    unavailable: [],
-    buttonLabel: 'Join for Free',
-    stripePriceId: process.env.NEXT_PUBLIC_BASIC_PLAN_PRICE_ID!,
-  },
-  {
-    name: 'Pro',
-    monthlyPrice: 450,
-    yearlyPrice: 4500,
-    features: ['Access to forums', 'Premium content', 'Priority support'],
-    unavailable: ['Dedicated account manager'],
-    buttonLabel: 'Subscribe Now',
-    stripePriceId: {
-      monthly: process.env.NEXT_PUBLIC_PRO_PLAN_PRICE_ID!,
-      yearly: process.env.NEXT_PUBLIC_PRO_ANNUAL_PRICE_ID!,
-    },
-  },
-  {
-    name: 'Premium',
-    monthlyPrice: 800,
-    yearlyPrice: 8000,
-    features: ['Access to forums', 'Premium content', 'Priority support', 'Dedicated account manager'],
-    unavailable: [],
-    buttonLabel: 'Subscribe Now',
-    stripePriceId: {
-      monthly: process.env.NEXT_PUBLIC_PREMIUM_PLAN_PRICE_ID!,
-      yearly: process.env.NEXT_PUBLIC_PREMIUM_ANNUAL_PRICE_ID!,
-    },
-  },
-];
 
 const SubscriptionForm = () => {
   const { user } = useUser();
@@ -62,6 +16,10 @@ const SubscriptionForm = () => {
   const [isYearly, setIsYearly] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
+
+  useEffect(() => {
+    // Function to fetch current plan logic (if needed)
+  }, [user?.primaryEmailAddress?.emailAddress]);
 
   const handlePlanSelect = (planName: string) => {
     setSelectedPlan(planName);
@@ -129,7 +87,10 @@ const SubscriptionForm = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-extrabold mb-8 text-center">Choose Your Subscription Plan</h1>
+      <CurrentPlan />
+
+      <h1 className="text-4xl font-extrabold mb-8 text-center">Subscription Plans</h1>
+
       <div className="flex justify-center mb-6 space-x-2">
         <button
           className={`px-6 py-3 rounded-l-md text-lg font-medium transition-all duration-300 ${!isYearly ? 'bg-gradient-to-r from-blue-600 to-blue-800 text-white' : 'bg-gray-200 text-gray-700'}`}
@@ -146,6 +107,7 @@ const SubscriptionForm = () => {
           Yearly
         </button>
       </div>
+
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {plans.map(plan => (
@@ -158,71 +120,35 @@ const SubscriptionForm = () => {
               onKeyPress={(e) => e.key === 'Enter' && handlePlanSelect(plan.name)}
               aria-label={`Select ${plan.name} plan`}
             >
-              <h2 className="text-2xl font-semibold mb-4">{plan.name}</h2>
-              <p className="text-3xl font-extrabold mb-4">
+              <h2 className="text-2xl font-semibold mb-2">{plan.name}</h2>
+              <p className="text-lg font-bold mb-4">
                 {isYearly ? `R${plan.yearlyPrice}` : `R${plan.monthlyPrice}`} {isYearly ? 'per year' : 'per month'}
-                {isYearly && plan.yearlyPrice < (plan.monthlyPrice * 12) ? (
-                  <span className="text-red-500 text-sm ml-2">(Save {(plan.monthlyPrice * 12 - plan.yearlyPrice).toFixed(2)})</span>
-                ) : null}
               </p>
-              <ul className="mb-6">
-                {plan.features.map(feature => (
-                  <li key={feature} className="flex items-center mb-2 text-green-600">
-                    <svg
-                      className="w-6 h-6 mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                    {feature}
-                  </li>
+              <ul className="list-disc list-inside mb-4">
+                {plan.features.map((feature, index) => (
+                  <li key={index}>{feature}</li>
                 ))}
-                {plan.unavailable.map(item => (
-                  <li key={item} className="flex items-center mb-2 text-gray-500">
-                    <svg
-                      className="w-6 h-6 mr-3 text-red-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    {item}
-                  </li>
+                {plan.unavailable.map((feature, index) => (
+                  <li key={index} className="text-gray-500 line-through">{feature}</li>
                 ))}
               </ul>
               <button
                 type="button"
-                className={`w-full py-3 rounded-lg text-white font-bold transition-all duration-300 ${selectedPlan === plan.name ? 'bg-gradient-to-r from-green-500 to-green-700' : 'bg-gray-300 text-gray-700'}`}
+                className={`w-full py-2 px-4 rounded-lg font-bold transition-colors duration-300 ${selectedPlan === plan.name ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
                 onClick={() => handlePlanSelect(plan.name)}
-                aria-pressed={selectedPlan === plan.name}
-                aria-label={`Select ${plan.name} plan`}
               >
                 {plan.buttonLabel}
               </button>
             </div>
           ))}
         </div>
+
         <button
           type="submit"
-          className={`w-full py-3 rounded-full bg-gradient-to-r from-blue-600 to-blue-800 text-white font-bold shadow-lg hover:opacity-90 transition-opacity duration-300 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-          disabled={isLoading}
-          aria-label="Proceed to payment"
+          className={`w-full py-3 px-4 rounded-lg font-bold transition-colors duration-300 ${selectedPlan ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+          disabled={!selectedPlan || isLoading}
         >
-          {isLoading ? (
-            <span className="flex items-center justify-center">
-              <svg className="animate-spin h-6 w-6 mr-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v8l4 4" />
-              </svg>
-              Processing...
-            </span>
-          ) : (
-            'Subscribe'
-          )}
+          {isLoading ? 'Processing...' : 'Subscribe'}
         </button>
       </form>
     </div>
