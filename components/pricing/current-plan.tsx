@@ -142,6 +142,8 @@ const CurrentPlan = () => {
                     : "border-transparent text-gray-700 dark:text-gray-200"
                 } hover:border-blue-500 focus:outline-none flex items-center justify-center`}
                 onClick={() => setActiveTab(item.tab)}
+                role="tab"
+                aria-selected={activeTab === item.tab}
               >
                 <item.icon className="mr-2" />
                 {item.name}
@@ -224,6 +226,7 @@ const CurrentPlan = () => {
                 <button
                   onClick={handleCancelSubscription}
                   className="w-full py-3 px-6 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full shadow-md transition-colors duration-300"
+                  aria-label="Cancel Subscription"
                 >
                   Cancel Subscription
                 </button>
@@ -237,6 +240,8 @@ const CurrentPlan = () => {
                           currentPlan?.name === plan.name ? "border-2 border-blue-500" : "border"
                         } bg-white dark:bg-gray-900 hover:shadow-lg transition-shadow duration-300`}
                         onClick={() => handleUpdatePlan(plan.stripePriceId)}
+                        role="button"
+                        aria-label={`Switch to ${plan.name} plan`}
                       >
                         <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{plan.name}</h4>
                         <p className="text-gray-600 dark:text-gray-400">
