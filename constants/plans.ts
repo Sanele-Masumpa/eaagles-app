@@ -18,60 +18,65 @@ export const plans: Plan[] = [
     monthlyPrice: 0,
     yearlyPrice: 0,
     features: [
-      'Access to forums - Available',
       'Basic support - Available',
-      'Free Plan - Available'
+      'Community events - Available',
+      'Newsletters - Available',
+      'Early access to updates - Not Available',
+      'Exclusive content - Not Available'
     ],
     unavailable: [
       'Premium content - Not Available',
-      'Priority support - Not Available',
-      'Dedicated account manager - Not Available'
+      'Additional storage - Not Available'
     ],
     buttonLabel: 'Join for Free',
     stripePriceId: process.env.NEXT_PUBLIC_BASIC_PLAN_PRICE_ID!,
-    description: 'The Basic plan provides essential access to community forums, basic support, and is completely free of charge. It is suitable for users who need minimal features and support.',
-    details: 'This plan includes access to community forums and basic support. It does not include advanced features like premium content, priority support, or a dedicated account manager.'
+    description: 'The Basic plan provides essential access to community forums, basic support, and is completely free of charge. It includes community events and newsletters but does not offer advanced features or exclusive content.',
+    details: 'This plan includes access to community forums, basic support, and free access. It does not include advanced features like premium content, priority support, or dedicated account management.'
   },
   {
     name: 'Pro',
     monthlyPrice: 450,
     yearlyPrice: 4500,
     features: [
-      'Access to forums - Available',
-      'Premium content - Available',
-      'Priority support - Available'
+      'Dedicated account manager - Available',
+      'Advanced analytics - Available',
+      'Custom integrations - Available',
+      'Early access to updates - Not Available'
     ],
     unavailable: [
-      'Dedicated account manager - Not Available'
+      'Exclusive content - Not Available',
+      'Additional storage - Not Available',
+      'One-on-one training - Not Available'
     ],
     buttonLabel: 'Subscribe Now',
     stripePriceId: {
       monthly: process.env.NEXT_PUBLIC_PRO_PLAN_PRICE_ID!,
       yearly: process.env.NEXT_PUBLIC_PRO_ANNUAL_PRICE_ID!,
     },
-    description: 'The Pro plan includes premium content and priority support along with all benefits of the Basic plan. It is designed for users who need additional resources and enhanced support.',
-    details: 'This plan provides access to premium content and priority support, but does not include a dedicated account manager. It is ideal for users seeking more advanced features and support compared to the Basic plan.'
+    description: 'The Pro plan includes premium content, priority support, and a dedicated account manager, along with additional features like advanced analytics and custom integrations. It does not include exclusive content.',
+    details: 'This plan offers comprehensive support and advanced features, excluding exclusive content and some high-end customization options. It is ideal for users needing robust features and priority support.'
   },
   {
     name: 'Premium',
     monthlyPrice: 800,
     yearlyPrice: 8000,
     features: [
-      'Access to forums - Available',
-      'Premium content - Available',
       'Priority support - Available',
-      'Dedicated account manager - Available'
+      'Dedicated account manager - Available',
+      'Advanced analytics - Available',
+      'Custom integrations - Available',
+      'Exclusive content - Available'
     ],
     unavailable: [
-      'Advanced analytics - Not Available',
-      'Custom integrations - Not Available'
+      'Additional storage - Not Available',
+      'Priority customer support - Not Available'
     ],
     buttonLabel: 'Subscribe Now',
     stripePriceId: {
       monthly: process.env.NEXT_PUBLIC_PREMIUM_PLAN_PRICE_ID!,
       yearly: process.env.NEXT_PUBLIC_PREMIUM_ANNUAL_PRICE_ID!,
     },
-    description: 'The Premium plan provides all features of the Pro plan plus a dedicated account manager. It offers the highest level of support and exclusive benefits, making it perfect for users who require the utmost support and personalization.',
-    details: 'This plan includes all features of the Pro plan and adds a dedicated account manager. It is designed for users needing the highest level of support and personalized assistance. Advanced analytics and custom integrations are not included in this plan.'
+    description: 'The Premium plan includes all features of the Pro plan plus exclusive content and the highest level of support, including a dedicated account manager. It is perfect for users who need the most comprehensive support and features.',
+    details: 'This plan provides the most extensive range of features and support, including exclusive content and top-tier support services. It does not include some additional features like more storage or personal training.'
   },
 ];
