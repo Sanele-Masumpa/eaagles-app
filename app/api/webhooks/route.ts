@@ -1,4 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+// app/api/webhooks/route.ts
+import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { db } from '@/lib/prisma'; // Adjust the import path based on your setup
 import rawBody from 'raw-body';
@@ -7,16 +8,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-06-20',
 });
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const sig = req.headers['stripe-signature']!;
+export async function POST(req: Request) {
+  const sig = req.headers.get('stripe-signature')!;
   const buf = await rawBody(req);
   let event: Stripe.Event;
 
@@ -24,9 +19,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     event = stripe.webhooks.constructEvent(buf, sig, endpointSecret);
   } catch (err) {
     if (err instanceof Error) {
-      return res.status(400).send(`Webhook Error: ${err.message}`);
+      return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 });
     }
-    return res.status(400).send('Webhook Error');
+    return new NextResponse('Webhook Error', { status: 400 });
   }
 
   switch (event.type) {
@@ -35,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const userId = session.metadata?.userId;
 
       if (!userId) {
-        return res.status(400).send('User ID not found in session metadata');
+        return new NextResponse('User ID not found in session metadata', { status: 400 });
       }
 
       const displayItemPrice = session.line_items?.data[0]?.price?.id || ''; // Handle possibly undefined properties
@@ -49,7 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           subscription = await stripe.subscriptions.retrieve(subscriptionId);
         } catch (error) {
           console.error('Error retrieving subscription:', error);
-          return res.status(400).send('Error retrieving subscription');
+          return new NextResponse('Error retrieving subscription', { status: 400 });
         }
       } else if (subscriptionId && typeof subscriptionId === 'object') {
         // subscriptionId is already a Subscription object
@@ -81,5 +76,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.log(`Unhandled event type ${event.type}`);
   }
 
-  res.json({ received: true });
+  return new NextResponse(JSON.stringify({ received: true }));
 }
