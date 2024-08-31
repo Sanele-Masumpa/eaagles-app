@@ -155,7 +155,7 @@ const CurrentPlan = () => {
               <div className="flex justify-center items-center h-48">
                 <Loader />
               </div>
-            ) :activeTab === "overview" ? (
+            ) : activeTab === "overview" ? (
               currentPlan ? (
                 <div className="space-y-6">
                   <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
@@ -164,8 +164,8 @@ const CurrentPlan = () => {
                     </div>
                     <div className="text-lg text-gray-600 dark:text-gray-400">
                       {isYearly
-                        ? Yearly - R${currentPlan.yearlyPrice} per year
-                        : Monthly - R${currentPlan.monthlyPrice} per month}
+                        ? `Yearly - R${currentPlan.yearlyPrice} per year`
+                        : `Monthly - R${currentPlan.monthlyPrice} per month`}
                     </div>
                   </div>
                   <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
@@ -179,9 +179,9 @@ const CurrentPlan = () => {
                   <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
                     <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Status</div>
                     <div
-                      className={text-lg font-bold ${
+                      className={`text-lg font-bold ${
                         subscriptionDetails?.status === "active" ? "text-green-500" : "text-red-500"
-                      } flex items-center}
+                      } flex items-center`}
                     >
                       {subscriptionDetails?.status === "active" ? (
                         <>
@@ -201,99 +201,74 @@ const CurrentPlan = () => {
             ) : activeTab === "details" ? (
               currentPlan ? (
                 <div className="space-y-6">
-                  <div className="flex flex-col sm:flex-row items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-                    <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Plan Details</div>
-                    <div className="text-lg text-gray-600 dark:text-gray-400">
-                      {isYearly
-                        ? R${currentPlan.yearlyPrice} per year
-                        : R${currentPlan.monthlyPrice} per month}
+                  <div className="flex flex-col sm:flex-row items-start justify-between">
+                    <div className="flex items-center">
+                      <FaListAlt className="mr-2" />
+                      <span className="font-semibold">Plan Details:</span>
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      {isYearly ? `Yearly - R${currentPlan.yearlyPrice} per year` : `Monthly - R${currentPlan.monthlyPrice} per month`}
                     </div>
                   </div>
-                  <ul className="space-y-4">
-                    {currentPlan.features.map((feature, index) => (
-                      <li key={index} className="flex items-center">
-                        <FaCheckCircle className="text-green-500 mr-2" />
-                        <span className="text-gray-800 dark:text-gray-200">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="flex flex-col sm:flex-row items-start justify-between">
+                    <div className="flex items-center">
+                      <FaCalendarAlt className="mr-2" />
+                      <span className="font-semibold">Next Billing Date:</span>
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      {subscriptionDetails?.nextBillingDate}
+                    </div>
+                  </div>
+                  <div className="flex flex-col sm:flex-row items-start justify-between">
+                    <div className="flex items-center">
+                      <FaCalendarCheck className="mr-2" />
+                      <span className="font-semibold">Subscription Start Date:</span>
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      {subscriptionDetails?.subscriptionStartDate}
+                    </div>
+                  </div>
                 </div>
               ) : (
-                <p className="text-center text-gray-700 dark:text-gray-300">You do not have an active plan.</p>
+                <p className="text-center text-gray-700 dark:text-gray-300">No details available.</p>
               )
             ) : activeTab === "manage" ? (
-              <div className="space-y-6">
-                <button
-                  onClick={handleCancelSubscription}
-                  className="w-full py-3 px-6 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full shadow-md transition-colors duration-300"
-                  aria-label="Cancel Subscription"
-                >
-                  Cancel Subscription
-                </button>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Switch Plan</h3>
+              currentPlan ? (
+                <div className="space-y-4">
                   <button
-                    onClick={() => setIsYearly(!isYearly)}
-                    className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-md transition-colors duration-300"
-                    aria-label={Show ${isYearly ? "monthly" : "yearly"} plans}
+                    onClick={() => handleUpdatePlan(currentPlan.stripePriceId)}
+                    className="w-full py-3 px-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                   >
-                    {isYearly ? "Show Monthly Plans" : "Show Yearly Plans"}
+                    Update Plan
                   </button>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
-                    {availablePlans.map((plan) => (
-                      <div
-                        key={plan.name}
-                        className={p-6 rounded-lg shadow-md cursor-pointer ${
-                          currentPlan?.name === plan.name ? "border-2 border-blue-500" : "border"
-                        } bg-white dark:bg-gray-900 hover:shadow-lg transition-shadow duration-300}
-                        onClick={() => {
-                          const confirmed = window.confirm(
-                            Are you sure you want to switch to the ${plan.name} plan? The last added payment method will be used to complete this transaction.
-                          );
-                          if (confirmed) {
-                            handleUpdatePlan(plan.stripePriceId);
-                          }
-                        }}
-                        role="button"
-                        aria-label={Switch to ${plan.name} plan}
-                      >
-                        <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{plan.name}</h4>
-                        <p className="text-gray-600 dark:text-gray-400">
-                          {isYearly ? R${plan.yearlyPrice} per year : R${plan.monthlyPrice} per month}
-                        </p>
-                      </div>
-                    ) : (
-                  <p className="text-gray-700 dark:text-gray-300">You are not currently subscribed to any plan.</p>
-                )}
-              </div>
+                  <button
+                    onClick={handleCancelSubscription}
+                    className="w-full py-3 px-6 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                  >
+                    Cancel Subscription
+                  </button>
+                </div>
+              ) : (
+                <p className="text-center text-gray-700 dark:text-gray-300">You do not have an active plan to manage.</p>
+              )
             ) : activeTab === "payment" ? (
-              <div>
-                <h3 className="text-xl font-semibold mb-4">Payment Methods</h3>
-                {paymentMethods.length > 0 ? (
-                  <ul className="space-y-4">
-                    {paymentMethods.map((pm) => (
-                      <li key={pm.id} className="flex items-center justify-between bg-white dark:bg-gray-900 p-4 rounded-lg shadow-md">
-                        <div className="flex items-center space-x-4">
-                          <FaCreditCard className="text-gray-700 dark:text-gray-300" />
-                          <div>
-                            <p className="text-gray-800 dark:text-gray-200">
-                              <strong>Card Brand:</strong> {pm.brand}
-                            </p>
-                            <p className="text-gray-800 dark:text-gray-200">
-                              <strong>Last 4 Digits:</strong> {pm.last4}
-                            </p>
-                            <p className="text-gray-800 dark:text-gray-200">
-                              <strong>Expiration Date:</strong> {pm.expMonth}/{pm.expYear}
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-gray-700 dark:text-gray-300">No payment methods found.</p>
-                )}
-              </div>
+              paymentMethods.length > 0 ? (
+                <div className="space-y-4">
+                  {paymentMethods.map((method) => (
+                    <div key={method.id} className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
+                      <div className="flex items-center">
+                        <FaCreditCard className="mr-2" />
+                        <span className="font-semibold">{method.cardBrand}</span>
+                      </div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                        **** **** **** {method.last4} - Exp: {method.expirationMonth}/{method.expirationYear}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-center text-gray-700 dark:text-gray-300">No payment methods available.</p>
+              )
             ) : null}
           </div>
         </div>
