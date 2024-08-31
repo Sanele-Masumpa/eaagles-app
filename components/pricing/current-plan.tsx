@@ -128,33 +128,35 @@ const CurrentPlan = () => {
         </div>
         <div className="p-6">
           <div className="flex flex-col sm:flex-row border-b border-gray-300 dark:border-gray-700">
-           {[
-  { name: "Overview", icon: FaListAlt, tab: "overview" },
-  { name: "Details", icon: FaCog, tab: "details" },
-  { name: "Manage", icon: FaTimesCircle, tab: "manage" },
-  { name: "Payment Methods", icon: FaCreditCard, tab: "payment" },
-].map((item) => (
-  <button
-    key={item.tab}
-    className={`flex-1 text-lg font-semibold py-3 px-6 border-b-2 ${
-      activeTab === item.tab
-        ? "border-blue-500 text-blue-600 dark:text-blue-400"
-        : "border-transparent text-gray-700 dark:text-gray-200"
-    } hover:border-blue-500 focus:outline-none flex items-center justify-center`}
-    onClick={() => setActiveTab(item.tab as 'overview' | 'details' | 'manage' | 'payment')}
-    role="tab"
-    aria-selected={activeTab === item.tab}
-  >
-    <item.icon className="mr-2" />
-    {item.name}
-  </button>
-))}
+          is my syntex correct?
 
-<div className="p-6 space-y-6 max-h-[calc(100vh-15rem)] overflow-y-auto">
-  {loading ? (
-    <div className="flex justify-center items-center h-48">
-      <Loader />
-    </div>
+{[
+              { name: "Overview", icon: FaListAlt, tab: "overview" },
+              { name: "Details", icon: FaCog, tab: "details" },
+              { name: "Manage", icon: FaTimesCircle, tab: "manage" },
+              { name: "Payment Methods", icon: FaCreditCard, tab: "payment" },
+            ].map((item) => (
+              <button
+                key={item.tab}
+                className={flex-1 text-lg font-semibold py-3 px-6 border-b-2 ${
+                  activeTab === item.tab
+                    ? "border-blue-500 text-blue-600 dark:text-blue-400"
+                    : "border-transparent text-gray-700 dark:text-gray-200"
+                } hover:border-blue-500 focus:outline-none flex items-center justify-center}
+                onClick={() => setActiveTab(item.tab as 'overview' | 'details' | 'manage' | 'payment')}
+                role="tab"
+                aria-selected={activeTab === item.tab}
+              >
+                <item.icon className="mr-2" />
+                {item.name}
+              </button>
+            ))}
+          </div>
+          <div className="p-6 space-y-6 max-h-[calc(100vh-15rem)] overflow-y-auto">
+            {loading ? (
+              <div className="flex justify-center items-center h-48">
+                <Loader />
+              </div>
   ) : activeTab === "overview" ? (
     currentPlan ? (
       <div className="space-y-6">
