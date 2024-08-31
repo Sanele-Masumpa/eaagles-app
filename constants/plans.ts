@@ -10,6 +10,7 @@ export interface Plan {
   stripePriceId: string | { monthly: string; yearly: string };
   description?: ReactNode; // Optional properties
   details?: ReactNode; // Optional properties
+  unavailableFeatures: string[]; // Add this line
 }
 
 export const plans: Plan[] = [
