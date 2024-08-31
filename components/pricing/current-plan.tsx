@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { useUser } from "@clerk/nextjs";
 import { plans, Plan } from "@/constants/plans";
 import Loader from "@/components/Loader";
-import { FaCheckCircle, FaTimesCircle, FaCreditCard, FaListAlt, FaCog } from "react-icons/fa";
+import { FaListAlt, FaCalendarAlt, FaCalendarCheck, FaStatusCompleted, FaCreditCard, FaCog, FaTimesCircle } from "react-icons/fa";
 
 const CurrentPlan = () => {
   const { user } = useUser();
@@ -19,7 +19,6 @@ const CurrentPlan = () => {
   } | null>(null);
   const [paymentMethods, setPaymentMethods] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState<'overview' | 'details' | 'manage' | 'payment'>('overview');
-  const [availablePlans, setAvailablePlans] = useState<Plan[]>(plans);
 
   useEffect(() => {
     const fetchCurrentPlan = async () => {
@@ -130,8 +129,8 @@ const CurrentPlan = () => {
           <div className="flex flex-col sm:flex-row border-b border-gray-300 dark:border-gray-700">
             {[
               { name: "Overview", icon: FaListAlt, tab: "overview" },
-              { name: "Details", icon: FaCog, tab: "details" },
-              { name: "Manage", icon: FaTimesCircle, tab: "manage" },
+              { name: "Details", icon: FaCalendarAlt, tab: "details" },
+              { name: "Manage", icon: FaCog, tab: "manage" },
               { name: "Payment Methods", icon: FaCreditCard, tab: "payment" },
             ].map((item) => (
               <button
@@ -145,7 +144,7 @@ const CurrentPlan = () => {
                 role="tab"
                 aria-selected={activeTab === item.tab}
               >
-                <item.icon className="mr-2" />
+                <item.icon className="mr-2 text-xl" />
                 {item.name}
               </button>
             ))}
@@ -160,10 +159,10 @@ const CurrentPlan = () => {
                 <div className="space-y-6">
                   <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
                     <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                      Plan: <span className="font-bold">{currentPlan.name}</span>
+                      <strong>Plan:</strong> <span className="font-bold">{currentPlan.name}</span>
                     </div>
                     <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                      Status: <span className="font-bold capitalize">{subscriptionDetails?.status}</span>
+                      <strong>Status:</strong> <span className="font-bold capitalize">{subscriptionDetails?.status}</span>
                     </div>
                   </div>
                   <div className="p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
@@ -182,9 +181,21 @@ const CurrentPlan = () => {
             ) : activeTab === "details" ? (
               <div>
                 <h3 className="text-xl font-semibold mb-4">Plan Details</h3>
-                <p className="text-gray-700 dark:text-gray-300">
-                  {/* Additional details about the plan can be added here */}
-                </p>
+                <div className="space-y-4">
+                  {currentPlan && (
+                    <>
+                      <p className="text-gray-700 dark:text-gray-300">
+                        <strong>Plan Name:</strong> {currentPlan.name}
+                      </p>
+                      <p className="text-gray-700 dark:text-gray-300">
+                        <strong>Description:</strong> {currentPlan.description}
+                      </p>
+                      <p className="text-gray-700 dark:text-gray-300">
+                        <strong>Price:</strong> {currentPlan.price}
+                      </p>
+                    </>
+                  )}
+                </div>
               </div>
             ) : activeTab === "manage" ? (
               <div>
