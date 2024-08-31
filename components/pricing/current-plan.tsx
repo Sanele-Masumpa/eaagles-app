@@ -232,14 +232,28 @@ const CurrentPlan = () => {
                 </button>
                 <div>
                   <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Switch Plan</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <button
+                    onClick={() => setIsYearly(!isYearly)}
+                    className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-md transition-colors duration-300"
+                    aria-label={`Show ${isYearly ? "monthly" : "yearly"} plans`}
+                  >
+                    {isYearly ? "Show Monthly Plans" : "Show Yearly Plans"}
+                  </button>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
                     {availablePlans.map((plan) => (
                       <div
                         key={plan.name}
                         className={`p-6 rounded-lg shadow-md cursor-pointer ${
                           currentPlan?.name === plan.name ? "border-2 border-blue-500" : "border"
                         } bg-white dark:bg-gray-900 hover:shadow-lg transition-shadow duration-300`}
-                        onClick={() => handleUpdatePlan(plan.stripePriceId)}
+                        onClick={() => {
+                          const confirmed = window.confirm(
+                            `Are you sure you want to switch to the ${plan.name} plan? The last added payment method will be used to complete this transaction.`
+                          );
+                          if (confirmed) {
+                            handleUpdatePlan(plan.stripePriceId);
+                          }
+                        }}
                         role="button"
                         aria-label={`Switch to ${plan.name} plan`}
                       >
