@@ -122,7 +122,7 @@ const CurrentPlan = () => {
 
   return (
     <div className="w-full px-6 py-12 mx-auto">
-      <div className="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+      <div className="bg-gray-100 dark:bg-gray-800 rounded-lg  overflow-hidden">
         <div className="flex justify-center items-center bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4">
           <h2 className="text-3xl font-bold">Current Plan</h2>
         </div>
