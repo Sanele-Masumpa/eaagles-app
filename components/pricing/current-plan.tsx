@@ -121,191 +121,65 @@ const CurrentPlan = () => {
   };
 
   return (
-    <div className="w-full px-6 py-12 mx-auto">
-      <div className="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-        <div className="flex justify-center items-center bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4">
-          <h2 className="text-3xl font-bold">Current Plan</h2>
-        </div>
-        <div className="p-6">
-          <div className="flex flex-col sm:flex-row border-b border-gray-300 dark:border-gray-700">
-
-            {[
-  { name: "Overview", icon: FaListAlt, tab: "overview" },
-  { name: "Details", icon: FaCog, tab: "details" },
-  { name: "Manage", icon: FaTimesCircle, tab: "manage" },
-  { name: "Payment Methods", icon: FaCreditCard, tab: "payment" },
-].map((item) => (
-  <button
-    key={item.tab}
-    className={`flex-1 text-lg font-semibold py-3 px-6 border-b-2 ${
-      activeTab === item.tab
-        ? "border-blue-500 text-blue-600 dark:text-blue-400"
-        : "border-transparent text-gray-700 dark:text-gray-200"
-    } hover:border-blue-500 focus:outline-none flex items-center justify-center`}
-    onClick={() => setActiveTab(item.tab as 'overview' | 'details' | 'manage' | 'payment')}
-    role="tab"
-    aria-selected={activeTab === item.tab}
-  >
-    <item.icon className="mr-2" />
-    {item.name}
-  </button>
-))}
-
-<div className="p-6 space-y-6 max-h-[calc(100vh-15rem)] overflow-y-auto">
-  {loading ? (
-    <div className="flex justify-center items-center h-48">
-      <Loader />
+   <div className="flex h-screen">
+  <aside className="w-64 bg-gray-800 text-white flex flex-col">
+    <div className="flex items-center justify-center py-6 bg-gradient-to-r from-blue-600 to-purple-600">
+      <h2 className="text-3xl font-bold">Current Plan</h2>
     </div>
-  ) : activeTab === "overview" ? (
-    currentPlan ? (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-          <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-            Plan: <span className="font-bold">{currentPlan.name}</span>
-          </div>
-          <div className="text-lg text-gray-600 dark:text-gray-400">
-            {isYearly
-              ? `Yearly - R${currentPlan.yearlyPrice} per year`
-              : `Monthly - R${currentPlan.monthlyPrice} per month`}
-          </div>
-        </div>
-        <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-          <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Next Billing Date</div>
-          <div className="text-lg text-gray-600 dark:text-gray-400">{subscriptionDetails?.nextBillingDate}</div>
-        </div>
-        <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-          <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Subscription Start Date</div>
-          <div className="text-lg text-gray-600 dark:text-gray-400">{subscriptionDetails?.subscriptionStartDate}</div>
-        </div>
-        <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-          <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">Status</div>
-          <div
-            className={`text-lg font-bold ${
-              subscriptionDetails?.status === "active" ? "text-green-500" : "text-red-500"
-            } flex items-center`}
-          >
-            {subscriptionDetails?.status === "active" ? (
-              <>
-                <FaCheckCircle className="mr-2" /> Active
-              </>
-            ) : (
-              <>
-                <FaTimesCircle className="mr-2" /> Inactive
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    ) : (
-      <p className="text-center text-gray-700 dark:text-gray-300">You do not have an active plan.</p>
-    )
-  ) : activeTab === "details" ? (
-    currentPlan ? (
-      <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row items-start justify-between">
-          <div className="flex items-center">
-            <FaListAlt className="mr-2" />
-            <span className="font-semibold">Plan Details:</span>
-          </div>
-          <div className="text-sm text-gray-600 dark:text-gray-400">
-            {isYearly ? `Yearly - R${currentPlan.yearlyPrice} per year` : `Monthly - R${currentPlan.monthlyPrice} per month`}
-          </div>
-        </div>
-        <div className="flex flex-col sm:flex-row items-start justify-between">
-          <div className="flex items-center">
-            <FaCalendarAlt className="mr-2" />
-            <span className="font-semibold">Next Billing Date:</span>
-          </div>
-          <div className="text-sm text-gray-600 dark:text-gray-400">
-            {subscriptionDetails?.nextBillingDate}
-          </div>
-        </div>
-        <div className="flex flex-col sm:flex-row items-start justify-between">
-          <div className="flex items-center">
-            <FaCalendarCheck className="mr-2" />
-            <span className="font-semibold">Subscription Start Date:</span>
-          </div>
-          <div className="text-sm text-gray-600 dark:text-gray-400">
-            {subscriptionDetails?.subscriptionStartDate}
-          </div>
-        </div>
-      </div>
-    ) : (
-      <p className="text-center text-gray-700 dark:text-gray-300">No details available.</p>
-    )
-  ) : activeTab === "manage" ? (
-    <div className="space-y-6">
-      <button
-        onClick={handleCancelSubscription}
-        className="w-full py-3 px-6 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full shadow-md transition-colors duration-300"
-        aria-label="Cancel Subscription"
-      >
-        Cancel Subscription
-      </button>
-      <div>
-        <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Switch Plan</h3>
+    <nav className="flex-1 px-2 py-4 space-y-1">
+      {[
+        { name: "Overview", icon: FaListAlt, tab: "overview" },
+        { name: "Details", icon: FaCog, tab: "details" },
+        { name: "Manage", icon: FaTimesCircle, tab: "manage" },
+        { name: "Payment Methods", icon: FaCreditCard, tab: "payment" },
+      ].map((item) => (
         <button
-          onClick={() => setIsYearly(!isYearly)}
-          className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-md transition-colors duration-300"
-          aria-label={`Show ${isYearly ? "monthly" : "yearly"} plans`}
+          key={item.tab}
+          className={`flex items-center px-4 py-3 w-full text-left rounded-lg ${
+            activeTab === item.tab
+              ? "bg-blue-500"
+              : "hover:bg-gray-700 transition-colors duration-300"
+          }`}
+          onClick={() => setActiveTab(item.tab as 'overview' | 'details' | 'manage' | 'payment')}
+          role="tab"
+          aria-selected={activeTab === item.tab}
         >
-          {isYearly ? "Show Monthly Plans" : "Show Yearly Plans"}
+          <item.icon className="mr-3" />
+          {item.name}
         </button>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
-          {availablePlans.map((plan) => (
-            <div
-              key={plan.name}
-              className={`p-6 rounded-lg shadow-md cursor-pointer ${
-                currentPlan?.name === plan.name ? "border-2 border-blue-500" : "border"
-              } bg-white dark:bg-gray-900 hover:shadow-lg transition-shadow duration-300`}
-              onClick={() => {
-                const confirmed = window.confirm(
-                  `Are you sure you want to switch to the ${plan.name} plan? The last added payment method will be used to complete this transaction.`
-                );
-                if (confirmed) {
-                  handleUpdatePlan(plan.stripePriceId);
-                }
-              }}
-              role="button"
-              aria-label={`Switch to ${plan.name} plan`}
-            >
-              <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{plan.name}</h4>
-              <p className="text-gray-600 dark:text-gray-400">
-                {isYearly ? `R${plan.yearlyPrice} per year` : `R${plan.monthlyPrice} per month`}
-              </p>
-            </div>
-          ))}
+      ))}
+    </nav>
+  </aside>
+  <main className="flex-1 p-6 bg-gray-100 dark:bg-gray-800 overflow-y-auto">
+    <div className="max-w-4xl mx-auto">
+      {loading ? (
+        <div className="flex justify-center items-center h-48">
+          <Loader />
         </div>
-      </div>
-    </div>
-  ) : activeTab === "payment" ? (
-    paymentMethods.length > 0 ? (
-      <div className="space-y-4">
-        {paymentMethods.map((method) => (
-          <div key={method.id} className="flex items-center justify-between p-4 bg-white dark:bg-gray-900 rounded-lg shadow-md">
-            <div className="flex items-center">
-              <FaCreditCard className="mr-2" />
-              <span className="font-semibold">{method.cardBrand}</span>
-            </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              **** **** **** {method.last4} - Exp: {method.expMonth}/{method.expYear}
-            </div>
+      ) : activeTab === "overview" ? (
+        currentPlan ? (
+          <div className="space-y-6">
+            {/* Overview content */}
           </div>
-        ))}
-      </div>
-    ) : (
-      <p className="text-center text-gray-700 dark:text-gray-300">No payment methods available.</p>
-    )
-  ) : null}
+        ) : (
+          <p className="text-center text-gray-700 dark:text-gray-300">You do not have an active plan.</p>
+        )
+      ) : activeTab === "details" ? (
+        <div className="space-y-6">
+          {/* Details content */}
+        </div>
+      ) : activeTab === "manage" ? (
+        <div className="space-y-6">
+          {/* Manage content */}
+        </div>
+      ) : activeTab === "payment" ? (
+        <div className="space-y-6">
+          {/* Payment Methods content */}
+        </div>
+      ) : null}
+    </div>
+  </main>
 </div>
-
-
-
-
-          </div>
-        </div>
-      </div>
-    </div>
   );
 };
 
