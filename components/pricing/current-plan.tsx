@@ -265,13 +265,20 @@ const CurrentPlan = () => {
                         <FaCreditCard className="text-blue-500 mr-4" />
                         <div>
                           <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                            {method.brand} **** **** **** {method.last4}
+                            {method.brand} {method.cardNumber} (ends in {method.last4})
                           </div>
-                          <div className="text-gray-600 dark:text-gray-400">Expires {method.expiry}</div>
+                          <div className="text-gray-600 dark:text-gray-400">
+                            Expires {method.expiry}
+                          </div>
                         </div>
                       </div>
                     </div>
                   ))
+                ) : (
+                  <p className="text-center text-gray-700 dark:text-gray-300">No payment methods available.</p>
+                )}
+              </div>
+            ))
                 ) : (
                   <p className="text-center text-gray-700 dark:text-gray-300">No payment methods available.</p>
                 )}
