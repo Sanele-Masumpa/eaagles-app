@@ -160,7 +160,7 @@ export default function PitchesPage() {
   };
 
   return (
-    <div className="min-h-screen p-8">
+    <div className="max-w-full px-6 py-8 mx-auto">
       <div className="max-w-7xl mx-auto py-10">
         <h2 className="text-4xl font-extrabold mb-8 text-center">Pitches Management</h2>
 

@@ -15,8 +15,8 @@ const Cancel = () => {
   }, [router]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-red-50">
-      <div className="text-center p-4 bg-white shadow-lg rounded-lg max-w-md w-full">
+    <div className="flex items-center justify-center min-h-screen ">
+      <div className="text-center p-4 shadow-lg rounded-lg max-w-md w-full">
         <svg
           className="w-16 h-16 mx-auto text-red-500 mb-4"
           fill="none"
