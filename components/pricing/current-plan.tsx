@@ -128,7 +128,6 @@ const CurrentPlan = () => {
         </div>
         <div className="p-6">
           <div className="flex flex-col sm:flex-row border-b border-gray-300 dark:border-gray-700">
-          is my syntex correct?
 
 {[
               { name: "Overview", icon: FaListAlt, tab: "overview" },
