@@ -232,52 +232,52 @@ const CurrentPlan = () => {
               ) : (
                 <p className="text-center text-gray-700 dark:text-gray-300">No details available.</p>
               )
-            ) :activeTab === "manage" ? (
-  <div className="space-y-6">
-    <button
-      onClick={handleCancelSubscription}
-      className="w-full py-3 px-6 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full shadow-md transition-colors duration-300"
-      aria-label="Cancel Subscription"
-    >
-      Cancel Subscription
-    </button>
-    <div>
-      <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Switch Plan</h3>
-      <button
-        onClick={() => setIsYearly(!isYearly)}
-        className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-md transition-colors duration-300"
-        aria-label={`Show ${isYearly ? "monthly" : "yearly"} plans`}
-      >
-        {isYearly ? "Show Monthly Plans" : "Show Yearly Plans"}
-      </button>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
-        {availablePlans.map((plan) => (
-          <div
-            key={plan.name}
-            className={`p-6 rounded-lg shadow-md cursor-pointer ${
-              currentPlan?.name === plan.name ? "border-2 border-blue-500" : "border"
-            } bg-white dark:bg-gray-900 hover:shadow-lg transition-shadow duration-300`}
-            onClick={() => {
-              const confirmed = window.confirm(
-                `Are you sure you want to switch to the ${plan.name} plan? The last added payment method will be used to complete this transaction.`
-              );
-              if (confirmed) {
-                handleUpdatePlan(plan.stripePriceId);
-              }
-            }}
-            role="button"
-            aria-label={`Switch to ${plan.name} plan`}
-          >
-            <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{plan.name}</h4>
-            <p className="text-gray-600 dark:text-gray-400">
-              {isYearly ? `R$${plan.yearlyPrice} per year` : `R$${plan.monthlyPrice} per month`}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </div>
-) : (
+            ) : activeTab === "manage" ? (
+              <div className="space-y-6">
+                <button
+                  onClick={handleCancelSubscription}
+                  className="w-full py-3 px-6 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full shadow-md transition-colors duration-300"
+                  aria-label="Cancel Subscription"
+                >
+                  Cancel Subscription
+                </button>
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Switch Plan</h3>
+                  <button
+                    onClick={() => setIsYearly(!isYearly)}
+                    className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-md transition-colors duration-300"
+                    aria-label={`Show ${isYearly ? "monthly" : "yearly"} plans`}
+                  >
+                    {isYearly ? "Show Monthly Plans" : "Show Yearly Plans"}
+                  </button>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
+                    {availablePlans.map((plan) => (
+                      <div
+                        key={plan.name}
+                        className={`p-6 rounded-lg shadow-md cursor-pointer ${
+                          currentPlan?.name === plan.name ? "border-2 border-blue-500" : "border"
+                        } bg-white dark:bg-gray-900 hover:shadow-lg transition-shadow duration-300`}
+                        onClick={() => {
+                          const confirmed = window.confirm(
+                            `Are you sure you want to switch to the ${plan.name} plan? The last added payment method will be used to complete this transaction.`
+                          );
+                          if (confirmed) {
+                            handleUpdatePlan(plan.stripePriceId);
+                          }
+                        }}
+                        role="button"
+                        aria-label={`Switch to ${plan.name} plan`}
+                      >
+                        <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200">{plan.name}</h4>
+                        <p className="text-gray-600 dark:text-gray-400">
+                          {isYearly ? `R$${plan.yearlyPrice} per year` : `R$${plan.monthlyPrice} per month`}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
                 <p className="text-center text-gray-700 dark:text-gray-300">You do not have an active plan to manage.</p>
               )
             ) : activeTab === "payment" ? (
