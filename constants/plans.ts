@@ -1,9 +1,6 @@
 import { ReactNode } from "react";
 
 export interface Plan {
-  [key: string]: string | number | ReactNode | undefined; // Adjust types as needed
-  details: ReactNode;
-  description: ReactNode;
   name: string;
   monthlyPrice: number;
   yearlyPrice: number;
@@ -11,6 +8,8 @@ export interface Plan {
   unavailable: string[];
   buttonLabel: string;
   stripePriceId: string | { monthly: string; yearly: string };
+  description?: ReactNode; // Optional properties
+  details?: ReactNode; // Optional properties
 }
 
 export const plans: Plan[] = [
