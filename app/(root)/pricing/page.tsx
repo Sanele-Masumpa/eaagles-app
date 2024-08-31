@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import { loadStripe } from '@stripe/stripe-js';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -87,7 +88,9 @@ const SubscriptionForm = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <CurrentPlan />
+      <SignedIn>
+        <CurrentPlan />
+      </SignedIn>
 
       <h1 className="text-4xl font-extrabold mb-8 text-center">Subscription Plans</h1>
 
