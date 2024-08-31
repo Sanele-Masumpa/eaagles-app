@@ -79,7 +79,7 @@ const PrivacyPolicy = () => {
           </li>
           <li>
             <a href="#childrens-privacy" className="text-blue-600 hover:underline">
-              12. Children's Privacy
+              12. Children&apos;s Privacy
             </a>
           </li>
           <li>
@@ -196,7 +196,7 @@ const PrivacyPolicy = () => {
       </section>
 
       <section id="childrens-privacy" className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4">12. Children's Privacy</h2>
+        <h2 className="text-2xl font-semibold mb-4">12. Children&apos;s Privacy</h2>
         <p>
           Our service is not intended for children under the age of 13. We do not knowingly collect personal information from children. If we become aware that we have collected data from a child, we will take steps to delete it promptly.
         </p>
