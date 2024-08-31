@@ -32,7 +32,11 @@ export const plans: Plan[] = [
     buttonLabel: 'Join for Free',
     stripePriceId: process.env.NEXT_PUBLIC_BASIC_PLAN_PRICE_ID!,
     description: 'The Basic plan provides essential access to community forums, basic support, and is completely free of charge. It includes community events and newsletters but does not offer advanced features or exclusive content.',
-    details: 'This plan includes access to community forums, basic support, and free access. It does not include advanced features like premium content, priority support, or dedicated account management.'
+    details: 'This plan includes access to community forums, basic support, and free access. It does not include advanced features like premium content, priority support, or dedicated account management.',
+    unavailableFeatures: [
+      'Early access to updates',
+      'Exclusive content'
+    ],
   },
   {
     name: 'Pro',
@@ -55,7 +59,12 @@ export const plans: Plan[] = [
       yearly: process.env.NEXT_PUBLIC_PRO_ANNUAL_PRICE_ID!,
     },
     description: 'The Pro plan includes premium content, priority support, and a dedicated account manager, along with additional features like advanced analytics and custom integrations. It does not include exclusive content.',
-    details: 'This plan offers comprehensive support and advanced features, excluding exclusive content and some high-end customization options. It is ideal for users needing robust features and priority support.'
+    details: 'This plan offers comprehensive support and advanced features, excluding exclusive content and some high-end customization options. It is ideal for users needing robust features and priority support.',
+    unavailableFeatures: [
+      'Exclusive content',
+      'Additional storage',
+      'One-on-one training'
+    ],
   },
   {
     name: 'Premium',
@@ -78,6 +87,10 @@ export const plans: Plan[] = [
       yearly: process.env.NEXT_PUBLIC_PREMIUM_ANNUAL_PRICE_ID!,
     },
     description: 'The Premium plan includes all features of the Pro plan plus exclusive content and the highest level of support, including a dedicated account manager. It is perfect for users who need the most comprehensive support and features.',
-    details: 'This plan provides the most extensive range of features and support, including exclusive content and top-tier support services. It does not include some additional features like more storage or personal training.'
+    details: 'This plan provides the most extensive range of features and support, including exclusive content and top-tier support services. It does not include some additional features like more storage or personal training.',
+    unavailableFeatures: [
+      'Additional storage',
+      'Priority customer support'
+    ],
   },
 ];
