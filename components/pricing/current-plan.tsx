@@ -261,7 +261,7 @@ const CurrentPlan = () => {
                         <span className="font-semibold">{method.cardBrand}</span>
                       </div>
                       <div className="text-sm text-gray-600 dark:text-gray-400">
-                        **** **** **** {method.last4} - Exp: {method.expirationMonth}/{method.expirationYear}
+                        **** **** **** {method.last4} - Exp: {method.expMonth}/{method.expYear}
                       </div>
                     </div>
                   ))}
