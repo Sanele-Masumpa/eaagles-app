@@ -26,13 +26,14 @@ export async function POST(request: Request) {
       });
     }
 
-    // Retrieve existing subscriptions and cancel them if needed
-    const subscriptions = await stripe.subscriptions.list({
+    // Check if the customer already has an active subscription
+    const activeSubscriptions = await stripe.subscriptions.list({
       customer: customer.id,
+      status: 'active',
     });
 
-    for (const subscription of subscriptions.data) {
-      await stripe.subscriptions.cancel(subscription.id);
+    if (activeSubscriptions.data.length > 0) {
+      console.log("Customer already has an active subscription. Proceeding without canceling.");
     }
 
     // Create a Checkout Session for the selected plan
@@ -47,6 +48,14 @@ export async function POST(request: Request) {
       success_url: `${process.env.NEXT_PUBLIC_URL}/success`,
       cancel_url: `${process.env.NEXT_PUBLIC_URL}/canceled`,
     });
+
+    // Handle the cancellation of previous subscriptions after successful checkout
+    if (session.payment_status === 'paid') {
+      // Cancel previous subscriptions
+      for (const subscription of activeSubscriptions.data) {
+        await stripe.subscriptions.cancel(subscription.id);
+      }
+    }
 
     return NextResponse.json({ id: session.id });
   } catch (err) {
