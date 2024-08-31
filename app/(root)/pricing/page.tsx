@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
+import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { loadStripe } from '@stripe/stripe-js';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -19,6 +19,7 @@ const SubscriptionForm = () => {
   const router = useRouter();
 
   useEffect(() => {
+    // Add any necessary side effects here
   }, [user?.primaryEmailAddress?.emailAddress]);
 
   const handlePlanSelect = (planName: string) => {
@@ -83,17 +84,14 @@ const SubscriptionForm = () => {
       setIsLoading(false);
     }
   };
-  
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-extrabold mb-8 text-center">Subscription Plans</h1>
-
-      
       <SignedIn>
         <CurrentPlan />
       </SignedIn>
-
+      
       <div className="flex justify-center mb-6 space-x-2">
         <button
           className={`px-6 py-3 rounded-l-md text-lg font-medium transition-all duration-300 ${!isYearly ? 'bg-gradient-to-r from-blue-600 to-blue-800 text-white' : 'bg-gray-200 text-gray-700'}`}
@@ -129,10 +127,10 @@ const SubscriptionForm = () => {
               </p>
               <ul className="list-disc list-inside mb-4">
                 {plan.features.map((feature, index) => (
-                  <li key={index}>{feature}</li>
+                  <li key={index} className="text-green-600">{feature}</li>
                 ))}
                 {plan.unavailable.map((feature, index) => (
-                  <li key={index} className="text-gray-500 line-through">{feature}</li>
+                  <li key={index} className="text-red-500 line-through">{feature}</li>
                 ))}
               </ul>
               <button
