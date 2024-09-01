@@ -16,7 +16,7 @@ const Cancel = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen ">
-      <div className="text-center p-4 shadow-lg rounded-lg max-w-md w-full">
+      <div className="text-center p-4 rounded-lg max-w-md w-full">
         <svg
           className="w-16 h-16 mx-auto text-red-500 mb-4"
           fill="none"

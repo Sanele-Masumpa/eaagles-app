@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { ClerkProvider, SignedIn, useUser } from '@clerk/nextjs';
 import { loadStripe } from '@stripe/stripe-js';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';
 import CurrentPlan from '@/components/pricing/current-plan';
-import { plans, Plan } from '@/constants/plans'; // Adjust the import path as necessary
-import { FaCheck, FaTimes, FaCog, FaChartLine, FaUserTie, FaMoneyBillWave } from 'react-icons/fa'; // Import icons
+import { plans } from '@/constants/plans'; // Adjust the import path as necessary
+import { FaCheck, FaTimes } from 'react-icons/fa'; // Import icons
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -16,7 +15,6 @@ const SubscriptionForm = () => {
   const { user } = useUser();
   const [selectedPlan, setSelectedPlan] = useState<string>('');
   const [isYearly, setIsYearly] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {}, [user?.primaryEmailAddress?.emailAddress]);
@@ -25,17 +23,15 @@ const SubscriptionForm = () => {
     setSelectedPlan(planName);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  const handleSubmit = async (planName: string) => {
     const userEmail = user?.primaryEmailAddress?.emailAddress;
 
-    if (!selectedPlan || !user?.id || !userEmail) {
+    if (!planName || !user?.id || !userEmail) {
       toast.error('Please select a plan and ensure you are logged in.');
       return;
     }
 
-    const selectedPlanData = plans.find((plan) => plan.name === selectedPlan);
+    const selectedPlanData = plans.find((plan) => plan.name === planName);
     if (!selectedPlanData) {
       toast.error('Invalid plan selected.');
       return;
@@ -52,8 +48,6 @@ const SubscriptionForm = () => {
       return;
     }
 
-    setIsLoading(true);
-
     try {
       const response = await fetch('/api/create-subscription', {
         method: 'POST',
@@ -67,7 +61,6 @@ const SubscriptionForm = () => {
 
       if (!response.ok) {
         toast.error(`Error: ${data.message}`);
-        setIsLoading(false);
         return;
       }
 
@@ -79,8 +72,6 @@ const SubscriptionForm = () => {
       }
     } catch (error) {
       toast.error('An unexpected error occurred.');
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -90,7 +81,7 @@ const SubscriptionForm = () => {
       <SignedIn>
         <CurrentPlan />
       </SignedIn>
-      
+
       <div className="flex justify-center mb-6 space-x-2">
         <button
           className={`px-6 py-3 rounded-l-md text-lg font-medium transition-all duration-300 ${!isYearly ? 'bg-gradient-to-r from-green-400 to-green-600 text-white' : 'bg-gray-200 text-gray-700'}`}
@@ -104,11 +95,11 @@ const SubscriptionForm = () => {
           onClick={() => setIsYearly(true)}
           aria-pressed={isYearly}
         >
-          Yearly
+          Yearly (Save 20%)
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {plans.map(plan => (
             <div
@@ -124,7 +115,13 @@ const SubscriptionForm = () => {
                 <span className="mr-2 text-green-600">{plan.name}</span>
               </h2>
               <p className="text-lg font-bold mb-4">
-                {isYearly ? `R${plan.yearlyPrice}` : `R${plan.monthlyPrice}`} {isYearly ? 'per year' : 'per month'}
+                {isYearly ? (
+                  <>
+                    <span className="line-through text-gray-500">R{plan.monthlyPrice * 12}</span> R{plan.yearlyPrice} per year
+                  </>
+                ) : (
+                  `R${plan.monthlyPrice} per month`
+                )}
               </p>
               <ul className="list-disc list-inside mb-4 space-y-2">
                 {plan.features.map((feature, index) => (
@@ -141,21 +138,13 @@ const SubscriptionForm = () => {
               <button
                 type="button"
                 className={`w-full py-2 px-4 rounded-lg font-bold transition-colors duration-300 ${selectedPlan === plan.name ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'}`}
-                onClick={() => handlePlanSelect(plan.name)}
+                onClick={() => handleSubmit(plan.name)}
               >
-                {plan.buttonLabel}
+                Subscribe
               </button>
             </div>
           ))}
         </div>
-
-        <button
-          type="submit"
-          className={`w-full py-3 px-4 rounded-lg font-bold transition-colors duration-300 ${selectedPlan ? 'bg-green-600 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
-          disabled={!selectedPlan || isLoading}
-        >
-          {isLoading ? 'Processing...' : 'Subscribe'}
-        </button>
       </form>
     </div>
   );

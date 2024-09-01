@@ -1,6 +1,9 @@
 import { ReactNode } from "react";
 
 export interface Plan {
+  [x: string]: boolean;
+  [x: string]: ReactNode;
+  yearlyDiscount: boolean;
   name: string;
   monthlyPrice: number;
   yearlyPrice: number;

@@ -1,35 +1,21 @@
+
 # 🦅 Eagles Ring
 
-Eagles Ring is an exclusive platform designed to connect ambitious entrepreneurs with discerning investors. Our platform streamlines the pitching process, enabling both asynchronous and real-time interactions between entrepreneurs and investors. Entrepreneurs can submit their innovative business ideas, and investors can browse pitches, provide insightful feedback, and potentially offer investment opportunities.
+**Eagles Ring** is an elite platform crafted to bridge the gap between visionary entrepreneurs and discerning investors. By streamlining the pitching process, we offer both asynchronous and real-time engagement opportunities, ensuring seamless connections and fostering fruitful investment opportunities. Whether you're an entrepreneur with groundbreaking ideas or an investor seeking the next big venture, Eagles Ring is your gateway to success.
 
-## 📜 Table of Contents
+## ✨ Features
 
-- [✨ Features](#-features)
-- [🛠️ Tech Stack](#️-tech-stack)
-- [🚀 Installation](#-installation)
-- [🗝️ Environment Variables](#️-environment-variables)
-- [🎨 Usage](#-usage)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
-- [📧 Contact](#-contact)
+- **User Authentication & Role Management:** Secure, streamlined login with role-based access for both entrepreneurs and investors.
+- **Subscription Plans:** Tailored subscription models powered by Stripe, offering various tiers to access premium features and live events.
+- **Pitch Submission:** Entrepreneurs can submit comprehensive business pitches that investors can browse and review at their convenience.
+- **Feedback System:** A robust feedback mechanism allows investors to provide constructive feedback on pitches, with instant notifications sent to entrepreneurs.
+- **Live Pitch Events:** Integrated real-time video pitch sessions, powered by Twilio, for direct and engaging interactions.
+- **Investor Requests:** Investors can issue specific requests to entrepreneurs, enabling targeted pitch responses and opportunities.
+- **Analytics Dashboard:** Track pitch performance, investor engagement, and feedback trends with advanced analytics tools.
+- **Global Reach:** Connect with investors worldwide, expanding the potential reach of every pitch.
+- **Data Security & Privacy:** Advanced security measures to ensure all sensitive information is protected.
 
-<details>
-<summary>✨ Features</summary>
-
-- 🛡️ **User Authentication & Role Management:** Secure and streamlined login system with role-based access tailored for both entrepreneurs and investors.
-- 📑 **Pitch Submission:** Entrepreneurs can submit detailed business pitches that investors can easily browse and review.
-- 💬 **Feedback System:** A robust feedback mechanism where investors provide constructive feedback on pitches, with instant notifications sent to entrepreneurs.
-- 🎥 **Live Pitch Events:** Seamlessly integrated real-time video pitch sessions, powered by Twilio, for direct and engaging investor interactions.
-- 🔔 **Real-Time Notifications:** Stay informed with instant updates on feedback, investor interest, and pitch status via WebSockets and GetStream.
-- 🗂️ **Investor Requests:** Investors can issue tailored requests to entrepreneurs, allowing them to respond directly to specific needs and opportunities.
-- 📊 **Detailed Analytics:** Track pitch performance, investor engagement, and feedback trends with advanced analytics tools.
-- 🌍 **Global Reach:** Connect with investors from around the world, expanding the reach and potential of every pitch.
-- 🔒 **Data Security & Privacy:** Top-tier security measures ensure that all sensitive information is protected.
-
-</details>
-
-<details>
-<summary>🛠️ Tech Stack</summary>
+## 🛠️ Tech Stack
 
 - **Frontend:** [Next.js](https://nextjs.org/), [React](https://reactjs.org/)
 - **Backend:** [Next.js API Routes](https://nextjs.org/docs/api-routes/introduction)
@@ -39,19 +25,18 @@ Eagles Ring is an exclusive platform designed to connect ambitious entrepreneurs
 - **Real-Time Updates:** [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API), [GetStream](https://getstream.io/)
 - **Video Streaming:** [Twilio](https://www.twilio.com/)
 - **UI Components:** [NextUI](https://nextui.org/), [Tailwind CSS](https://tailwindcss.com/)
+- **Payments:** [Stripe](https://stripe.com/)
 - **Deployment:** [Vercel](https://vercel.com/), [Docker](https://www.docker.com/)
+- **Contact Form:** [Formspree](https://formspree.io/)
 
-</details>
-
-<details>
-<summary>🚀 Installation</summary>
+## 🚀 Installation
 
 ### Prerequisites
 
 - Node.js v14.x or higher
 - PostgreSQL
 - npm or yarn
-- Docker (optional, for containerized deployment)
+- Docker (optional for containerized deployment)
 
 ### Clone the Repository
 
@@ -68,10 +53,7 @@ npm install
 yarn install
 ```
 
-</details>
-
-<details>
-<summary>🗝️ Environment Variables</summary>
+### Set Up Environment Variables
 
 Create a `.env` file in the root directory and add the following variables. **Replace the placeholders with your actual secret values.**
 
@@ -80,10 +62,6 @@ Create a `.env` file in the root directory and add the following variables. **Re
 CLERK_WEBHOOK_SECRET=<YOUR_CLERK_WEBHOOK_SECRET>
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=<YOUR_CLERK_PUBLISHABLE_KEY>
 CLERK_SECRET_KEY=<YOUR_CLERK_SECRET_KEY>
-
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/select-role
 
 # Stream API Keys
 NEXT_PUBLIC_STREAM_API_KEY=<YOUR_STREAM_API_KEY>
@@ -112,68 +90,52 @@ NEXT_PUBLIC_PREMIUM_ANNUAL_PRICE_ID=<YOUR_PREMIUM_ANNUAL_PRICE_ID>
 
 # Application URL
 NEXT_PUBLIC_URL=<REPLACE_WITH_YOUR_URL>
+
+# Formspree API Key
+FORMSPREE_API_KEY=<YOUR_FORMSPREE_API_KEY>
 ```
 
-</details>
-
-<details>
-<summary>🎨 Usage</summary>
+## 🎨 Usage
 
 ### User Authentication and Role Assignment
 
-- Users sign up using Clerk, and upon first login, choose their role (entrepreneur or investor).
-- The role determines the user’s dashboard and available features.
+- **Sign Up:** Users sign up using Clerk, and upon first login, select their role (entrepreneur or investor).
+- **Role-Specific Dashboard:** The role selected determines the user's dashboard, available features, and subscription plans.
+
+### Subscription Plans
+
+- **Stripe Integration:** Access premium features through tailored subscription models. Stripe handles secure payment processing and subscription management.
+- **Plan Tiers:** Offer basic, pro, and premium plans with both monthly and annual options to fit diverse user needs.
 
 ### Pitch Submission & Feedback
 
-- Entrepreneurs submit pitches through a user-friendly interface.
-- Investors can browse and filter pitches, providing detailed feedback or expressing interest.
+- **Entrepreneur Dashboard:** Entrepreneurs submit pitches through an intuitive, user-friendly interface.
+- **Investor Dashboard:** Investors can browse, filter, and review pitches, providing detailed feedback or expressing interest.
 
 ### Live Pitch Events
 
-- Entrepreneurs can schedule live pitch events via Twilio.
-- Investors can join these sessions, offering real-time feedback and investment decisions.
+- **Scheduling:** Entrepreneurs schedule live pitch events through Twilio, ensuring direct, real-time investor engagement.
+- **Interactive Sessions:** Investors can join sessions, ask questions, and make immediate investment decisions.
 
 ### Real-Time Notifications
 
-- Notifications are pushed instantly using WebSockets and GetStream, ensuring users are always informed of important updates.
+- **Stay Updated:** Real-time notifications via WebSockets and GetStream keep users informed of feedback, investor interest, and pitch status.
 
-### 💻 UI/UX Enhancements
+### UI/UX Enhancements
 
-- **Responsive Design:** The app is fully responsive, ensuring a seamless experience across all devices.
-- **Smooth Animations:** Subtle animations enhance the user experience, from button hovers to form transitions.
-- **Dark Mode Support:** Toggle between light and dark themes based on your preference.
-- **Interactive Cards:** Engage users with interactive elements like flipping cards and animated icons.
+- **Responsive Design:** Fully responsive design for seamless experiences across devices.
+- **Dark Mode:** Toggle between light and dark themes to suit user preferences.
+- **Interactive Elements:** Engage users with smooth animations, flipping cards, and more.
 
-</details>
+## 📧 Contact
 
-<details>
-<summary>🤝 Contributing</summary>
+For any inquiries or feedback, please reach out through our contact form:
 
-While this project is not currently open to external contributions, suggestions and ideas are welcome. Please feel free to reach out with your feedback.
+- **[Contact Us](https://eaglesring-app.vercel.app/contact)**
 
-</details>
-
-<details>
-<summary>📄 License</summary>
-
-This project is privately licensed. Unauthorized sharing or distribution is prohibited.
-
-</details>
-
-<details>
-<summary>📧 Contact</summary>
- 
-For any inquiries or feedback, please contact:
+You can also contact us directly:
 
 - **Name:** Sanele Hlongwane
-- **Email:** sanelehlongwane61@gmail.com
-- **GitHub:** [Sanele-Masumpa](https://github.com/Sanele-Masumpa) and **GitHub:** [Sanele-Hlongwane](https://github.com/Sanele-Masumpa)
-- **Phone Number:** +27 60 317 9552
-
-**Explanation:**
-- `+27` is the international dialing code for South Africa.
-- The number is then grouped into readable segments. 
-
-
-</details>
+- **Email:** [sanelehlongwane61@gmail.com](mailto:sanelehlongwane61@gmail.com)
+- **GitHub:** [Sanele-Masumpa](https://github.com/Sanele-Masumpa)
+- **Phone Number:** +27 (603)-179-552

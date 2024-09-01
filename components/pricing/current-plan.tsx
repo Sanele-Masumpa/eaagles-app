@@ -127,31 +127,37 @@ const CurrentPlan = () => {
       <h2 className="text-3xl font-bold">Current Plan</h2>
     </div>
     <div className="p-6">
-      <div className="border-b border-gray-300 dark:border-gray-700">
-        <div className="flex justify-center space-x-6">
-          {[
-            { name: "Overview", icon: FaListAlt, tab: "overview" },
-            { name: "Details", icon: FaCog, tab: "details" },
-            { name: "Manage", icon: FaTimesCircle, tab: "manage" },
-            { name: "Payment Methods", icon: FaCreditCard, tab: "payment" },
-          ].map((item) => (
-            <button
-              key={item.tab}
-              className={`text-lg font-semibold py-3 px-6 border-b-2 ${
-                activeTab === item.tab
-                  ? "border-blue-500 text-blue-600 dark:text-blue-400"
-                  : "border-transparent text-gray-700 dark:text-gray-200"
-              } hover:border-blue-500 focus:outline-none flex items-center`}
-              onClick={() => setActiveTab(item.tab as 'overview' | 'details' | 'manage' | 'payment')}
-              role="tab"
-              aria-selected={activeTab === item.tab}
-            >
-              <item.icon className="mr-2" />
-              {item.name}
-            </button>
-          ))}
-        </div>
-      </div>
+
+
+
+      
+    <div className="border-b border-gray-300 dark:border-gray-700">
+  <div className="flex flex-wrap justify-center gap-2 p-2">
+    {[
+      { name: "Overview", icon: FaListAlt, tab: "overview" },
+      { name: "Details", icon: FaCog, tab: "details" },
+      { name: "Manage", icon: FaTimesCircle, tab: "manage" },
+      { name: "Payment Methods", icon: FaCreditCard, tab: "payment" },
+    ].map((item) => (
+      <button
+        key={item.tab}
+        className={`flex items-center text-xs sm:text-sm md:text-base font-semibold py-2 px-3 sm:py-2.5 sm:px-4 border-b-2 ${
+          activeTab === item.tab
+            ? "border-blue-500 text-blue-600 dark:text-blue-400"
+            : "border-transparent text-gray-700 dark:text-gray-200"
+        } hover:border-blue-500 focus:outline-none`}
+        onClick={() => setActiveTab(item.tab as 'overview' | 'details' | 'manage' | 'payment')}
+        role="tab"
+        aria-selected={activeTab === item.tab}
+      >
+        <item.icon className="mr-1 sm:mr-2" />
+        <span className="hidden sm:inline">{item.name}</span>
+      </button>
+    ))}
+  </div>
+</div>
+
+
 
       <div className="p-6 space-y-6 max-h-[calc(100vh-15rem)] overflow-y-auto">
         {loading ? (
