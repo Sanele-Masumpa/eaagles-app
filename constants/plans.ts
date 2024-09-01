@@ -1,8 +1,7 @@
 import { ReactNode } from "react";
 
+
 export interface Plan {
-  [x: string]: boolean;
-  [x: string]: ReactNode;
   yearlyDiscount: boolean;
   name: string;
   monthlyPrice: number;
@@ -11,10 +10,11 @@ export interface Plan {
   unavailable: string[];
   buttonLabel: string;
   stripePriceId: string | { monthly: string; yearly: string };
-  description?: ReactNode; // Optional properties
-  details?: ReactNode; // Optional properties
-  unavailableFeatures: string[]; // Add this line
+  description?: ReactNode;
+  details?: ReactNode;
+  unavailableFeatures: string[];
 }
+
 
 export const plans: Plan[] = [
   {
@@ -40,6 +40,7 @@ export const plans: Plan[] = [
       'Early access to updates',
       'Exclusive content'
     ],
+    yearlyDiscount: false
   },
   {
     name: 'Pro',
@@ -68,6 +69,7 @@ export const plans: Plan[] = [
       'Additional storage',
       'One-on-one training'
     ],
+    yearlyDiscount: false
   },
   {
     name: 'Premium',
@@ -95,5 +97,6 @@ export const plans: Plan[] = [
       'Additional storage',
       'Priority customer support'
     ],
+    yearlyDiscount: false
   },
 ];
