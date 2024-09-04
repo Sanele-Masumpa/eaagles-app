@@ -12,12 +12,6 @@ enum Role {
   INVESTOR
 }
 
-enum FriendRequestStatus {
-  PENDING
-  ACCEPTED
-  REJECTED
-}
-
 model User {
   id                    Int                   @id @default(autoincrement())
   clerkId               String                @unique
@@ -29,15 +23,16 @@ model User {
   updatedAt             DateTime              @updatedAt
   messagesSent          Message[]             @relation("MessageSender")
   messagesReceived      Message[]             @relation("MessageReceiver")
-  investments           Investment[]          // List of investments made by the user
+  investments           Investment[]
   entrepreneurProfile   EntrepreneurProfile?
   investorProfile       InvestorProfile?
-  pitches               Pitch[]               // Pitches submitted by the user (if an entrepreneur)
-  feedbacks             Feedback[]            // Feedback given by the user (if an investor)
-  interests             Interest[]           
+  pitches               Pitch[]
+  feedbacks             Feedback[]
+  interests             Interest[]
   sentFriendRequests    FriendRequest[]       @relation("SentFriendRequests")
   receivedFriendRequests FriendRequest[]      @relation("ReceivedFriendRequests")
 }
+
 
 
 model EntrepreneurProfile {
@@ -84,6 +79,11 @@ model FriendRequest {
   @@unique([senderId, receiverId])  // Ensure a unique friend request between two users
 }
 
+enum FriendRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
 
 model Message {
   id                   Int                   @id @default(autoincrement())

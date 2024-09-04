@@ -9,7 +9,7 @@
 		"lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix"
 	},
 	"dependencies": {
-		"@clerk/nextjs": "^5.2.14",
+		"@clerk/nextjs": "^5.4.1",
 		"@emotion/react": "^11.13.0",
 		"@formspree/react": "^2.5.1",
 		"@heroicons/react": "^2.1.5",

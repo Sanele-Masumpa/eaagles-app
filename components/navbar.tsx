@@ -109,6 +109,11 @@ export const Navbar = () => {
                 Meetings
               </Link>
             </NavbarMenuItem>
+            <NavbarMenuItem>
+              <Link className="text-sm" color="foreground" href="/friend-requests" onClick={() => handleLinkClick('/meetings')}>
+                Friend-requests
+              </Link>
+            </NavbarMenuItem>
           </>
         );
       case 'ENTREPRENEUR':
@@ -127,6 +132,11 @@ export const Navbar = () => {
             <NavbarMenuItem>
               <Link className="text-sm" color="foreground" href="/meetings" onClick={() => handleLinkClick('/meetings')}>
                 Meetings
+              </Link>
+            </NavbarMenuItem>
+            <NavbarMenuItem>
+              <Link className="text-sm" color="foreground" href="/friend-requests" onClick={() => handleLinkClick('/meetings')}>
+                Friend-requests
               </Link>
             </NavbarMenuItem>
           </>
