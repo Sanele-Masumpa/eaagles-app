@@ -6,12 +6,18 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Image from 'next/image';
 import Loader from "@/components/Loader";
-import InvestmentForm from '@/components/dashboards/CreateInvestmentForm';
+import InvestmentForm from '@/components/dashboards/InvestmentForm';
 import InvestorProfile from '@/components/dashboards/InvestorProfile';
 import InvestmentAnalytics from '@/components/dashboards/InvestmentAnalytics';
 import NotificationsAlerts from '@/components/dashboards/NotificationsAndAlerts';
 import EntrepreneurProfile from '@/components/dashboards/EntrepreneurProfile';
 import ProposalsAnalytics from '@/components/dashboards/ProposalsAnalytics';
+import Sidebar from "@/components/dashboards/SideNav";
+import Messages from '@/components/dashboards/Messages';
+import ProfileOverview from '@/components/dashboards/ProfileOverview';
+import UpcomingEvents from '@/components/dashboards/UpcomingEvents';
+import FeedbacksReceived from '@/components/dashboards/FeedbacksReceived';
+import InterestManagement from '@/components/dashboards/InterestManagement';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -22,6 +28,7 @@ export default function DashboardPage() {
   const [data, setData] = useState<any>(null);
   const [form, setForm] = useState<{ [key: string]: any }>({});
   const [editing, setEditing] = useState<{ [key: string]: any }>({});
+  const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
     async function fetchUserRole() {
@@ -192,18 +199,13 @@ export default function DashboardPage() {
   if (role === 'INVESTOR') {
     return (
       <div className="relative min-h-screen text-gray-900 dark:text-white">
-        <main className="flex flex-col items-center justify-center w-full h-full px-6 py-16 text-center">
-          <h1 className="text-4xl font-bold mb-4">Investor Dashboard</h1>
-          <p className="text-xl mb-8">
-            Welcome to your investor dashboard! Here you can find potential startups to invest in.
-          </p>
-          <InvestmentForm onSubmit={(e) => handleSubmit(e, 'investment')} form={{}} onChange={function (e: ChangeEvent<HTMLInputElement>): void {
-            throw new Error("Function not implemented.");
-          } } />
-          <InvestmentAnalytics analytics={data?.analytics} />
-          <NotificationsAlerts alerts={data?.alerts} />
-        </main>
-      </div>
+      <main className="flex flex-col items-center justify-center w-full h-full px-6 py-16 text-center">
+        <h1 className="text-4xl font-bold mb-4">Investor Dashboard</h1>
+        <p className="text-xl mb-8">
+          Welcome to your investor dashboard! Here you can find potential startups to invest in.
+        </p>
+      </main>
+    </div>
     );
   } else if (role === 'ENTREPRENEUR') {
     return (

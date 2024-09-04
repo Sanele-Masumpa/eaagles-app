@@ -6,12 +6,25 @@ import { useRouter } from "next/navigation";
 import Pusher from "pusher-js";
 import Loader from "@/components/Loader";
 
-
 interface Pitch {
   id: number;
   title: string;
   description: string;
+  entrepreneurId: number; // Required field
+  category?: string;
+  fundingGoal?: number;
+  currentFunding?: number;
+  stage?: string;
+  video?: Uint8Array; // For storing video data
+  pitchDeck?: Uint8Array; // For storing pitch deck data
+  deadline?: string; // Date as string
+  locationId?: number;
+  tags: string[];
+  status?: string;
+  attachments: Uint8Array[]; // For storing attachments
+  presentationDate?: string; // Date as string
   createdAt: string;
+  updatedAt: string;
 }
 
 interface PusherEvent {
@@ -22,15 +35,17 @@ export default function PitchesPage() {
   const [pitches, setPitches] = useState<Pitch[]>([]);
   const [selectedPitch, setSelectedPitch] = useState<Pitch | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [newPitch, setNewPitch] = useState<{ title: string; description: string }>({
+  const [newPitch, setNewPitch] = useState<Omit<Pitch, 'id' | 'createdAt' | 'updatedAt'>>({
     title: "",
     description: "",
+    entrepreneurId: 1, // Set a default value or retrieve from user session
+    tags: [],
+    attachments: [],
   });
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const [expandedPitchId, setExpandedPitchId] = useState<number | null>(null);
   const router = useRouter();
-  const [loading,setLoading] = useState(true);
-  
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchPitches() {
@@ -56,8 +71,9 @@ export default function PitchesPage() {
     });
   
     const channel = pusher.subscribe('my-channel');
-    channel.bind('update', (data: any) => {
+    channel.bind('update', (data: PusherEvent) => {
       console.log('Event received:', data); // Log data to see if the event is triggered
+      // Handle the pitch update
     });
   
     return () => {
@@ -70,7 +86,7 @@ export default function PitchesPage() {
   }, []);
 
   if (loading) {
-    return < Loader />;
+    return <Loader />;
   }
 
   const handleCreate = async () => {
@@ -86,7 +102,13 @@ export default function PitchesPage() {
         throw new Error("Failed to create pitch");
       }
       const result = await response.json();
-      setNewPitch({ title: "", description: "" });
+      setNewPitch({
+        title: "",
+        description: "",
+        entrepreneurId: 1, // Ensure entrepreneurId is included
+        tags: [],
+        attachments: [],
+      });
       setIsCreating(false);
       toast.success("Pitch created successfully");
       window.location.reload();
@@ -213,12 +235,25 @@ export default function PitchesPage() {
                     <div className="mt-4 p-4 border-t border-gray-200">
                       <h5 className="text-lg font-semibold">Description</h5>
                       <p className="text-gray-800 dark:text-gray-200">{pitch.description}</p>
+                      {/* Add more details about the pitch */}
+                      {pitch.category && <p><strong>Category:</strong> {pitch.category}</p>}
+                      {pitch.fundingGoal && <p><strong>Funding Goal:</strong> ${pitch.fundingGoal.toLocaleString()}</p>}
+                      {pitch.currentFunding && <p><strong>Current Funding:</strong> ${pitch.currentFunding.toLocaleString()}</p>}
+                      {pitch.stage && <p><strong>Stage:</strong> {pitch.stage}</p>}
+                      {pitch.video && <p><strong>Video:</strong> (Video content)</p>}
+                      {pitch.pitchDeck && <p><strong>Pitch Deck:</strong> (Pitch Deck content)</p>}
+                      {pitch.deadline && <p><strong>Deadline:</strong> {new Date(pitch.deadline).toLocaleDateString()}</p>}
+                      {pitch.locationId && <p><strong>Location ID:</strong> {pitch.locationId}</p>}
+                      {pitch.tags.length > 0 && <p><strong>Tags:</strong> {pitch.tags.join(", ")}</p>}
+                      {pitch.status && <p><strong>Status:</strong> {pitch.status}</p>}
+                      {pitch.attachments.length > 0 && <p><strong>Attachments:</strong> (Attachments content)</p>}
+                      {pitch.presentationDate && <p><strong>Presentation Date:</strong> {new Date(pitch.presentationDate).toLocaleDateString()}</p>}
                     </div>
                   )}
                 </li>
               ))
             ) : (
-              <p className="text-lg text-gray-400">No pitches available.</p>
+              <p>No pitches available.</p>
             )}
           </ul>
         </div>
@@ -226,76 +261,322 @@ export default function PitchesPage() {
 
       {/* Create Pitch Modal */}
       {isCreating && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-gray-100 dark:bg-gray-900 p-8 rounded-lg shadow-lg max-w-md w-full">
-            <h3 className="text-2xl font-bold mb-4">Create New Pitch</h3>
-            <input
-              type="text"
-              placeholder="Title"
-              value={newPitch.title}
-              onChange={(e) => setNewPitch({ ...newPitch, title: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded mb-4"
-            />
-            <textarea
-              placeholder="Description"
-              value={newPitch.description}
-              onChange={(e) => setNewPitch({ ...newPitch, description: e.target.value })}
-              className="w-full p-2 border border-gray-300 rounded mb-4"
-              rows={4}
-            />
-            <div className="flex justify-end space-x-4">
-              <button
-                onClick={handleCreate}
-                className="px-4 py-2 rounded-full bg-gradient-to-r from-green-400 to-green-600 text-white hover:opacity-90 transition-opacity duration-300"
-              >
-                Create
-              </button>
-              <button
-                onClick={() => setIsCreating(false)}
-                className="px-4 py-2 rounded-full bg-gray-300 text-gray-800 hover:opacity-90 transition-opacity duration-300"
-              >
-                Cancel
-              </button>
-            </div>
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+          <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+            <h3 className="text-2xl font-semibold mb-4">Create New Pitch</h3>
+            <form>
+              <div className="mb-4">
+                <label className="block text-gray-700">Title</label>
+                <input
+                  type="text"
+                  value={newPitch.title}
+                  onChange={(e) => setNewPitch({ ...newPitch, title: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Description</label>
+                <textarea
+                  value={newPitch.description}
+                  onChange={(e) => setNewPitch({ ...newPitch, description: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Entrepreneur ID</label>
+                <input
+                  type="number"
+                  value={newPitch.entrepreneurId}
+                  onChange={(e) => setNewPitch({ ...newPitch, entrepreneurId: +e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Category</label>
+                <input
+                  type="text"
+                  value={newPitch.category || ""}
+                  onChange={(e) => setNewPitch({ ...newPitch, category: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Funding Goal</label>
+                <input
+                  type="number"
+                  value={newPitch.fundingGoal || ""}
+                  onChange={(e) => setNewPitch({ ...newPitch, fundingGoal: +e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Current Funding</label>
+                <input
+                  type="number"
+                  value={newPitch.currentFunding || ""}
+                  onChange={(e) => setNewPitch({ ...newPitch, currentFunding: +e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Stage</label>
+                <input
+                  type="text"
+                  value={newPitch.stage || ""}
+                  onChange={(e) => setNewPitch({ ...newPitch, stage: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Video</label>
+                <input
+                  type="file"
+                  accept="video/*"
+                  onChange={(e) => e.target.files && setNewPitch({ ...newPitch, video: e.target.files[0] })}
+                  className="w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Pitch Deck</label>
+                <input
+                  type="file"
+                  accept=".pdf, .pptx"
+                  onChange={(e) => e.target.files && setNewPitch({ ...newPitch, pitchDeck: e.target.files[0] })}
+                  className="w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Deadline</label>
+                <input
+                  type="date"
+                  value={newPitch.deadline || ""}
+                  onChange={(e) => setNewPitch({ ...newPitch, deadline: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Location ID</label>
+                <input
+                  type="number"
+                  value={newPitch.locationId || ""}
+                  onChange={(e) => setNewPitch({ ...newPitch, locationId: +e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Tags (comma separated)</label>
+                <input
+                  type="text"
+                  value={newPitch.tags.join(", ")}
+                  onChange={(e) => setNewPitch({ ...newPitch, tags: e.target.value.split(", ").filter(tag => tag) })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Status</label>
+                <input
+                  type="text"
+                  value={newPitch.status || ""}
+                  onChange={(e) => setNewPitch({ ...newPitch, status: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Attachments</label>
+                <input
+                  type="file"
+                  multiple
+                  onChange={(e) => e.target.files && setNewPitch({ ...newPitch, attachments: Array.from(e.target.files) })}
+                  className="w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Presentation Date</label>
+                <input
+                  type="date"
+                  value={newPitch.presentationDate || ""}
+                  onChange={(e) => setNewPitch({ ...newPitch, presentationDate: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="flex justify-between">
+                <button
+                  type="button"
+                  onClick={handleCreate}
+                  className="px-6 py-3 rounded-full shadow-lg bg-gradient-to-r from-green-400 to-green-600 text-white hover:opacity-90 transition-opacity duration-300"
+                >
+                  Create Pitch
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsCreating(false)}
+                  className="px-6 py-3 rounded-full shadow-lg bg-gradient-to-r from-red-400 to-red-600 text-white hover:opacity-90 transition-opacity duration-300"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
 
       {/* Edit Pitch Modal */}
       {isEditing && selectedPitch && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-            <h3 className="text-2xl font-bold mb-4">Edit Pitch</h3>
-            <input
-              type="text"
-              value={selectedPitch.title}
-              onChange={(e) =>
-                setSelectedPitch({ ...selectedPitch, title: e.target.value })
-              }
-              className="w-full p-2 border border-gray-300 rounded mb-4"
-            />
-            <textarea
-              value={selectedPitch.description}
-              onChange={(e) =>
-                setSelectedPitch({ ...selectedPitch, description: e.target.value })
-              }
-              className="w-full p-2 border border-gray-300 rounded mb-4"
-              rows={4}
-            />
-            <div className="flex justify-end space-x-4">
-              <button
-                onClick={handleUpdate}
-                className="px-4 py-2 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-white hover:opacity-90 transition-opacity duration-300"
-              >
-                Update
-              </button>
-              <button
-                onClick={handleCloseOverlay}
-                className="px-4 py-2 rounded-full bg-gray-300 text-gray-800 hover:opacity-90 transition-opacity duration-300"
-              >
-                Cancel
-              </button>
-            </div>
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+          <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+            <h3 className="text-2xl font-semibold mb-4">Edit Pitch</h3>
+            <form>
+              <div className="mb-4">
+                <label className="block text-gray-700">Title</label>
+                <input
+                  type="text"
+                  value={selectedPitch.title}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, title: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Description</label>
+                <textarea
+                  value={selectedPitch.description}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, description: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Entrepreneur ID</label>
+                <input
+                  type="number"
+                  value={selectedPitch.entrepreneurId}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, entrepreneurId: +e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Category</label>
+                <input
+                  type="text"
+                  value={selectedPitch.category || ""}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, category: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Funding Goal</label>
+                <input
+                  type="number"
+                  value={selectedPitch.fundingGoal || ""}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, fundingGoal: +e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Current Funding</label>
+                <input
+                  type="number"
+                  value={selectedPitch.currentFunding || ""}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, currentFunding: +e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Stage</label>
+                <input
+                  type="text"
+                  value={selectedPitch.stage || ""}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, stage: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Video</label>
+                <input
+                  type="file"
+                  accept="video/*"
+                  onChange={(e) => e.target.files && setSelectedPitch({ ...selectedPitch, video: e.target.files[0] })}
+                  className="w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Pitch Deck</label>
+                <input
+                  type="file"
+                  accept=".pdf, .pptx"
+                  onChange={(e) => e.target.files && setSelectedPitch({ ...selectedPitch, pitchDeck: e.target.files[0] })}
+                  className="w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Deadline</label>
+                <input
+                  type="date"
+                  value={selectedPitch.deadline || ""}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, deadline: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Location ID</label>
+                <input
+                  type="number"
+                  value={selectedPitch.locationId || ""}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, locationId: +e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Tags (comma separated)</label>
+                <input
+                  type="text"
+                  value={selectedPitch.tags.join(", ")}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, tags: e.target.value.split(", ").filter(tag => tag) })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Status</label>
+                <input
+                  type="text"
+                  value={selectedPitch.status || ""}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, status: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Attachments</label>
+                <input
+                  type="file"
+                  multiple
+                  onChange={(e) => e.target.files && setSelectedPitch({ ...selectedPitch, attachments: Array.from(e.target.files) })}
+                  className="w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Presentation Date</label>
+                <input
+                  type="date"
+                  value={selectedPitch.presentationDate || ""}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, presentationDate: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="flex justify-between">
+                <button
+                  type="button"
+                  onClick={handleUpdate}
+                  className="px-6 py-3 rounded-full shadow-lg bg-gradient-to-r from-blue-400 to-blue-600 text-white hover:opacity-90 transition-opacity duration-300"
+                >
+                  Update Pitch
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsEditing(false)}
+                  className="px-6 py-3 rounded-full shadow-lg bg-gradient-to-r from-red-400 to-red-600 text-white hover:opacity-90 transition-opacity duration-300"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
