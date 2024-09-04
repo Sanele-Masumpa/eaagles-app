@@ -1,5 +1,5 @@
 // components/UpcomingEvents.tsx
-import { Card, List, Text } from '@nextui-org/react';
+import { Card } from '@nextui-org/react';
 
 interface Event {
   id: number;
@@ -16,17 +16,7 @@ const UpcomingEvents: React.FC = () => {
 
   return (
     <Card>
-      <Card.Body>
-        <Text h4>Upcoming Events</Text>
-        <List>
-          {events.map(event => (
-            <List.Item key={event.id}>
-              <Text>{event.title}</Text>
-              <Text size="small" color="gray">{new Date(event.date).toLocaleDateString()}</Text>
-            </List.Item>
-          ))}
-        </List>
-      </Card.Body>
+      
     </Card>
   );
 };

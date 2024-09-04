@@ -17,8 +17,8 @@ export default function SuccessPage() {
   }, [router]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-300 to-white dark:bg-gradient-to-br dark:from-blue-800 dark:to-black">
-      <div className="p-8 bg-gradient-to-br from-gray-50 to-blue-300 dark:bg-gradient-to-br dark:from-black dark:to-blue-800 rounded-lg shadow-2xl border-1 border-blue-200 space-y-6 max-w-md">
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="p-8 rounded-lg border-1 border-blue-200 space-y-6 max-w-md">
         <div className="flex justify-center">
           <svg
             className="h-16 w-16 text-green-500"

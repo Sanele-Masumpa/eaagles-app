@@ -1,5 +1,5 @@
 // components/Messages.tsx
-import { Card, Text, List, Button } from '@nextui-org/react';
+import { Card } from '@nextui-org/react';
 
 interface Message {
   id: number;
@@ -17,18 +17,7 @@ const Messages: React.FC = () => {
 
   return (
     <Card>
-      <Card.Body>
-        <Text h4>Messages</Text>
-        <List>
-          {messages.map(msg => (
-            <List.Item key={msg.id}>
-              <Text>{msg.content}</Text>
-              <Text size="small" color="gray">{`From: ${msg.sender} - ${new Date(msg.createdAt).toLocaleDateString()}`}</Text>
-            </List.Item>
-          ))}
-        </List>
-        <Button color="primary">Compose Message</Button>
-      </Card.Body>
+      
     </Card>
   );
 };

@@ -1,5 +1,5 @@
 // components/InterestManagement.tsx
-import { Card, List, Button, Text } from '@nextui-org/react';
+import { Card } from '@nextui-org/react';
 
 interface Interest {
   id: number;
@@ -16,18 +16,7 @@ const InterestManagement: React.FC = () => {
 
   return (
     <Card>
-      <Card.Body>
-        <Text h4>Interest Management</Text>
-        <List>
-          {interests.map(interest => (
-            <List.Item key={interest.id}>
-              <Text>Pitch ID: {interest.pitchId}</Text>
-              <Text size="small" color="gray">{new Date(interest.createdAt).toLocaleDateString()}</Text>
-            </List.Item>
-          ))}
-        </List>
-        <Button color="primary">Update Interests</Button>
-      </Card.Body>
+      
     </Card>
   );
 };
