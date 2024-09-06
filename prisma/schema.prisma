@@ -33,39 +33,6 @@ model User {
   receivedFriendRequests FriendRequest[]      @relation("ReceivedFriendRequests")
 }
 
-
-
-model EntrepreneurProfile {
-  id                    Int                   @id @default(autoincrement())
-  userId                Int                   @unique
-  user                  User                  @relation(fields: [userId], references: [id])
-  bio                   String?
-  company               String?
-  businessStage         String?
-  fundingHistory        String?
-  linkedinUrl           String?
-  pitches               Pitch[]               // Pitches submitted by the entrepreneur
-  createdAt             DateTime              @default(now())
-  updatedAt             DateTime              @updatedAt
-  investments           Investment[]
-  notifications         Notification[]        // Added field for notifications
-  revenue               Float?                // Added revenue field
-  investmentOpportunities InvestmentOpportunity[] // Added field for investment opportunities
-}
-
-model InvestorProfile {
-  id                    Int                   @id @default(autoincrement())
-  userId                Int                   @unique
-  user                  User                  @relation(fields: [userId], references: [id])
-  investmentStrategy    String?
-  linkedinUrl           String?
-  investments           Investment[]          // Investments made by the investor
-  feedbacks             Feedback[]            // Feedback given by the investor
-  createdAt             DateTime              @default(now())
-  updatedAt             DateTime              @updatedAt
-  notifications         Notification[]        // Add this line
-}
-
 model FriendRequest {
   id                   Int                   @id @default(autoincrement())
   senderId             Int
@@ -84,6 +51,52 @@ enum FriendRequestStatus {
   ACCEPTED
   REJECTED
 }
+
+model EntrepreneurProfile {
+  id                    Int                   @id @default(autoincrement())
+  userId                Int                   @unique
+  user                  User                  @relation(fields: [userId], references: [id])
+  bio                   String?
+  company               String?
+  businessStage         String?
+  fundingHistory        String?
+  linkedinUrl           String?
+  imageUrl              String?               // Field for storing image URL
+  pitches               Pitch[]               // Pitches submitted by the entrepreneur
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  investments           Investment[]
+  notifications         Notification[]        // Added field for notifications
+  revenue               Float?                // Added revenue field
+  investmentOpportunities InvestmentOpportunity[] // Added field for investment opportunities
+}
+
+model InvestmentOpportunity {
+  id                   Int                   @id @default(autoincrement())
+  title                String
+  description          String?
+  amount               Float?
+  entrepreneurProfileId Int
+  entrepreneurProfile  EntrepreneurProfile   @relation(fields: [entrepreneurProfileId], references: [id])
+  investments          Investment[]          @relation("InvestmentOpportunityInvestments")
+
+  Investment Investment[]
+}
+
+model InvestorProfile {
+  id                    Int                   @id @default(autoincrement())
+  userId                Int                   @unique
+  user                  User                  @relation(fields: [userId], references: [id])
+  investmentStrategy    String?
+  linkedinUrl           String?
+  investments           Investment[]          // Investments made by the investor
+  feedbacks             Feedback[]            // Feedback given by the investor
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  notifications         Notification[]        // Add this line
+}
+
+
 
 model Message {
   id                   Int                   @id @default(autoincrement())
@@ -113,17 +126,7 @@ model Investment {
   InvestmentOpportunity InvestmentOpportunity[] @relation("InvestmentOpportunityInvestments")
 }
 
-model InvestmentOpportunity {
-  id                   Int                   @id @default(autoincrement())
-  title                String
-  description          String?
-  amount               Float?
-  entrepreneurProfileId Int
-  entrepreneurProfile  EntrepreneurProfile   @relation(fields: [entrepreneurProfileId], references: [id])
-  investments          Investment[]          @relation("InvestmentOpportunityInvestments")
 
-  Investment Investment[]
-}
 
 model Pitch {
   id                   Int                   @id @default(autoincrement())
@@ -139,8 +142,7 @@ model Pitch {
   fundingGoal          Float?
   currentFunding       Float?
   stage                String?
-  video                String?               // URL or path for video
-  pitchDeck            String?               // URL or path for pitch deck
+  pitchDeckFileName    String?               // File name of the uploaded pitch deck
   deadline             DateTime?
   locationId           Int?                  // Foreign key reference
   location             Location?             @relation(fields: [locationId], references: [id])
@@ -151,6 +153,7 @@ model Pitch {
 
   User User[]
 }
+
 
 model Location {
   id                   Int                   @id @default(autoincrement())

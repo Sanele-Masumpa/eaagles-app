@@ -31,8 +31,8 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     const friendRequest = await prisma.friendRequest.findUnique({
       where: {
         senderId_receiverId: {
-          senderId: receiver.id,
-          receiverId: senderId,
+          senderId: senderId,
+          receiverId: receiver.id,
         },
       },
     });
@@ -48,17 +48,17 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     await prisma.friendRequest.delete({
       where: {
         senderId_receiverId: {
-          senderId: receiver.id,
-          receiverId: senderId,
+          senderId: senderId,
+          receiverId: receiver.id,
         },
       },
     });
 
-    console.debug(`Friend request with Sender ID ${senderId} deleted`);
+    console.debug(`Friend request with Sender ID ${senderId} removed`);
     return NextResponse.json({ success: true });
 
   } catch (error) {
-    console.error('Error deleting friend request:', error);
-    return NextResponse.json({ error: 'Failed to delete friend request', details: (error as any).message }, { status: 500 });
+    console.error('Error removing friend request:', error);
+    return NextResponse.json({ error: 'Failed to remove friend request', details: (error as any).message }, { status: 500 });
   }
 }
