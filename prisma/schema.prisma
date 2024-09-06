@@ -33,23 +33,30 @@ model User {
   receivedFriendRequests FriendRequest[]      @relation("ReceivedFriendRequests")
 }
 
-model FriendRequest {
+model Pitch {
   id                   Int                   @id @default(autoincrement())
-  senderId             Int
-  receiverId           Int
-  sender               User                  @relation("SentFriendRequests", fields: [senderId], references: [id])
-  receiver             User                  @relation("ReceivedFriendRequests", fields: [receiverId], references: [id])
-  status               FriendRequestStatus   @default(PENDING)
+  title                String
+  description          String
+  entrepreneurId       Int
+  entrepreneur         EntrepreneurProfile   @relation(fields: [entrepreneurId], references: [id])
+  feedbacks            Feedback[]            // Feedback given by investors
+  interests            Interest[]            // Interests shown by users
   createdAt            DateTime              @default(now())
   updatedAt            DateTime              @updatedAt
+  category             String?
+  fundingGoal          Float?
+  currentFunding       Float?
+  stage                String?
+  pitchDeckFileName    String?               // File name of the uploaded pitch deck
+  deadline             DateTime?
+  locationId           Int?                  // Foreign key reference
+  location             Location?             @relation(fields: [locationId], references: [id])
+  tags                 String[]
+  status               String?
+  attachments          String[]              // Array of URLs or paths for attachments
+  presentationDate     DateTime?
 
-  @@unique([senderId, receiverId])  // Ensure a unique friend request between two users
-}
-
-enum FriendRequestStatus {
-  PENDING
-  ACCEPTED
-  REJECTED
+  User User[]
 }
 
 model EntrepreneurProfile {
@@ -70,6 +77,27 @@ model EntrepreneurProfile {
   revenue               Float?                // Added revenue field
   investmentOpportunities InvestmentOpportunity[] // Added field for investment opportunities
 }
+
+model FriendRequest {
+  id                   Int                   @id @default(autoincrement())
+  senderId             Int
+  receiverId           Int
+  sender               User                  @relation("SentFriendRequests", fields: [senderId], references: [id])
+  receiver             User                  @relation("ReceivedFriendRequests", fields: [receiverId], references: [id])
+  status               FriendRequestStatus   @default(PENDING)
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+
+  @@unique([senderId, receiverId]) 
+}
+
+enum FriendRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+
 
 model InvestmentOpportunity {
   id                   Int                   @id @default(autoincrement())
@@ -128,31 +156,7 @@ model Investment {
 
 
 
-model Pitch {
-  id                   Int                   @id @default(autoincrement())
-  title                String
-  description          String
-  entrepreneurId       Int
-  entrepreneur         EntrepreneurProfile   @relation(fields: [entrepreneurId], references: [id])
-  feedbacks            Feedback[]            // Feedback given by investors
-  interests            Interest[]            // Interests shown by users
-  createdAt            DateTime              @default(now())
-  updatedAt            DateTime              @updatedAt
-  category             String?
-  fundingGoal          Float?
-  currentFunding       Float?
-  stage                String?
-  pitchDeckFileName    String?               // File name of the uploaded pitch deck
-  deadline             DateTime?
-  locationId           Int?                  // Foreign key reference
-  location             Location?             @relation(fields: [locationId], references: [id])
-  tags                 String[]
-  status               String?
-  attachments          String[]              // Array of URLs or paths for attachments
-  presentationDate     DateTime?
 
-  User User[]
-}
 
 
 model Location {

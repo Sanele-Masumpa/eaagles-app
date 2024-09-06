@@ -1,8 +1,11 @@
 "use client";
+
 import { useState } from 'react';
 import { FaUpload, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import supabase  from '@/lib/supabaseClient'; // Adjust path as needed
 
 interface InvestmentOpportunity {
   title: string;
@@ -19,53 +22,84 @@ const EntrepreneurProfileForm = () => {
   const [revenue, setRevenue] = useState<number | ''>('');
   const [investmentOpportunities, setInvestmentOpportunities] = useState<InvestmentOpportunity[]>([]);
   const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const handleFormSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
 
-    if (!bio || !company || !businessStage || !fundingHistory || !linkedinUrl || revenue === '') {
-      toast.error('All fields are required!');
+const handleFormSubmit = async (event: React.FormEvent) => {
+  event.preventDefault();
+
+  if (!bio || !company || !businessStage || !fundingHistory || !linkedinUrl || revenue === '') {
+    toast.error('All fields are required!');
+    return;
+  }
+
+  let imageUrl: string | null = null;
+
+  // Upload image to Supabase if an image is selected
+  if (image) {
+    const { data, error } = await supabase
+      .storage
+      .from('your-bucket-name') // Replace with your bucket name
+      .upload(`profiles/${Date.now()}_${image.name}`, image);
+
+    if (error) {
+      toast.error('Failed to upload image.');
       return;
     }
+    imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data.path}`;
+  }
 
-    const formData = new FormData();
-    formData.append('bio', bio);
-    formData.append('company', company);
-    formData.append('businessStage', businessStage);
-    formData.append('fundingHistory', fundingHistory);
-    formData.append('linkedinUrl', linkedinUrl);
-    formData.append('revenue', revenue.toString());
-    formData.append('investmentOpportunities', JSON.stringify(investmentOpportunities));
-    if (image) formData.append('image', image);
+  // Save profile data to Prisma
+  try {
+    const response = await fetch('/api/entrepreneur-profile', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        bio,
+        company,
+        businessStage,
+        fundingHistory,
+        linkedinUrl,
+        revenue,
+        investmentOpportunities,
+        imageUrl, // Include image URL if uploaded
+      }),
+    });
 
-    try {
-      const response = await fetch('/api/entrepreneur-profile', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (response.ok) {
-        toast.success('Profile updated successfully!');
-        setBio('');
-        setCompany('');
-        setBusinessStage('');
-        setFundingHistory('');
-        setLinkedinUrl('');
-        setRevenue('');
-        setInvestmentOpportunities([]);
-        setImage(null);
-      } else {
-        const errorData = await response.json();
-        toast.error(`Failed to update profile: ${errorData.error}`);
-      }
-    } catch (error) {
-      toast.error('Failed to update profile.');
+    if (response.ok) {
+      toast.success('Profile updated successfully!');
+      // Reset the form state
+      setBio('');
+      setCompany('');
+      setBusinessStage('');
+      setFundingHistory('');
+      setLinkedinUrl('');
+      setRevenue('');
+      setInvestmentOpportunities([]);
+      setImage(null);
+      setImagePreview(null);
+    } else {
+      const errorData = await response.json();
+      toast.error(`Failed to update profile: ${errorData.error}`);
     }
-  };
+  } catch (error) {
+    toast.error('Failed to update profile.');
+  }
+};
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
     setImage(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleInvestmentOpportunityChange = (index: number, field: keyof InvestmentOpportunity, value: string) => {
@@ -113,13 +147,17 @@ const EntrepreneurProfileForm = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="businessStage">Business Stage</label>
-          <input
+          <select
             id="businessStage"
-            type="text"
             value={businessStage}
             onChange={(e) => setBusinessStage(e.target.value)}
             className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm"
-          />
+          >
+            <option value="" disabled>Select Business Stage</option>
+            <option value="Startup">Startup</option>
+            <option value="Growth">Growth</option>
+            <option value="Mature">Mature</option>
+          </select>
         </div>
 
         <div>
@@ -203,23 +241,27 @@ const EntrepreneurProfileForm = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="image">Profile Image</label>
+          {imagePreview && (
+            <div className="mb-4">
+              <img src={imagePreview} alt="Preview" className="h-32 w-32 object-cover rounded-full" />
+            </div>
+          )}
           <input
             id="image"
             type="file"
             accept="image/*"
             onChange={handleFileChange}
-            className="block w-full text-sm text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:text-sm file:font-medium file:bg-gray-50 hover:file:bg-gray-100"
+            className="block w-full text-sm text-gray-500 file:py-2 file:px-4 file:border file:border-gray-300 file:rounded-md file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
           />
         </div>
 
         <button
           type="submit"
-          className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-400 to-green-600 text-white rounded-full shadow-lg hover:opacity-90 transition-opacity duration-300"
+          className="w-full py-2 px-4 bg-green-600 text-white rounded-md shadow-md hover:bg-green-700 transition-colors duration-300"
         >
           Update Profile
         </button>
       </form>
-
       <ToastContainer />
     </div>
   );

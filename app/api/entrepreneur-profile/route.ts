@@ -1,125 +1,71 @@
-import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-import supabase from "@/lib/supabaseClient";
-import { getAuth } from "@clerk/nextjs/server";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { db } from '@/lib/prisma'; // Adjust path as needed
 
-// Define the type for investment opportunities
-interface InvestmentOpportunityInput {
-  title: string;
-  description?: string;
-  amount?: number;
-}
-
-type UserRole = 'entrepreneur' | 'investor' | 'admin'; // Define roles
-
-const prisma = new PrismaClient();
-
-export async function POST(request: NextRequest) {
-  const { userId: clerkId } = await getAuth(request);
-
-  if (!clerkId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  try {
-    const user = await prisma.user.findUnique({
-      where: { clerkId },
-      include: { entrepreneurProfile: true },
-    });
-
-    if (!user || user.role !== 'ENTREPRENEUR') {
-      console.log("Unauthorized access attempt with clerkId:", clerkId);
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const formData = await request.formData();
-    const bio = formData.get("bio") as string;
-    const company = formData.get("company") as string;
-    const businessStage = formData.get("businessStage") as string;
-    const fundingHistory = formData.get("fundingHistory") as string;
-    const linkedinUrl = formData.get("linkedinUrl") as string;
-    const revenue = parseFloat(formData.get("revenue") as string);
-    const investmentOpportunities = formData.get("investmentOpportunities") as string;
-    const imageFile = formData.get("image") as File;
-
-    let imageUrl = "";
-
-    if (imageFile) {
-      // Upload file to Supabase
-      const { data, error: uploadError } = await supabase.storage
-        .from("profiles")
-        .upload(`images/${clerkId}/${imageFile.name}`, imageFile);
-    
-      if (uploadError) throw uploadError;
-    
-      // Get the public URL of the uploaded file
-      const { data: publicUrlData } = supabase.storage
-        .from("profiles")
-        .getPublicUrl(data.path);
-    
-      imageUrl = publicUrlData.publicUrl || "";
-    }
-    
-
-    // Parse and validate investment opportunities
-    const parsedInvestmentOpportunities: InvestmentOpportunityInput[] = investmentOpportunities
-      ? JSON.parse(investmentOpportunities)
-      : [];
-
-    // Check for invalid investment opportunities
-    const validOpportunities = parsedInvestmentOpportunities.filter(
-      (opp) => opp.title && (opp.amount === undefined || !isNaN(opp.amount))
-    );
-
-    // Upsert the EntrepreneurProfile and handle investment opportunities
-    await prisma.entrepreneurProfile.upsert({
-      where: { userId: user.id },
-      update: {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === 'POST') {
+    try {
+      const {
         bio,
         company,
         businessStage,
         fundingHistory,
         linkedinUrl,
-        imageUrl,
         revenue,
-        investmentOpportunities: {
-          deleteMany: {},
-          create: validOpportunities.map((opp) => ({
-            title: opp.title,
-            description: opp.description,
-            amount: opp.amount,
-            entrepreneurProfileId: user.id,
-          })),
-        },
-      },
-      create: {
-        userId: user.id,
-        bio,
-        company,
-        businessStage,
-        fundingHistory,
-        linkedinUrl,
+        investmentOpportunities,
         imageUrl,
-        revenue,
-        investmentOpportunities: {
-          create: validOpportunities.map((opp) => ({
-            title: opp.title,
-            description: opp.description,
-            amount: opp.amount,
-            entrepreneurProfileId: user.id,
-          })),
-        },
-      },
-    });
+      } = req.body;
 
-    console.log("Profile updated successfully for userId:", user.id);
-    toast.success("Profile updated successfully!");
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error("Failed to update profile:", error);
-    toast.error("Failed to update profile.");
-    return NextResponse.json({ error: "Failed to update profile" }, { status: 500 });
+      const clerkId = req.headers['clerk-id'] as string;
+
+      if (!clerkId) {
+        return res.status(400).json({ error: 'Clerk ID is required' });
+      }
+
+      const user = await db.user.findFirst({ where: { clerkId } });
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      await db.entrepreneurProfile.upsert({
+        where: { userId: user.id },
+        update: {
+          bio,
+          company,
+          businessStage,
+          fundingHistory,
+          linkedinUrl,
+          revenue,
+          imageUrl,
+          investmentOpportunities: {
+            upsert: investmentOpportunities.map((opp: any) => ({
+              where: { title: opp.title },
+              update: opp,
+              create: opp,
+            })),
+          },
+        },
+        create: {
+          userId: user.id,
+          bio,
+          company,
+          businessStage,
+          fundingHistory,
+          linkedinUrl,
+          revenue,
+          imageUrl,
+          investmentOpportunities: {
+            create: investmentOpportunities,
+          },
+        },
+      });
+
+      res.status(200).json({ message: 'Profile updated successfully' });
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      res.status(500).json({ error: 'Failed to update profile' });
+    }
+  } else {
+    res.setHeader('Allow', ['POST']);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
