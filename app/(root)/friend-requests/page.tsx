@@ -59,7 +59,6 @@ const ProfilesPage = () => {
       setLoading(true);
       try {
         const response = await axios.get("/api/users");
-        // Shuffle profiles to randomize the collection
         const shuffledProfiles = response.data.sort(() => Math.random() - 0.5);
         setProfiles(shuffledProfiles);
       } catch (err) {

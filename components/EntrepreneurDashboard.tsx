@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 interface InvestmentOpportunity {
   id: number;
@@ -26,12 +26,12 @@ const EntrepreneurProfile: React.FC = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch('/api/entrepreneur-profile');
-        if (!response.ok) throw new Error('Failed to fetch profile');
+        const response = await fetch("/api/entrepreneur-profile");
+        if (!response.ok) throw new Error("Failed to fetch profile");
         const data = await response.json();
         setProfile(data);
       } catch (error) {
-        console.error(error);
+        // Optionally handle the error
       }
     };
 
@@ -43,7 +43,11 @@ const EntrepreneurProfile: React.FC = () => {
   return (
     <div className="p-4 max-w-4xl mx-auto">
       {profile.imageUrl && (
-        <img src={profile.imageUrl} alt="Profile Image" className="w-32 h-32 rounded-full object-cover" />
+        <img
+          src={profile.imageUrl}
+          alt="Profile"
+          className="w-32 h-32 rounded-full object-cover"
+        />
       )}
       <h1 className="text-2xl font-bold">{profile.company}</h1>
       <p>{profile.bio}</p>
