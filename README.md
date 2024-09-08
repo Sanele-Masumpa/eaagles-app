@@ -1,4 +1,3 @@
-
 # 🦅 Eagles Ring
 
 **Eagles Ring** is an elite platform crafted to bridge the gap between visionary entrepreneurs and discerning investors. By streamlining the pitching process, we offer both asynchronous and real-time engagement opportunities, ensuring seamless connections and fostering fruitful investment opportunities. Whether you're an entrepreneur with groundbreaking ideas or an investor seeking the next big venture, Eagles Ring is your gateway to success.
@@ -20,7 +19,7 @@
 - **Frontend:** [Next.js](https://nextjs.org/), [React](https://reactjs.org/)
 - **Backend:** [Next.js API Routes](https://nextjs.org/docs/api-routes/introduction)
 - **Authentication:** [Clerk](https://clerk.dev/)
-- **Database:** [PostgreSQL](https://www.neon.tech/)
+- **Database:** [Supabase](https://supabase.io/) (PostgreSQL)
 - **ORM:** [Prisma](https://www.prisma.io/)
 - **Real-Time Updates:** [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API), [GetStream](https://getstream.io/)
 - **Video Streaming:** [Twilio](https://www.twilio.com/)
@@ -34,7 +33,7 @@
 ### Prerequisites
 
 - Node.js v14.x or higher
-- PostgreSQL
+- Supabase (PostgreSQL)
 - npm or yarn
 - Docker (optional for containerized deployment)
 
@@ -63,12 +62,16 @@ CLERK_WEBHOOK_SECRET=<YOUR_CLERK_WEBHOOK_SECRET>
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=<YOUR_CLERK_PUBLISHABLE_KEY>
 CLERK_SECRET_KEY=<YOUR_CLERK_SECRET_KEY>
 
+# Supabase Database URL
+SUPABASE_URL=<YOUR_SUPABASE_URL>
+SUPABASE_KEY=<YOUR_SUPABASE_KEY>
+
+# Prisma and Supabase database connection URL
+DATABASE_URL=<YOUR_SUPABASE_ORM_KEY>
+
 # Stream API Keys
 NEXT_PUBLIC_STREAM_API_KEY=<YOUR_STREAM_API_KEY>
 STREAM_SECRET_KEY=<YOUR_STREAM_SECRET_KEY>
-
-# Database URL
-DATABASE_URL=<YOUR_DATABASE_URL>
 
 # Pusher API Keys
 NEXT_PUBLIC_PUSHER_APP_ID=<YOUR_PUSHER_APP_ID>

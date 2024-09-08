@@ -235,15 +235,12 @@ export default function DashboardPage() {
     <h1 className="text-3xl sm:text-2xl md:text-4xl font-bold mb-4">
       Connecting entrepreneurs with world-class investors to create a brighter future.
     </h1>
-    <h2 className="text-2xl sm:text-xl md:text-3xl font-semibold mb-6">
-      Join the Premier Platform for Entrepreneurs and Investors
-    </h2>
     <p className="text-base sm:text-sm md:text-lg mb-8">
       Connect, innovate, and grow with Eagles Ring. Our platform brings together startups and investors to foster groundbreaking business ideas and opportunities.
     </p>
     <a
       href="/sign-up"
-      className="px-4 py-2 rounded-full bg-gradient-to-r from-blue-400 to-blue-700 text-white hover:opacity-90 transition-opacity duration-300 text-sm sm:text-xs md:text-sm lg:text-base shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+      className="text-lg font-semibold rounded-lg px-4 py-2 transition-all duration-300 ease-in-out bg-gradient-to-r from-blue-400 to-blue-700 text-gray-100 shadow-lg hover:from-blue-500 hover:to-blue-800 dark:bg-gradient-to-r dark:from-blue-600 dark:to-blue-900 dark:text-gray-100 dark:hover:from-blue-700 dark:hover:to-blue-800 focus:outline-none"
     >
       Join Now
     </a>
@@ -277,37 +274,37 @@ export default function DashboardPage() {
     <h3 className="text-xl sm:text-lg md:text-2xl font-semibold mb-6">Our Features</h3>
     <div className="overflow-hidden w-full">
       <div className="flex flex-nowrap animate-scroll-features">
-        <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 sm:p-3 md:p-6 dark:bg-black border rounded-lg shadow-lg mr-4 last:mr-0">
+        <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 sm:p-3 md:p-6 dark:bg-gray-800 border rounded-lg shadow-lg mr-4 last:mr-0">
           <h4 className="text-base sm:text-sm md:text-lg font-semibold mb-2">Innovative Ideas</h4>
           <p className="text-sm sm:text-xs md:text-base">
             Discover groundbreaking ideas from talented entrepreneurs looking to make an impact.
           </p>
         </div>
-        <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 sm:p-3 md:p-6 dark:bg-black border rounded-lg shadow-lg mr-4 last:mr-0">
+        <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 sm:p-3 md:p-6 dark:bg-gray-800 border rounded-lg shadow-lg mr-4 last:mr-0">
           <h4 className="text-base sm:text-sm md:text-lg font-semibold mb-2">Secure Transactions</h4>
           <p className="text-sm sm:text-xs md:text-base">
             Ensure your investments are safe with our secure and transparent transaction processes.
           </p>
         </div>
-        <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 sm:p-3 md:p-6 dark:bg-black border rounded-lg shadow-lg mr-4 last:mr-0">
+        <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 sm:p-3 md:p-6 dark:bg-gray-800 border rounded-lg shadow-lg mr-4 last:mr-0">
           <h4 className="text-base sm:text-sm md:text-lg font-semibold mb-2">Effective Communication</h4>
           <p className="text-sm sm:text-xs md:text-base">
             Connect easily with entrepreneurs and investors through our integrated communication tools.
           </p>
         </div>
-        <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 sm:p-3 md:p-6 dark:bg-black border rounded-lg shadow-lg mr-4 last:mr-0">
+        <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 sm:p-3 md:p-6 dark:bg-gray-800 border rounded-lg shadow-lg mr-4 last:mr-0">
           <h4 className="text-base sm:text-sm md:text-lg font-semibold mb-2">Expert Guidance</h4>
           <p className="text-sm sm:text-xs md:text-base">
             Gain insights and mentorship from industry experts to refine your business strategy.
           </p>
         </div>
-        <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 sm:p-3 md:p-6 dark:bg-black border rounded-lg shadow-lg mr-4 last:mr-0">
+        <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 sm:p-3 md:p-6 dark:bg-gray-800 border rounded-lg shadow-lg mr-4 last:mr-0">
           <h4 className="text-base sm:text-sm md:text-lg font-semibold mb-2">Real-Time Analytics</h4>
           <p className="text-sm sm:text-xs md:text-base">
             Monitor your investments and performance with real-time analytics and reporting tools.
           </p>
         </div>
-        <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 sm:p-3 md:p-6 dark:bg-black border rounded-lg shadow-lg mr-4 last:mr-0">
+        <div className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-4 sm:p-3 md:p-6 dark:bg-gray-800 border rounded-lg shadow-lg mr-4 last:mr-0">
           <h4 className="text-base sm:text-sm md:text-lg font-semibold mb-2">Customized Opportunities</h4>
           <p className="text-sm sm:text-xs md:text-base">
             Receive tailored investment opportunities that match your interests and goals.
@@ -317,7 +314,7 @@ export default function DashboardPage() {
     </div>
     <a
       href="/features"
-      className="absolute bottom-2 right-0 p-2 text-blue-500 dark:text-blue-300 underline text-sm sm:text-xs md:text-sm lg:text-base transition-transform transform hover:scale-105"
+      className="absolute  right-0 p-2 text-blue-500 dark:text-blue-300 underline text-sm sm:text-xs md:text-sm lg:text-base transition-transform transform hover:scale-105"
     >
       View All
     </a>
@@ -330,7 +327,7 @@ export default function DashboardPage() {
     </p>
     <a
       href="/sign-up"
-      className="px-4 py-2 rounded-full bg-gradient-to-r from-green-400 to-green-700 text-white hover:opacity-90 transition-opacity duration-300 text-sm sm:text-xs md:text-sm lg:text-base shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+      className="text-lg font-semibold rounded-lg px-4 py-2 transition-all duration-300 ease-in-out bg-gradient-to-r from-blue-400 to-blue-700 text-gray-100 shadow-lg hover:from-blue-500 hover:to-blue-800 dark:bg-gradient-to-r dark:from-blue-600 dark:to-blue-900 dark:text-gray-100 dark:hover:from-blue-700 dark:hover:to-blue-800 focus:outline-none"
     >
       Get Started
     </a>
