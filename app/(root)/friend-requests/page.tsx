@@ -197,7 +197,7 @@ const ProfilesPage = () => {
   {dataToDisplay.map((item: any) => (
   <div
     key={item.id}
-    className="relative bg-gradient-to-r from-blue-100 to-white dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-xl transition-transform transform hover:scale-105 hover:shadow-2xl"
+    className="relative bg-gradient-to-r from-gray-300 to-gray-200 dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-xl transition-transform transform "
   >
     {/* Badge for Role */}
     <div className="absolute top-2 right-2 bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-lg shadow-md">

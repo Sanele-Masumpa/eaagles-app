@@ -9,30 +9,26 @@ import {
   NavbarItem,
   NavbarMenuItem,
 } from "@nextui-org/navbar";
-import { Kbd } from "@nextui-org/kbd";
 import { Link } from "@nextui-org/link";
-import { Input } from "@nextui-org/input";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { SearchIcon } from "@/components/icons";
 import { SignInButton, SignedIn, SignedOut, UserButton, SignOutButton } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import Image from 'next/image';
-import eagleSvg from '@/public/images/Eagle.png'; // Update with the correct path to your SVG file
-import { useRouter } from 'next/navigation';
+import eagleSvg from '@/public/images/Eagle.png';
+import { usePathname } from 'next/navigation'; // Updated import
+import router from "next/router";
 
 export const Navbar = () => {
   const [role, setRole] = useState<string | null>(null);
-  const [menuOpen, setMenuOpen] = useState(false); // State for menu visibility
-  const [isSmallScreen, setIsSmallScreen] = useState(false); // State for screen size
-  const router = useRouter(); // Next.js router instance
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const pathname = usePathname(); // Get the current path for highlighting
 
   useEffect(() => {
-    // Function to check if the screen is small
     const checkScreenSize = () => {
       setIsSmallScreen(window.matchMedia('(max-width: 768px)').matches);
     };
 
-    // Check screen size on initial render and on resize
     checkScreenSize();
     window.addEventListener('resize', checkScreenSize);
 
@@ -60,33 +56,19 @@ export const Navbar = () => {
     fetchUserRole();
   }, []);
 
-  const searchInput = (
-    <Input
-      aria-label="Search"
-      classNames={{
-        inputWrapper: "bg-default-100",
-        input: "text-sm",
-      }}
-      endContent={
-        <Kbd className="hidden lg:inline-block" keys={["command"]}>
-          K
-        </Kbd>
-      }
-      labelPlacement="outside"
-      placeholder="Search..."
-      startContent={
-        <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
-      }
-      type="search"
-    />
-  );
-
   const handleLinkClick = (href: string) => {
     router.push(href);
     if (isSmallScreen && menuOpen) {
-      // Force a page reload on small screens if the menu is open
       window.location.href = href;
     }
+  };
+
+  const getLinkClasses = (href: string) => {
+    return `text-sm font-bold navbar-link ${
+      pathname === href
+        ? 'active text-black dark:text-white font-bold' 
+        : 'text-gray-600 dark:text-gray-300'
+    }`;
   };
 
   const roleBasedOptions = (role: string | null) => {
@@ -95,22 +77,22 @@ export const Navbar = () => {
         return (
           <>
             <NavbarMenuItem>
-              <Link className="text-sm" color="foreground" href="/" onClick={() => handleLinkClick('/')}>
+              <Link className={getLinkClasses('/')} href="/" onClick={() => handleLinkClick('/')}>
                 Dashboard
               </Link>
             </NavbarMenuItem>
             <NavbarMenuItem>
-              <Link className="text-sm" color="foreground" href="/opportunities" onClick={() => handleLinkClick('/opportunities')}>
+              <Link className={getLinkClasses('/opportunities')} href="/opportunities" onClick={() => handleLinkClick('/opportunities')}>
                 Opportunities
               </Link>
             </NavbarMenuItem>
             <NavbarMenuItem>
-              <Link className="text-sm" color="foreground" href="/meetings" onClick={() => handleLinkClick('/meetings')}>
+              <Link className={getLinkClasses('/meetings')} href="/meetings" onClick={() => handleLinkClick('/meetings')}>
                 Meetings
               </Link>
             </NavbarMenuItem>
             <NavbarMenuItem>
-              <Link className="text-sm" color="foreground" href="/friend-requests" onClick={() => handleLinkClick('/meetings')}>
+              <Link className={getLinkClasses('/friend-requests')} href="/friend-requests" onClick={() => handleLinkClick('/friend-requests')}>
                 Friend-requests
               </Link>
             </NavbarMenuItem>
@@ -120,22 +102,22 @@ export const Navbar = () => {
         return (
           <>
             <NavbarMenuItem>
-              <Link className="text-sm" color="foreground" href="/" onClick={() => handleLinkClick('/')}>
+              <Link className={getLinkClasses('/')} href="/" onClick={() => handleLinkClick('/')}>
                 Dashboard
               </Link>
             </NavbarMenuItem>
             <NavbarMenuItem>
-              <Link className="text-sm" color="foreground" href="/pitches" onClick={() => handleLinkClick('/pitches')}>
+              <Link className={getLinkClasses('/pitches')} href="/pitches" onClick={() => handleLinkClick('/pitches')}>
                 Pitches
               </Link>
             </NavbarMenuItem>
             <NavbarMenuItem>
-              <Link className="text-sm" color="foreground" href="/meetings" onClick={() => handleLinkClick('/meetings')}>
+              <Link className={getLinkClasses('/meetings')} href="/meetings" onClick={() => handleLinkClick('/meetings')}>
                 Meetings
               </Link>
             </NavbarMenuItem>
             <NavbarMenuItem>
-              <Link className="text-sm" color="foreground" href="/friend-requests" onClick={() => handleLinkClick('/meetings')}>
+              <Link className={getLinkClasses('/friend-requests')} href="/friend-requests" onClick={() => handleLinkClick('/friend-requests')}>
                 Friend-requests
               </Link>
             </NavbarMenuItem>
@@ -149,12 +131,12 @@ export const Navbar = () => {
   const commonLinks = (
     <>
       <NavbarMenuItem>
-        <Link className="text-sm" color="foreground" href="/about" onClick={() => handleLinkClick('/about')}>
+        <Link className={getLinkClasses('/about')} href="/about" onClick={() => handleLinkClick('/about')}>
           About
         </Link>
       </NavbarMenuItem>
       <NavbarMenuItem>
-        <Link className="text-sm" color="foreground" href="/pricing" onClick={() => handleLinkClick('/pricing')}>
+        <Link className={getLinkClasses('/pricing')} href="/pricing" onClick={() => handleLinkClick('/pricing')}>
           Pricing
         </Link>
       </NavbarMenuItem>
@@ -162,7 +144,7 @@ export const Navbar = () => {
   );
 
   return (
-    <NextUINavbar maxWidth="xl" position="sticky">
+    <NextUINavbar maxWidth="xl" position="sticky" className="bg-gray-300 dark:bg-black shadow-md">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <Link className="flex justify-start items-center gap-1" href="/">
@@ -173,9 +155,10 @@ export const Navbar = () => {
               height={32} 
               className="w-8 h-8 invert-on-dark" 
             />
-            <p className="font-bold text-2xl text-inherit">Eagles Ring</p>
+            <p className="font-bold text-2xl text-gray-800 dark:text-gray-300">EaglesRing</p>
           </Link>
         </NavbarBrand>
+
         <ul className="hidden lg:flex gap-3 justify-start ml-2">
           <SignedIn>
             {roleBasedOptions(role)}
@@ -194,15 +177,25 @@ export const Navbar = () => {
           </SignedIn>
           <SignedOut>
             <SignInButton>
-              Sign In
+              <button
+                className="text-lg font-semibold rounded-lg px-4 py-2 transition-all duration-300 ease-in-out bg-gradient-to-r from-green-500 to-green-500 text-gray-100 shadow-lg hover:from-green-600 hover:to-green-600 dark:bg-gradient-to-r dark:from-green-800 dark:to-green-800 dark:text-gray-100 dark:hover:from-green-900 dark:hover:to-green-900 focus:outline-none"
+                type="button"
+              >
+                Sign In
+              </button>
             </SignInButton>
           </SignedOut>
         </NavbarItem>
-        <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
+        
         <NavbarItem className="hidden md:flex">
           <SignedIn>
             <SignOutButton>
-              Log Out
+              <button
+                className="text-lg font-semibold rounded-lg px-4 py-2 transition-all duration-300 ease-in-out bg-gradient-to-r from-red-500 to-red-500 text-gray-100 shadow-lg hover:from-red-600 hover:to-red-600 dark:bg-gradient-to-r dark:from-red-800 dark:to-red-800 dark:text-gray-100 dark:hover:from-red-900 dark:hover:to-red-900 focus:outline-none"
+                type="button"
+              >
+                Log Out
+              </button>
             </SignOutButton>
           </SignedIn>
         </NavbarItem>
@@ -213,7 +206,14 @@ export const Navbar = () => {
           <UserButton />
         </SignedIn>
         <SignedOut>
-          <SignInButton />
+          <SignInButton>
+            <button
+              className="text-lg font-semibold rounded-lg px-4 py-2 transition-all duration-300 ease-in-out bg-gradient-to-r from-green-500 to-green-500 text-gray-100 shadow-lg hover:from-green-600 hover:to-green-600 dark:bg-gradient-to-r dark:from-green-800 dark:to-green-800 dark:text-gray-100 dark:hover:from-green-900 dark:hover:to-green-900 focus:outline-none"
+              type="button"
+            >
+              Sign In
+            </button>
+          </SignInButton>
         </SignedOut>
         <ThemeSwitch />
         <NavbarMenuToggle onClick={() => setMenuOpen(!menuOpen)} />
@@ -221,13 +221,17 @@ export const Navbar = () => {
 
       {menuOpen && (
         <NavbarMenu>
-          {searchInput}
           <div className="mx-4 mt-2 flex flex-col gap-1">
             <SignedIn>
               {roleBasedOptions(role)}
               <NavbarMenuItem>
                 <SignOutButton>
-                  Log Out
+                  <button
+                    className="text-lg font-semibold rounded-lg px-4 py-2 transition-all duration-300 ease-in-out bg-gradient-to-r from-red-500 to-red-500 text-gray-100 shadow-lg hover:from-red-600 hover:to-red-600 dark:bg-gradient-to-r dark:from-red-800 dark:to-red-800 dark:text-gray-100 dark:hover:from-red-900 dark:hover:to-red-900 focus:outline-none"
+                    type="button"
+                  >
+                    Log Out
+                  </button>
                 </SignOutButton>
               </NavbarMenuItem>
             </SignedIn>

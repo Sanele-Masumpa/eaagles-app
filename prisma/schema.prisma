@@ -43,21 +43,20 @@ model Pitch {
   interests            Interest[]            // Interests shown by users
   createdAt            DateTime              @default(now())
   updatedAt            DateTime              @updatedAt
-  category             String?
-  fundingGoal          Float?
-  currentFunding       Float?
-  stage                String?
-  pitchDeckFileName    String?               // File name of the uploaded pitch deck
-  deadline             DateTime?
-  locationId           Int?                  // Foreign key reference
-  location             Location?             @relation(fields: [locationId], references: [id])
-  tags                 String[]
-  status               String?
-  attachments          String[]              // Array of URLs or paths for attachments
-  presentationDate     DateTime?
+  fundingGoal          Float?                // Entrepreneur sets this goal
+  currentFunding       Float?                // This is updated programmatically
+  stage                String?               // Stage of the pitch (optional)
+  pitchDeckFileName    String?               // File name of the uploaded pitch deck (optional)
+  tags                 String[]              // Tags relevant to the pitch (optional)
+  status               String?               // Status of the pitch, updated programmatically
+  attachments          String[]              // Additional documents or files (optional)
+  videoUrl             String?               // URL of the pitch video (optional)
+  country              String                // Location country
+  city                 String                // Location city
 
-  User User[]
+ User User[]
 }
+
 
 model EntrepreneurProfile {
   id                    Int                   @id @default(autoincrement())
@@ -154,19 +153,6 @@ model Investment {
   InvestmentOpportunity InvestmentOpportunity[] @relation("InvestmentOpportunityInvestments")
 }
 
-
-
-
-
-
-model Location {
-  id                   Int                   @id @default(autoincrement())
-  country              String
-  city                 String
-  pitches              Pitch[]
-
-  @@unique([country, city]) // This adds a composite unique constraint
-}
 
 model Feedback {
   id                   Int                   @id @default(autoincrement())

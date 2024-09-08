@@ -119,7 +119,37 @@ flex-shrink: 0;
 @media (prefers-color-scheme: dark) {
   .Toastify__toast {
     background: black !important; /* Dark mode background */
-    color: #ddd !important; /* Dark mode text color */
+    color: #ddd !important; 
   }
 }
 
+.navbar-link {
+  position: relative;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  color: #333;
+  transition: color 0.3s, border-bottom 0.3s;
+}
+
+.navbar-link:hover {
+  color: #0070f3;
+}
+
+.navbar-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background-color: transparent;
+  transition: background-color 0.3s;
+}
+
+.navbar-link:hover::after {
+  background-color: #0070f3; 
+}
+
+.navbar-link.active::after {
+  background-color: #0070f3;
+}

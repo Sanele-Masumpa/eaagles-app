@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import CurrentPlan from '@/components/pricing/current-plan';
 import { plans } from '@/constants/plans'; // Adjust the import path as necessary
 import { FaCheck, FaTimes } from 'react-icons/fa'; // Import icons
+import LoadingDots from '@/components/ui/LoadingDots';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -16,6 +17,7 @@ const SubscriptionForm = () => {
   const [selectedPlan, setSelectedPlan] = useState<string>('');
   const [isYearly, setIsYearly] = useState<boolean>(false);
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {}, [user?.primaryEmailAddress?.emailAddress]);
 
@@ -24,16 +26,19 @@ const SubscriptionForm = () => {
   };
 
   const handleSubmit = async (planName: string) => {
+    setIsLoading(true);
     const userEmail = user?.primaryEmailAddress?.emailAddress;
 
     if (!planName || !user?.id || !userEmail) {
       toast.error('Please select a plan and ensure you are logged in.');
+    setIsLoading(false);
       return;
     }
 
     const selectedPlanData = plans.find((plan) => plan.name === planName);
     if (!selectedPlanData) {
       toast.error('Invalid plan selected.');
+      setIsLoading(false);
       return;
     }
 
@@ -77,7 +82,7 @@ const SubscriptionForm = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-extrabold mb-8 text-center">Subscription Plans</h1>
+      <h1 className="text-4xl font-extrabold mb-18 text-center">Subscription Plans</h1>
       <SignedIn>
         <CurrentPlan />
       </SignedIn>
@@ -104,7 +109,7 @@ const SubscriptionForm = () => {
           {plans.map(plan => (
             <div
               key={plan.name}
-              className={`border rounded-lg p-6 transition-transform duration-300 ${selectedPlan === plan.name ? 'border-green-600 shadow-lg transform scale-105' : 'border-gray-300'}`}
+              className={`border rounded-lg p-6 transition-transform duration-300 ${selectedPlan === plan.name ? 'border-green-600 shadow-lg transform scale-105' : 'border-blue-800'}`}
               role="button"
               tabIndex={0}
               onClick={() => handlePlanSelect(plan.name)}
@@ -137,10 +142,13 @@ const SubscriptionForm = () => {
               </ul>
               <button
                 type="button"
-                className={`w-full py-2 px-4 rounded-lg font-bold transition-colors duration-300 ${selectedPlan === plan.name ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+                className={`w-full py-2 px-4 rounded-lg font-bold transition-colors duration-300 ${
+                  selectedPlan === plan.name ? 'bg-green-600 text-white' : 'bg-blue-800 text-gray-200'
+                }`}
                 onClick={() => handleSubmit(plan.name)}
+                disabled={isLoading}
               >
-                Subscribe
+                {isLoading ? <LoadingDots /> : 'Subscribe'}
               </button>
             </div>
           ))}
