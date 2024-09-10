@@ -33,6 +33,15 @@ model User {
   receivedFriendRequests FriendRequest[]      @relation("ReceivedFriendRequests")
 }
 
+enum Stage {
+  IDEA
+  VALIDATION
+  MVP
+  GROWTH
+  SCALING
+  EXIT
+}
+
 model Pitch {
   id                   Int                   @id @default(autoincrement())
   title                String
@@ -41,21 +50,22 @@ model Pitch {
   entrepreneur         EntrepreneurProfile   @relation(fields: [entrepreneurId], references: [id])
   feedbacks            Feedback[]            // Feedback given by investors
   interests            Interest[]            // Interests shown by users
-  createdAt            DateTime              @default(now())
-  updatedAt            DateTime              @updatedAt
-  fundingGoal          Float?                // Entrepreneur sets this goal
-  currentFunding       Float?                // This is updated programmatically
-  stage                String?               // Stage of the pitch (optional)
+  createdAt            DateTime              @default(now()) // Read-only, set on creation
+  updatedAt            DateTime              @updatedAt // Read-only, updated automatically
+  fundingGoal          Float?                // Set by the entrepreneur, editable by them
+  currentFunding       Float?                // Read-only, updated programmatically
+  stage                Stage?                // Editable by the entrepreneur to indicate progress
   pitchDeckFileName    String?               // File name of the uploaded pitch deck (optional)
   tags                 String[]              // Tags relevant to the pitch (optional)
-  status               String?               // Status of the pitch, updated programmatically
+  status               String?               // Read-only, updated programmatically
   attachments          String[]              // Additional documents or files (optional)
   videoUrl             String?               // URL of the pitch video (optional)
-  country              String                // Location country
-  city                 String                // Location city
+  country              String                // Set by the entrepreneur, read-only afterward
+  city                 String                // Set by the entrepreneur, read-only afterward
 
- User User[]
+  user                 User[]                // Relation to User model (investors and entrepreneurs)
 }
+
 
 
 model EntrepreneurProfile {

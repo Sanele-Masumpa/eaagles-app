@@ -140,7 +140,7 @@ export default function PitchesPage() {
     }
   };
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (id: number) => {
     if (!selectedPitch) return;
 
     try {
@@ -248,7 +248,10 @@ export default function PitchesPage() {
                         </div>
                         <div className="flex gap-2">
                           <button
-                            onClick={() => handleEditClick(pitch)}
+                            onClick={() => {
+                              setSelectedPitch(pitch);
+                              setIsEditing(true);
+                            }}
                             className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors"
                           >
                             Edit
@@ -347,21 +350,21 @@ export default function PitchesPage() {
                 />
               </div>
               <div>
-                  <label className="block text-gray-700">Stage</label>
-                  <select
-        name="stage" 
-        onChange={handleChange}
-        className="border p-2 rounded w-full"
-        required
-      >
-        <option value="">Select Stage</option>
-        <option value="Idea">Idea</option>
-        <option value="Prototype">Prototype</option>
-        <option value="MVP">MVP</option>
-        <option value="Growth">Growth</option>
-        <option value="Scaling">Scaling</option>
-      </select>
-                </div>
+                <label className="block text-gray-700">Stage</label>
+                <select
+                  name="stage" 
+                  onChange={handleChange}
+                  className="border p-2 rounded w-full"
+                  required
+                >
+                  <option value="">Select Stage</option>
+                  <option value="Idea">Idea</option>
+                  <option value="Prototype">Prototype</option>
+                  <option value="MVP">MVP</option>
+                  <option value="Growth">Growth</option>
+                  <option value="Scaling">Scaling</option>
+                </select>
+              </div>
               <div>
                 <label className="block text-gray-700">Country</label>
                 <input
@@ -381,8 +384,6 @@ export default function PitchesPage() {
                   className="border p-2 rounded w-full"
                   required
                 />
-              </div>
-              <div>
               </div>
               <div>
                 <label className="block text-gray-700">Video File</label>
@@ -406,12 +407,127 @@ export default function PitchesPage() {
                   type="submit"
                   className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
                 >
-                  {isCreating ? "Creating..." : "Create Pitch"}
+                  Create Pitch
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {/* Edit Form */}
+        {isEditing && selectedPitch && (
+          <div className="mt-8 border p-6 rounded-lg shadow-sm">
+            <h3 className="text-3xl font-bold mb-6">Edit Pitch</h3>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleUpdate(selectedPitch.id);
+              }}
+              className="space-y-6"
+            >
+              <div>
+                <label className="block text-gray-700">Title</label>
+                <input
+                  type="text"
+                  value={selectedPitch.title}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, title: e.target.value })}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Description</label>
+                <textarea
+                  value={selectedPitch.description}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, description: e.target.value })}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Funding Goal</label>
+                <input
+                  type="number"
+                  value={selectedPitch.fundingGoal || ""}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, fundingGoal: parseFloat(e.target.value) })}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Current Funding</label>
+                <input
+                  type="number"
+                  value={selectedPitch.currentFunding || ""}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, currentFunding: parseFloat(e.target.value) })}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Stage</label>
+                <select
+                  value={selectedPitch.stage}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, stage: e.target.value })}
+                  className="border p-2 rounded w-full"
+                  required
+                >
+                  <option value="">Select Stage</option>
+                  <option value="Idea">Idea</option>
+                  <option value="Prototype">Prototype</option>
+                  <option value="MVP">MVP</option>
+                  <option value="Growth">Growth</option>
+                  <option value="Scaling">Scaling</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-gray-700">Country</label>
+                <input
+                  type="text"
+                  value={selectedPitch.country}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, country: e.target.value })}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">City</label>
+                <input
+                  type="text"
+                  value={selectedPitch.city}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, city: e.target.value })}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Video File</label>
+                <input
+                  type="file"
+                  onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
+                  className="border p-2 rounded w-full"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Attachments</label>
+                <input
+                  type="file"
+                  multiple
+                  onChange={(e) => setAttachmentFiles(Array.from(e.target.files || []))}
+                  className="border p-2 rounded w-full"
+                />
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
+                >
+                  Save Changes
                 </button>
                 <button
                   type="button"
-                  onClick={handleCloseOverlay}
-                  className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+                  onClick={() => setIsEditing(false)}
+                  className="bg-gray-500 text-white px-4 py-2 rounded ml-4 hover:bg-gray-600 transition-colors"
                 >
                   Cancel
                 </button>
@@ -419,135 +535,9 @@ export default function PitchesPage() {
             </form>
           </div>
         )}
-
-        {/* Overlay for editing */}
-        {isEditing && selectedPitch && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-1/2">
-              <h3 className="text-3xl font-bold mb-6">Edit Pitch</h3>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleUpdate();
-                }}
-                className="space-y-6"
-              >
-                <div>
-                  <label className="block text-gray-700">Title</label>
-                  <input
-                    type="text"
-                    value={selectedPitch.title}
-                    onChange={(e) => setSelectedPitch({ ...selectedPitch, title: e.target.value })}
-                    className="border p-2 rounded w-full"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700">Description</label>
-                  <textarea
-                    value={selectedPitch.description}
-                    onChange={(e) => setSelectedPitch({ ...selectedPitch, description: e.target.value })}
-                    className="border p-2 rounded w-full"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700">Funding Goal</label>
-                  <input
-                    type="number"
-                    value={selectedPitch.fundingGoal || ""}
-                    onChange={(e) => setSelectedPitch({ ...selectedPitch, fundingGoal: parseFloat(e.target.value) })}
-                    className="border p-2 rounded w-full"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700">Current Funding</label>
-                  <input
-                    type="number"
-                    value={selectedPitch.currentFunding || ""}
-                    onChange={(e) => setSelectedPitch({ ...selectedPitch, currentFunding: parseFloat(e.target.value) })}
-                    className="border p-2 rounded w-full"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700">Stage</label>
-                  <select
-        name="stage" // Ensure the name matches the state property
-        value={selectedPitch.stage}
-        onChange={handleChange}
-        className="border p-2 rounded w-full"
-        required
-      >
-        <option value="">Select Stage</option>
-        <option value="Idea">Idea</option>
-        <option value="Prototype">Prototype</option>
-        <option value="MVP">MVP</option>
-        <option value="Growth">Growth</option>
-        <option value="Scaling">Scaling</option>
-      </select>
-                </div>
-                <div>
-                  <label className="block text-gray-700">Country</label>
-                  <input
-                    type="text"
-                    value={selectedPitch.country}
-                    onChange={(e) => setSelectedPitch({ ...selectedPitch, country: e.target.value })}
-                    className="border p-2 rounded w-full"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700">City</label>
-                  <input
-                    type="text"
-                    value={selectedPitch.city}
-                    onChange={(e) => setSelectedPitch({ ...selectedPitch, city: e.target.value })}
-                    className="border p-2 rounded w-full"
-                    required
-                  />
-                </div>
-                <div>
-                </div>
-                <div>
-                  <label className="block text-gray-700">Video File</label>
-                  <input
-                    type="file"
-                    onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
-                    className="border p-2 rounded w-full"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700">Attachments</label>
-                  <input
-                    type="file"
-                    multiple
-                    onChange={(e) => setAttachmentFiles(Array.from(e.target.files || []))}
-                    className="border p-2 rounded w-full"
-                  />
-                </div>
-                <div>
-                  <button
-                    type="submit"
-                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
-                  >
-                    {isUpdating ? "Updating..." : "Update Pitch"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setIsEditing(false)}
-                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
 };
+
 

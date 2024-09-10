@@ -57,9 +57,12 @@ export const Navbar = () => {
   }, []);
 
   const handleLinkClick = (href: string) => {
-    router.push(href);
     if (isSmallScreen && menuOpen) {
+      // Full page reload for small screens when the menu is open
       window.location.href = href;
+    } else {
+      // Client-side navigation for larger screens or when the menu is closed
+      router.push(href);
     }
   };
 

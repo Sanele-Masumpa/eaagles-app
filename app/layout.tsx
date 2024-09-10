@@ -83,7 +83,7 @@ export default function RootLayout({
             fontSans.variable
           )}
         >
-          <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+          <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
             <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 ">
               <Navbar />
               <main className="flex-grow w-full py-8">
