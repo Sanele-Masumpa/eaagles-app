@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import Pusher from "pusher-js";
 import { v4 as uuidv4 } from "uuid"; // For generating unique file names
 import supabase from "@/lib/supabaseClient"; // Adjust this import based on your setup
+import { FaDownload, FaVideo } from "react-icons/fa";
+import LoadingDots from "@/components/ui/LoadingDots";
 
 interface Pitch {
   id: number;
@@ -279,24 +281,50 @@ export default function PitchesPage() {
                         </div>
                       </div>
                       {expandedPitchId === pitch.id && (
-                        <div className="mt-4">
-                          <p className="text-gray-700">Details for: {pitch.title}</p>
-                          {pitch.videoUrl && <video src={pitch.videoUrl} controls className="mt-2" />}
-                          {pitch.attachments && pitch.attachments.length > 0 && (
-                            <div className="mt-2">
-                              <p className="text-gray-700">Attachments:</p>
-                              <ul>
-                                {pitch.attachments.map((attachment, index) => (
-                                  <li key={index} className="text-blue-600">
-                                    <a href={attachment} target="_blank" rel="noopener noreferrer">
-                                      {attachment}
-                                    </a>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-                        </div>
+                        <div className="mt-6 p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
+                        <p className="text-gray-900 text-2xl font-bold mb-4">
+                          Details for: <span className="text-indigo-600">{pitch.title}</span>
+                        </p>
+                        
+                        
+                  
+                        {pitch.videoUrl && (
+                          <div className="mb-6">
+                            <video 
+                              src={pitch.videoUrl} 
+                              controls 
+                              className="w-full max-w-full rounded-lg border border-gray-300"
+                              style={{ maxHeight: '500px' }}
+                            />
+                            <p className="text-gray-600 text-sm flex items-center mt-2">
+                              <FaVideo className="mr-2" /> Video Preview
+                            </p>
+                          </div>
+                        )}
+                        
+                        {pitch.attachments && pitch.attachments.length > 0 && (
+                          <div className="mt-6">
+                            <p className="text-gray-900 text-xl font-semibold mb-3 flex items-center">
+                              <FaDownload className="mr-2" /> Attachments:
+                            </p>
+                            <ul className="space-y-3">
+                              {pitch.attachments.map((attachment, index) => (
+                                <li key={index} className="flex items-center space-x-2">
+                                  <FaDownload className="text-blue-600" />
+                                  <a 
+                                    href={attachment} 
+                                    download
+                                    className="text-blue-700 hover:text-blue-900 font-medium transition-colors duration-300"
+                                  >
+                                    {attachment.split('/').pop()}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                      
                       )}
                     </li>
                   ))
