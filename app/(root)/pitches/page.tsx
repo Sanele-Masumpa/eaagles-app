@@ -84,14 +84,24 @@ export default function PitchesPage() {
     };
   }, []);
 
-  const uploadFile = async (file: File, path: string) => {
-    const { data, error } = await supabase.storage.from('video').upload(path, file);
-    if (error) {
-      throw new Error(`Failed to upload file: ${error.message}`);
+  const uploadFile = async (file: File, path: string): Promise<string> => {
+    // Upload the file
+    const { data: uploadData, error: uploadError } = await supabase.storage.from('video').upload(path, file);
+    if (uploadError) {
+      throw new Error(`Failed to upload file: ${uploadError.message}`);
     }
-    return data?.path;
+  
+    // Get the public URL of the uploaded file
+    const { data: urlData } = supabase.storage.from('video').getPublicUrl(path);
+    
+    if (!urlData?.publicUrl) {
+      throw new Error("Failed to get public URL");
+    }
+  
+    return urlData.publicUrl; // Correctly access the public URL from `data`
   };
-
+  
+  
   const handleCreate = async () => {
     try {
       let videoUrl = "";
@@ -99,16 +109,14 @@ export default function PitchesPage() {
         const videoPath = `videos/${uuidv4()}_${videoFile.name}`;
         videoUrl = await uploadFile(videoFile, videoPath);
       }
-
+  
       const attachmentUrls: string[] = [];
       for (const file of attachmentFiles) {
         const attachmentPath = `attachments/${uuidv4()}_${file.name}`;
         const attachmentUrl = await uploadFile(file, attachmentPath);
         attachmentUrls.push(attachmentUrl);
       }
-
-      
-
+  
       const response = await fetch("/api/create-pitch", {
         method: "POST",
         headers: {
