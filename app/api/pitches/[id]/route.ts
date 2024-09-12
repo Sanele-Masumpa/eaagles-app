@@ -49,7 +49,11 @@ export async function PUT(req: NextRequest) {
   }
 
   try {
-    const { title, description } = await req.json();
+    const { title, description, 
+      fundingGoal,
+      stage,
+      country,
+      city,} = await req.json();
 
     if (!title || !description) {
       return NextResponse.json(
@@ -58,15 +62,19 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    const pitch = await prisma.pitch.update({
+    const updatedPitch = await prisma.pitch.update({
       where: { id: Number(id) },
       data: {
         title,
         description,
+        fundingGoal,
+        stage,
+        country,
+        city,
       },
     });
 
-    return NextResponse.json(pitch);
+    return NextResponse.json(updatedPitch);
   } catch (error) {
     console.error('Error updating pitch:', error);
     return NextResponse.json({ error: "Failed to update pitch" }, { status: 500 });

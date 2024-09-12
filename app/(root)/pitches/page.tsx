@@ -10,10 +10,11 @@ import { FaDownload, FaVideo } from "react-icons/fa";
 import LoadingDots from "@/components/ui/LoadingDots";
 
 interface Pitch {
+  updatedAt: string; // Using string for ISO date format
   id: number;
   title: string;
   description: string;
-  createdAt: string;
+  createdAt: string; // Using string for ISO date format
   videoUrl?: string;
   attachments?: string[];
   fundingGoal?: number;
@@ -24,6 +25,7 @@ interface Pitch {
   country: string;
   city: string;
 }
+
 
 interface PusherEvent {
   pitch: Pitch;
@@ -43,6 +45,7 @@ export default function PitchesPage() {
     status: "",
     country: "",
     city: "",
+    updatedAt: new Date().toISOString(), // Sets current date and time
   });
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [attachmentFiles, setAttachmentFiles] = useState<File[]>([]);
@@ -139,6 +142,7 @@ export default function PitchesPage() {
         status: "",
         country: "",
         city: "",
+        updatedAt: new Date().toISOString(), // Sets current date and time
       });
       setVideoFile(null);
       setAttachmentFiles([]);
@@ -238,102 +242,286 @@ export default function PitchesPage() {
 
         {/* Render based on active tab */}
         {activeTab === "overview" && (
+          <div className="p-6 rounded-lg">
+          {/* Pitches List */}
           <div>
-            {/* Pitches List */}
-            <div>
-              <h3 className="text-3xl font-bold mb-6">Pitches</h3>
-              <ul className="space-y-4">
-                {pitches.length > 0 ? (
-                  pitches.map((pitch) => (
-                    <li key={pitch.id} className="border rounded-lg p-4 shadow-sm">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <h4 className="text-xl font-semibold">{pitch.title}</h4>
-                          <p className="text-gray-600">{pitch.description}</p>
-                          <p className="text-gray-500">Funding Goal: ${pitch.fundingGoal?.toFixed(2)}</p>
-                          <p className="text-gray-500">Current Funding: ${pitch.currentFunding?.toFixed(2)}</p>
-                          <p className="text-gray-500">Stage: {pitch.stage || "N/A"}</p>
-                          <p className="text-gray-500">Location: {pitch.city}, {pitch.country}</p>
-                          <p className="text-gray-500">Status: {pitch.status || "N/A"}</p>
-                        </div>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => {
-                              setSelectedPitch(pitch);
-                              setIsEditing(true);
-                            }}
-                            className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleDelete(pitch.id)}
-                            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
-                          >
-                            Delete
-                          </button>
-                          <button
-                            onClick={() => handleViewDetails(pitch.id)}
-                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
-                          >
-                            {expandedPitchId === pitch.id ? "Hide Details" : "View Details"}
-                          </button>
-                        </div>
-                      </div>
-                      {expandedPitchId === pitch.id && (
-                        <div className="mt-6 p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
-                        <p className="text-gray-900 text-2xl font-bold mb-4">
-                          Details for: <span className="text-indigo-600">{pitch.title}</span>
-                        </p>
-                        
-                        
-                  
-                        {pitch.videoUrl && (
-                          <div className="mb-6">
-                            <video 
-                              src={pitch.videoUrl} 
-                              controls 
-                              className="w-full max-w-full rounded-lg border border-gray-300"
-                              style={{ maxHeight: '500px' }}
-                            />
-                            <p className="text-gray-600 text-sm flex items-center mt-2">
-                              <FaVideo className="mr-2" /> Video Preview
-                            </p>
-                          </div>
-                        )}
-                        
-                        {pitch.attachments && pitch.attachments.length > 0 && (
-                          <div className="mt-6">
-                            <p className="text-gray-900 text-xl font-semibold mb-3 flex items-center">
-                              <FaDownload className="mr-2" /> Attachments:
-                            </p>
-                            <ul className="space-y-3">
-                              {pitch.attachments.map((attachment, index) => (
-                                <li key={index} className="flex items-center space-x-2">
-                                  <FaDownload className="text-blue-600" />
-                                  <a 
-                                    href={attachment} 
-                                    download
-                                    className="text-blue-700 hover:text-blue-900 font-medium transition-colors duration-300"
-                                  >
-                                    {attachment.split('/').pop()}
-                                  </a>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
-                      
-                      )}
-                    </li>
-                  ))
-                ) : (
-                  <p>No pitches available.</p>
-                )}
+            <h3 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">Pitches</h3>
+            <ul className="space-y-4">
+            {pitches.length > 0 ? (
+  pitches.map((pitch) => (
+    <li key={pitch.id} className="border dark:border-gray-700 rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800">
+      <div className="flex justify-between items-center">
+        {isEditing && selectedPitch?.id === pitch.id ? (
+          <div className="w-full">
+            {/* Close Button */}
+            <button
+              onClick={() => setIsEditing(false)}
+              className="text-gray-500 dark:text-red-400 absolute top-2 right-4 hover:text-gray-800"
+            >
+              &#10005; {/* X icon */}
+            </button>
+            <h3 className="text-3xl font-bold mb-6">Edit Pitch</h3>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleUpdate(selectedPitch.id);
+              }}
+              className="space-y-6"
+            >
+              <div>
+                <label className="block text-gray-700 dark:text-gray-200">Title</label>
+                <input
+                  type="text"
+                  value={selectedPitch.title}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, title: e.target.value })}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 dark:text-gray-200">Description</label>
+                <textarea
+                  value={selectedPitch.description}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, description: e.target.value })}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 dark:text-gray-200">Funding Goal</label>
+                <input
+                  type="number"
+                  value={selectedPitch.fundingGoal || ""}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, fundingGoal: parseFloat(e.target.value) })}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 dark:text-gray-200">Current Funding</label>
+                <input
+                  type="number"
+                  value={selectedPitch.currentFunding || ""}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, currentFunding: parseFloat(e.target.value) })}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 dark:text-gray-200">Stage</label>
+                <select
+                  value={selectedPitch.stage}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, stage: e.target.value })}
+                  className="border p-2 rounded w-full"
+                  required
+                >
+                  <option value="">Select Stage</option>
+                  <option value="Idea">Idea</option>
+                  <option value="Prototype">Prototype</option>
+                  <option value="MVP">MVP</option>
+                  <option value="Growth">Growth</option>
+                  <option value="Scaling">Scaling</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-gray-700 dark:text-gray-200">Country</label>
+                <input
+                  type="text"
+                  value={selectedPitch.country}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, country: e.target.value })}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 dark:text-gray-200">City</label>
+                <input
+                  type="text"
+                  value={selectedPitch.city}
+                  onChange={(e) => setSelectedPitch({ ...selectedPitch, city: e.target.value })}
+                  className="border p-2 rounded w-full"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 dark:text-gray-200">Video File</label>
+                <input
+                  type="file"
+                  onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
+                  className="border p-2 rounded w-full"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 dark:text-gray-200">Attachments</label>
+                <input
+                  type="file"
+                  multiple
+                  onChange={(e) => setAttachmentFiles(Array.from(e.target.files || []))}
+                  className="border p-2 rounded w-full"
+                />
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
+                >
+                  Save Changes
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsEditing(false)}
+                  className="bg-gray-500 text-white px-4 py-2 rounded ml-4 hover:bg-gray-600 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        ) : (
+          <>
+            <div className="p-6 rounded-lg">
+              <div className="flex items-center mb-4">
+                <div className="flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 0l8-8m-4 4v8m-4-4H4" />
+                  </svg>
+                </div>
+                <div className="ml-4">
+                  <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-200">{pitch.title}</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Last edited on: {new Date(pitch.updatedAt).toLocaleString('en-US', {
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric',
+                      second: 'numeric',
+                      hour12: true
+                    })}
+                  </p>
+                </div>
+              </div>
+
+              {/* Key Info Display */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 0l8-8m-4 4v8m-4-4H4" />
+                  </svg>
+                  <p className="text-gray-500 dark:text-gray-400">Funding Goal: R{pitch.fundingGoal?.toFixed(2)}</p>
+                </div>
+
+                <div className="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4h16M4 8h16M4 12h16m-7 4h7M4 16h7" />
+                  </svg>
+                  <p className="text-gray-500 dark:text-gray-400">Current Funding: R{pitch.currentFunding?.toFixed(2)}</p>
+                </div>
+
+                <div className="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 6l12 12m-12 0L18 6" />
+                  </svg>
+                  <p className="text-gray-500 dark:text-gray-400">Status: {pitch.status || "N/A"}</p>
+                </div>
+
+                <div className="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 19.071L4 20.192l1.414 1.414L6.535 20.6M15 12V3l3 3M6 3l3 3M3 12h18M3 15v6h18v-6" />
+                  </svg>
+                  <p className="text-gray-500 dark:text-gray-400">Location: {pitch.city}, {pitch.country}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  setSelectedPitch(pitch);
+                  setIsEditing(true);
+                }}
+                className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => handleDelete(pitch.id)}
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
+              >
+                Delete
+              </button>
+              <button
+                onClick={() => handleViewDetails(pitch.id)}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+              >
+                {expandedPitchId === pitch.id ? "Hide Details" : "View Details"}
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Expandable Details Section */}
+      {expandedPitchId === pitch.id && !isEditing && (
+        <div className="mt-6 p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto rounded-lg">
+          <p className="text-gray-900 dark:text-gray-100 text-2xl font-bold mb-4">
+            Details for: <span className="text-indigo-600">{pitch.title}</span>
+          </p>
+          <p className="text-gray-700 dark:text-gray-300 text-lg mb-4">
+            {pitch.description || "No description provided for this pitch."}
+          </p>
+
+          {pitch.videoUrl && (
+            <div className="mb-6">
+              <video
+                src={pitch.videoUrl}
+                controls
+                className="w-full max-w-full rounded-lg border border-gray-300 dark:border-gray-700"
+                style={{ maxHeight: '500px' }}
+              />
+              <p className="text-gray-600 dark:text-gray-400 text-sm flex items-center mt-2">
+                <FaVideo className="mr-2" /> Video Preview
+              </p>
+            </div>
+          )}
+
+          {pitch.attachments && pitch.attachments.length > 0 && (
+            <div className="mt-6">
+              <p className="text-gray-900 dark:text-gray-100 text-xl font-semibold mb-3 flex items-center">
+                <FaDownload className="mr-2" /> Attachments:
+              </p>
+              <ul className="space-y-3">
+                {pitch.attachments.map((attachment, index) => (
+                  <li key={index} className="flex items-center space-x-2">
+                    <FaDownload className="text-blue-600" />
+                    <a
+                      href={attachment}
+                      download
+                      className="text-blue-700 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 font-medium transition-colors duration-300"
+                    >
+                      {attachment.split('/').pop()}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
+          )}
+        </div>
+      )}
+    </li>
+  ))
+) : (
+  <p className="text-gray-500 dark:text-gray-400">No pitches available.</p>
+)}
+
+
+            </ul>
           </div>
+        </div>
+        
+        
         )}
 
         {activeTab === "add" && (
@@ -374,6 +562,7 @@ export default function PitchesPage() {
                   className="border p-2 rounded w-full"
                   required
                 />
+
               </div>
               <div>
                 <label className="block text-gray-700">Current Funding</label>
@@ -450,127 +639,7 @@ export default function PitchesPage() {
           </div>
         )}
 
-        {/* Edit Form */}
-        {isEditing && selectedPitch && (
-          <div className="mt-8 border p-6 rounded-lg shadow-sm">
-            <h3 className="text-3xl font-bold mb-6">Edit Pitch</h3>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleUpdate(selectedPitch.id);
-              }}
-              className="space-y-6"
-            >
-              <div>
-                <label className="block text-gray-700">Title</label>
-                <input
-                  type="text"
-                  value={selectedPitch.title}
-                  onChange={(e) => setSelectedPitch({ ...selectedPitch, title: e.target.value })}
-                  className="border p-2 rounded w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Description</label>
-                <textarea
-                  value={selectedPitch.description}
-                  onChange={(e) => setSelectedPitch({ ...selectedPitch, description: e.target.value })}
-                  className="border p-2 rounded w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Funding Goal</label>
-                <input
-                  type="number"
-                  value={selectedPitch.fundingGoal || ""}
-                  onChange={(e) => setSelectedPitch({ ...selectedPitch, fundingGoal: parseFloat(e.target.value) })}
-                  className="border p-2 rounded w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Current Funding</label>
-                <input
-                  type="number"
-                  value={selectedPitch.currentFunding || ""}
-                  onChange={(e) => setSelectedPitch({ ...selectedPitch, currentFunding: parseFloat(e.target.value) })}
-                  className="border p-2 rounded w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Stage</label>
-                <select
-                  value={selectedPitch.stage}
-                  onChange={(e) => setSelectedPitch({ ...selectedPitch, stage: e.target.value })}
-                  className="border p-2 rounded w-full"
-                  required
-                >
-                  <option value="">Select Stage</option>
-                  <option value="Idea">Idea</option>
-                  <option value="Prototype">Prototype</option>
-                  <option value="MVP">MVP</option>
-                  <option value="Growth">Growth</option>
-                  <option value="Scaling">Scaling</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-gray-700">Country</label>
-                <input
-                  type="text"
-                  value={selectedPitch.country}
-                  onChange={(e) => setSelectedPitch({ ...selectedPitch, country: e.target.value })}
-                  className="border p-2 rounded w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">City</label>
-                <input
-                  type="text"
-                  value={selectedPitch.city}
-                  onChange={(e) => setSelectedPitch({ ...selectedPitch, city: e.target.value })}
-                  className="border p-2 rounded w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Video File</label>
-                <input
-                  type="file"
-                  onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
-                  className="border p-2 rounded w-full"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Attachments</label>
-                <input
-                  type="file"
-                  multiple
-                  onChange={(e) => setAttachmentFiles(Array.from(e.target.files || []))}
-                  className="border p-2 rounded w-full"
-                />
-              </div>
-              <div>
-                <button
-                  type="submit"
-                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
-                >
-                  Save Changes
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsEditing(false)}
-                  className="bg-gray-500 text-white px-4 py-2 rounded ml-4 hover:bg-gray-600 transition-colors"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
+       
       </div>
     </div>
   );

@@ -1,25 +1,78 @@
-// components/Messages.tsx
-import { Card } from '@nextui-org/react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { db } from '@/lib/prisma'; // Adjust the import path based on your project structure
+import { useUser } from '@clerk/nextjs';
+import { Investment, Feedback, Interest, Notification } from '@prisma/client';
 
-interface Message {
-  id: number;
-  content: string;
-  sender: string;
-  createdAt: string;
+interface InvestmentOverviewProps {
+  investments: Investment[];
+  feedbacks: Feedback[];
+  interests: Interest[];
+  notifications: Notification[];
 }
 
-const Messages: React.FC = () => {
-  // Placeholder messages data
-  const messages: Message[] = [
-    { id: 1, content: "Meeting scheduled for tomorrow.", sender: "Entrepreneur A", createdAt: new Date().toISOString() },
-    // Add more messages as needed
-  ];
-
+const InvestmentOverview: React.FC<InvestmentOverviewProps> = ({ investments, feedbacks, interests, notifications }) => {
   return (
-    <Card>
-      
-    </Card>
+    <div className="p-4">
+      <h2 className="text-xl font-bold mb-4">Investment Overview</h2>
+
+      <section className="mb-6">
+        <h3 className="text-lg font-semibold">My Investments</h3>
+        <ul>
+          {investments.map((investment) => (
+            <li key={investment.id} className="mb-2">
+              <div className="flex justify-between">
+                <span className="font-medium">{investment.title}</span>
+                <span>${investment.amount.toFixed(2)}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="mb-6">
+        <h3 className="text-lg font-semibold">My Feedbacks</h3>
+        <ul>
+          {feedbacks.map((feedback) => (
+            <li key={feedback.id} className="mb-2">
+              <div className="flex flex-col">
+                <p className="font-medium">Pitch ID: {feedback.pitchId}</p>
+                <p>{feedback.content}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="mb-6">
+        <h3 className="text-lg font-semibold">My Interests</h3>
+        <ul>
+          {interests.map((interest) => (
+            <li key={interest.id} className="mb-2">
+              <div className="flex flex-col">
+                <p className="font-medium">Pitch ID: {interest.pitchId}</p>
+                <p>Interested since: {new Date(interest.createdAt).toLocaleDateString()}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <h3 className="text-lg font-semibold">Notifications</h3>
+        <ul>
+          {notifications.map((notification) => (
+            <li key={notification.id} className="mb-2">
+              <div className="flex flex-col">
+                <p className="font-medium">Content: {notification.content}</p>
+                <p className="text-sm text-gray-500">Created at: {new Date(notification.createdAt).toLocaleDateString()}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
   );
 };
 
-export default Messages;
+export default InvestmentOverview;
