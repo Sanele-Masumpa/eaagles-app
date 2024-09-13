@@ -220,34 +220,29 @@ const ProfilesPage = () => {
           {item.email}
         </p>
         {item.entrepreneurProfile && (
-  <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg mb-4 border-t-2 border-gray-900 dark:border-gray-300">
-    <div className="flex items-center mb-2">
-      <FaBuilding className="text-gray-600 mr-2" />
-      <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Company:</h3>
-    </div>
-    <p className="text-gray-800 dark:text-gray-300 mb-2">{item.entrepreneurProfile.company}</p>
-    <div className="flex items-center mb-2">
-      <FaInfoCircle className="text-gray-600 mr-2" />
-      <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Bio:</h3>
-    </div>
-    <p className="text-gray-700 dark:text-gray-400 mb-2">{item.entrepreneurProfile.bio}</p>
-    <div className="flex items-center mb-2">
-      <FaTag className="text-gray-600 mr-2" />
-      <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Business Stage:</h3>
-    </div>
-    <p className="text-gray-700 dark:text-gray-400 mb-2">{item.entrepreneurProfile.businessStage}</p>
-    <div className="flex items-center">
-      <FaDollarSign className="text-gray-600 mr-2" />
-      <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Revenue:</h3>
-    </div>
-    <p className="text-gray-700 dark:text-gray-400">{item.entrepreneurProfile.revenue}</p>
-  </div>
-)}
-
-
-
-
-
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg mb-4 border-t-2 border-gray-900 dark:border-gray-300">
+        <div className="flex items-center mb-2">
+          <FaBuilding className="text-gray-600 mr-2" />
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Company:</h3>
+        </div>
+        <p className="text-gray-800 dark:text-gray-300 mb-2">{item.entrepreneurProfile.company}</p>
+        <div className="flex items-center mb-2">
+          <FaInfoCircle className="text-gray-600 mr-2" />
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Bio:</h3>
+        </div>
+        <p className="text-gray-700 dark:text-gray-400 mb-2">{item.entrepreneurProfile.bio}</p>
+        <div className="flex items-center mb-2">
+          <FaTag className="text-gray-600 mr-2" />
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Business Stage:</h3>
+        </div>
+        <p className="text-gray-700 dark:text-gray-400 mb-2">{item.entrepreneurProfile.businessStage}</p>
+        <div className="flex items-center">
+          <FaDollarSign className="text-gray-600 mr-2" />
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Revenue:</h3>
+        </div>
+        <p className="text-gray-700 dark:text-gray-400">{item.entrepreneurProfile.revenue}</p>
+      </div>
+    )}
             {item.investorProfile && (
               <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mb-4">
                 <p className="font-semibold text-gray-800 dark:text-gray-100">Investment Strategy:</p>

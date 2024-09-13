@@ -95,10 +95,10 @@ export const Navbar = () => {
               </Link>
             </NavbarMenuItem>
             <NavbarMenuItem>
-              <Link className={getLinkClasses('/friend-requests')} href="/friend-requests" onClick={() => handleLinkClick('/friend-requests')}>
-                Friend-requests
-              </Link>
-            </NavbarMenuItem>
+          <Link className={getLinkClasses('/friend-requests')} href="/friend-requests" onClick={() => handleLinkClick('/friend-requests')}>
+            Connections
+          </Link>
+        </NavbarMenuItem>
           </>
         );
       case 'ENTREPRENEUR':
@@ -121,7 +121,7 @@ export const Navbar = () => {
             </NavbarMenuItem>
             <NavbarMenuItem>
               <Link className={getLinkClasses('/friend-requests')} href="/friend-requests" onClick={() => handleLinkClick('/friend-requests')}>
-                Friend-requests
+                Connections
               </Link>
             </NavbarMenuItem>
           </>
@@ -152,7 +152,7 @@ export const Navbar = () => {
   );
 
   return (
-    <NextUINavbar maxWidth="xl" position="sticky" className="bg-gray-300 dark:bg-black shadow-md">
+    <NextUINavbar maxWidth="xl" position="sticky" className="bg-gray-300 dark:bg-gray-800">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <Link className="flex justify-start items-center gap-1" href="/">
@@ -167,7 +167,7 @@ export const Navbar = () => {
           </Link>
         </NavbarBrand>
 
-        <ul className="hidden lg:flex gap-3 justify-start ml-2">
+        <ul className="hidden lg:flex gap-2 justify-start ml-2">
           <SignedIn>
             {roleBasedOptions(role)}
           </SignedIn>
@@ -212,14 +212,7 @@ export const Navbar = () => {
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
         <SignedIn>
           <UserButton />
-          <SignOutButton>
-            <button
-              className="text-lg font-semibold rounded-lg px-4 py-2 transition-all duration-300 ease-in-out bg-gradient-to-r from-red-500 to-red-500 text-gray-100 shadow-lg hover:from-red-600 hover:to-red-600 dark:bg-gradient-to-r dark:from-red-800 dark:to-red-800 dark:text-gray-100 dark:hover:from-red-900 dark:hover:to-red-900 focus:outline-none"
-              type="button"
-            >
-              Log Out
-            </button>
-          </SignOutButton>
+          
         </SignedIn>
         <SignedOut>
           <SignInButton>
