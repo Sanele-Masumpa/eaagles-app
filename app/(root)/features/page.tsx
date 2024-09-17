@@ -6,7 +6,7 @@ import { features } from '@/constants/features';
 
 export default function FeaturesPage() {
   return (
-    <div className="relative min-h-screen text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-900">
+    <div className="relative min-h-screen text-gray-900 dark:text-white">
       <main className="flex flex-col items-center justify-center w-full h-full px-6 py-16 text-center">
         <section className="mb-12 max-w-4xl mx-auto">
           <h1 className="text-3xl sm:text-2xl md:text-4xl font-bold mb-4">Our Features</h1>
