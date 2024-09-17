@@ -48,7 +48,7 @@ interface FriendRequest {
   receiver: Profile;
 }
 
-const ProfilesPage = () => {
+const OpportunitiesPage = () => {
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [sentRequests, setSentRequests] = useState<FriendRequest[]>([]);
   const [receivedRequests, setReceivedRequests] = useState<FriendRequest[]>([]);
@@ -64,7 +64,7 @@ const ProfilesPage = () => {
     const fetchProfiles = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("/api/users");
+        const response = await axios.get("/api/opportunities");
         const shuffledProfiles = response.data.sort(() => Math.random() - 0.5);
         setProfiles(shuffledProfiles);
       } catch (err) {
@@ -219,6 +219,9 @@ const ProfilesPage = () => {
                     {item.name}
                   </h2>
                   <p className="text-base text-gray-700 dark:text-gray-300 mb-2">
+                    {item.status}
+                  </p>
+                  <p className="text-base text-gray-700 dark:text-gray-300 mb-2">
                     {item.email}
                   </p>
                   {item.entrepreneurProfile && (
@@ -261,7 +264,7 @@ const ProfilesPage = () => {
                     disabled={loadingId === item.id}
                     className="bg-blue-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 disabled:opacity-50"
                   >
-                    {loadingId === item.id ? "Sending..." : "Send Friend Request"}
+                    {loadingId === item.id ? <LoadingDots /> : "Send Friend Request"}
                   </button>
                 )}
                 {(activeTab === "sent" || activeTab === "received") && item.status === "ACCEPTED" && (
@@ -287,7 +290,7 @@ const ProfilesPage = () => {
                         </button>
                       </>
                     )}
-                    {activeTab === "sent" && (
+                    {activeTab === "sent" && item.status === "PENDING" && (
                       <button
                         onClick={() => handleDeleteRequest(item.id)}
                         className="bg-red-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-red-700"
@@ -363,4 +366,4 @@ const ProfilesPage = () => {
   );
 };
 
-export default ProfilesPage;
+export default OpportunitiesPage;

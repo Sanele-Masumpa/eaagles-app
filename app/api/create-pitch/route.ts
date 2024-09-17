@@ -61,16 +61,12 @@ export async function POST(request: NextRequest) {
     videoUrl,
     attachments,
     fundingGoal,
-    country,  // Country is required
-    city,     // Optional
-    tags,     // Optional tags (array)
-    pitchDeckFileName  // Optional pitch deck file name
   } = await request.json();
 
 
-  if (!title || !description || !country) {
+  if (!title || !description ) {
     return NextResponse.json(
-      { error: "Title, description, and country are required" },
+      { error: "Title and description are required" },
       { status: 400 }
     );
   }
@@ -108,12 +104,9 @@ export async function POST(request: NextRequest) {
         attachments,
         fundingGoal,
         entrepreneurId: entrepreneurProfile.id,
-        country,
-        city: city || "",   // Default empty string if no city is provided
-        tags: tags || [],   // Default empty array if no tags are provided
-        pitchDeckFileName: pitchDeckFileName || null,  // Nullable pitch deck filename
       },
     });
+    
 
     return NextResponse.json({
       message: 'Pitch created successfully',

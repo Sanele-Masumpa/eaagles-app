@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Pusher from "pusher-js";
 import { v4 as uuidv4 } from "uuid"; // For generating unique file names
 import supabase from "@/lib/supabaseClient"; // Adjust this import based on your setup
-import { FaDownload, FaVideo } from "react-icons/fa";
+import { FaCalendarAlt, FaDownload, FaMapMarkerAlt, FaMoneyBillWave, FaVideo } from "react-icons/fa";
 import LoadingDots from "@/components/ui/LoadingDots";
 
 interface Pitch {
@@ -18,14 +18,7 @@ interface Pitch {
   videoUrl?: string;
   attachments?: string[];
   fundingGoal?: number;
-  currentFunding?: number;
-  stage?: string;
-  pitchDeckFileName?: string;
-  status?: string;
-  country: string;
-  city: string;
 }
-
 
 interface PusherEvent {
   pitch: Pitch;
@@ -38,15 +31,10 @@ export default function PitchesPage() {
   const [newPitch, setNewPitch] = useState<Omit<Pitch, 'id' | 'createdAt'> & { videoFile?: File; pitchDeckFile?: File }>({
     title: "",
     description: "",
-    fundingGoal: undefined,
-    currentFunding: undefined,
-    stage: "",
-    pitchDeckFileName: "",
-    status: "",
-    country: "",
-    city: "",
-    updatedAt: new Date().toISOString(), // Sets current date and time
+    fundingGoal: undefined, 
+    updatedAt: new Date().toISOString(),
   });
+  
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [attachmentFiles, setAttachmentFiles] = useState<File[]>([]);
   const [isCreating, setIsCreating] = useState<boolean>(false);
@@ -54,6 +42,7 @@ export default function PitchesPage() {
   const [activeTab, setActiveTab] = useState<string>("overview");
   const [isUpdating, setIsUpdating] = useState(false);
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function fetchPitches() {
@@ -73,7 +62,6 @@ export default function PitchesPage() {
     fetchPitches();
   }, []);
 
-  
   useEffect(() => {
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
@@ -81,7 +69,7 @@ export default function PitchesPage() {
 
     const channel = pusher.subscribe('my-channel');
     channel.bind('update', (data: any) => {
-      console.log('Event received:', data); // Log data to see if the event is triggered
+      console.log('Event received:', data);
     });
 
     return () => {
@@ -90,38 +78,33 @@ export default function PitchesPage() {
   }, []);
 
   const uploadFile = async (file: File, path: string): Promise<string> => {
-    // Upload the file
     const { data: uploadData, error: uploadError } = await supabase.storage.from('video').upload(path, file);
     if (uploadError) {
       throw new Error(`Failed to upload file: ${uploadError.message}`);
     }
-  
-    // Get the public URL of the uploaded file
     const { data: urlData } = supabase.storage.from('video').getPublicUrl(path);
-    
     if (!urlData?.publicUrl) {
       throw new Error("Failed to get public URL");
     }
-  
-    return urlData.publicUrl; // Correctly access the public URL from `data`
+    return urlData.publicUrl;
   };
-  
-  
+
   const handleCreate = async () => {
+    setLoading(true); // Start loading
     try {
       let videoUrl = "";
       if (videoFile) {
         const videoPath = `videos/${uuidv4()}_${videoFile.name}`;
         videoUrl = await uploadFile(videoFile, videoPath);
       }
-  
+
       const attachmentUrls: string[] = [];
       for (const file of attachmentFiles) {
         const attachmentPath = `attachments/${uuidv4()}_${file.name}`;
         const attachmentUrl = await uploadFile(file, attachmentPath);
         attachmentUrls.push(attachmentUrl);
       }
-  
+
       const response = await fetch("/api/create-pitch", {
         method: "POST",
         headers: {
@@ -137,25 +120,23 @@ export default function PitchesPage() {
         title: "",
         description: "",
         fundingGoal: undefined,
-        currentFunding: undefined,
-        stage: "",
-        status: "",
-        country: "",
-        city: "",
-        updatedAt: new Date().toISOString(), // Sets current date and time
+        updatedAt: new Date().toISOString(),
       });
       setVideoFile(null);
       setAttachmentFiles([]);
       toast.success("Pitch created successfully");
-      router.refresh(); // Refresh the page
+      setLoading(false); 
+      router.refresh();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to create pitch";
       toast.error(errorMessage);
+      setLoading(false); 
     }
   };
 
   const handleUpdate = async (id: number) => {
     if (!selectedPitch) return;
+    setLoading(true); 
 
     try {
       const response = await fetch(`/api/create-pitch/${selectedPitch.id}`, {
@@ -167,24 +148,26 @@ export default function PitchesPage() {
       });
 
       if (!response.ok) {
-        const errorMessage = await response.text(); // Get error message from the response
+        const errorMessage = await response.text();
         throw new Error(errorMessage || "Failed to update pitch");
       }
-
+      setLoading(false); 
       setSelectedPitch(null);
       setIsEditing(false);
       toast.success("Pitch updated successfully");
-      router.refresh(); // Refresh the page
+      router.refresh();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to update pitch";
       setSelectedPitch(null);
       setIsEditing(false);
+      setLoading(false); 
       toast.error(errorMessage);
     }
   };
 
   const handleDelete = async (id: number) => {
     try {
+      setLoading(true); 
       const response = await fetch(`/api/create-pitch/${id}`, {
         method: "DELETE",
       });
@@ -193,340 +176,308 @@ export default function PitchesPage() {
       }
       setPitches(pitches.filter((pitch) => pitch.id !== id));
       toast.success("Pitch deleted successfully");
-      router.refresh(); // Refresh the page
+      setLoading(false); 
+      router.refresh();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Failed to delete pitch";
+      setLoading(false); 
       toast.error(errorMessage);
     }
-  };
-
-  const handleEditClick = (pitch: Pitch) => {
-    setSelectedPitch(pitch);
-    setIsEditing(true);
   };
 
   const handleViewDetails = (id: number) => {
     setExpandedPitchId(id === expandedPitchId ? null : id);
   };
 
-  const handleCloseOverlay = () => {
-    setSelectedPitch(null);
-    setIsEditing(false);
-    setIsCreating(false);
-  };
-
-  function handleChange(event: ChangeEvent<HTMLSelectElement>): void {
-    throw new Error("Function not implemented.");
-  }
-
   return (
     <div className="min-h-screen p-8">
       <div className="max-w-7xl mx-auto py-10">
         <h2 className="text-4xl font-extrabold mb-8 text-center">Pitches Management</h2>
-
-        {/* Tabs */}
         <div className="flex justify-center mb-8">
           <button
             onClick={() => setActiveTab("overview")}
-            className={`px-6 py-3 rounded-full ${activeTab === "overview" ? "bg-green-600 text-white" : "bg-gray-300 text-gray-800"} hover:opacity-90 transition-opacity duration-300`}
+            className={`px-6 py-3 border-2 border-gray-800 text-gray-800 rounded-full ${activeTab === "overview" ? "bg-gray-800 text-white" : "bg-transparent"} hover:bg-gray-800 hover:text-white transition-colors duration-300`}
           >
             Overview
           </button>
           <button
             onClick={() => setActiveTab("add")}
-            className={`px-6 py-3 rounded-full ${activeTab === "add" ? "bg-green-600 text-white" : "bg-gray-300 text-gray-800"} hover:opacity-90 transition-opacity duration-300`}
+            className={`px-6 py-3 border-2 border-gray-800 text-gray-800 rounded-full ${activeTab === "add" ? "bg-gray-800 text-white" : "bg-transparent"} hover:bg-gray-800 hover:text-white transition-colors duration-300`}
           >
             Add Pitch
           </button>
         </div>
-
+        
         {/* Render based on active tab */}
         {activeTab === "overview" && (
           <div className="p-6 rounded-lg">
-          {/* Pitches List */}
-          <div>
-            <h3 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">Pitches</h3>
+            {/* Pitches List */}
             <ul className="space-y-4">
-            {pitches.length > 0 ? (
-  pitches.map((pitch) => (
-    <li key={pitch.id} className="border dark:border-gray-700 rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800">
-      <div className="flex justify-between items-center">
-        {isEditing && selectedPitch?.id === pitch.id ? (
-          <div className="w-full">
-            {/* Close Button */}
-            <button
-              onClick={() => setIsEditing(false)}
-              className="text-gray-500 dark:text-red-400 absolute top-2 right-4 hover:text-gray-800"
-            >
-              &#10005; {/* X icon */}
-            </button>
-            <h3 className="text-3xl font-bold mb-6">Edit Pitch</h3>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleUpdate(selectedPitch.id);
-              }}
-              className="space-y-6"
-            >
-              <div>
-                <label className="block text-gray-700 dark:text-gray-200">Title</label>
-                <input
-                  type="text"
-                  value={selectedPitch.title}
-                  onChange={(e) => setSelectedPitch({ ...selectedPitch, title: e.target.value })}
-                  className="border p-2 rounded w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 dark:text-gray-200">Description</label>
-                <textarea
-                  value={selectedPitch.description}
-                  onChange={(e) => setSelectedPitch({ ...selectedPitch, description: e.target.value })}
-                  className="border p-2 rounded w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 dark:text-gray-200">Funding Goal</label>
-                <input
-                  type="number"
-                  value={selectedPitch.fundingGoal || ""}
-                  onChange={(e) => setSelectedPitch({ ...selectedPitch, fundingGoal: parseFloat(e.target.value) })}
-                  className="border p-2 rounded w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 dark:text-gray-200">Current Funding</label>
-                <input
-                  type="number"
-                  value={selectedPitch.currentFunding || ""}
-                  onChange={(e) => setSelectedPitch({ ...selectedPitch, currentFunding: parseFloat(e.target.value) })}
-                  className="border p-2 rounded w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 dark:text-gray-200">Stage</label>
-                <select
-                  value={selectedPitch.stage}
-                  onChange={(e) => setSelectedPitch({ ...selectedPitch, stage: e.target.value })}
-                  className="border p-2 rounded w-full"
-                  required
-                >
-                  <option value="">Select Stage</option>
-                  <option value="Idea">Idea</option>
-                  <option value="Prototype">Prototype</option>
-                  <option value="MVP">MVP</option>
-                  <option value="Growth">Growth</option>
-                  <option value="Scaling">Scaling</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-gray-700 dark:text-gray-200">Country</label>
-                <input
-                  type="text"
-                  value={selectedPitch.country}
-                  onChange={(e) => setSelectedPitch({ ...selectedPitch, country: e.target.value })}
-                  className="border p-2 rounded w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 dark:text-gray-200">City</label>
-                <input
-                  type="text"
-                  value={selectedPitch.city}
-                  onChange={(e) => setSelectedPitch({ ...selectedPitch, city: e.target.value })}
-                  className="border p-2 rounded w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 dark:text-gray-200">Video File</label>
-                <input
-                  type="file"
-                  onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
-                  className="border p-2 rounded w-full"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700 dark:text-gray-200">Attachments</label>
-                <input
-                  type="file"
-                  multiple
-                  onChange={(e) => setAttachmentFiles(Array.from(e.target.files || []))}
-                  className="border p-2 rounded w-full"
-                />
-              </div>
-              <div>
-                <button
-                  type="submit"
-                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
-                >
-                  Save Changes
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsEditing(false)}
-                  className="bg-gray-500 text-white px-4 py-2 rounded ml-4 hover:bg-gray-600 transition-colors"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        ) : (
-          <>
-            <div className="p-6 rounded-lg">
-              <div className="flex items-center mb-4">
-                <div className="flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 0l8-8m-4 4v8m-4-4H4" />
-                  </svg>
-                </div>
-                <div className="ml-4">
-                  <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-200">{pitch.title}</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Last edited on: {new Date(pitch.updatedAt).toLocaleString('en-US', {
-                      weekday: 'long',
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: 'numeric',
-                      minute: 'numeric',
-                      second: 'numeric',
-                      hour12: true
-                    })}
-                  </p>
-                </div>
-              </div>
+              {pitches.length > 0 ? (
+                pitches.map((pitch) => (
+                  <li
+                    key={pitch.id}
+                    className="border dark:border-gray-700 rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800"
+                  >
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+                      {isEditing && selectedPitch?.id === pitch.id ? (
+                        // Edit Form
+                        <div className="p-6 rounded-lg w-full">
+                          <h3 className="text-3xl font-bold mb-6">Edit Pitch</h3>
+                          <form
+                            onSubmit={(e) => {
+                              e.preventDefault();
+                              handleUpdate(pitch.id);
+                            }}
+                            className="space-y-6"
+                          >
+                            {/* Editable Fields */}
+                            <div className="flex flex-col md:flex-row md:space-x-6">
+                              <div className="w-full">
+                                <label className="block text-gray-700 dark:text-gray-200">
+                                  Title
+                                </label>
+                                <input
+                                  type="text"
+                                  value={selectedPitch?.title || ""}
+                                  onChange={(e) =>
+                                    setSelectedPitch({
+                                      ...selectedPitch,
+                                      title: e.target.value,
+                                    })
+                                  }
+                                  className="border p-2 rounded w-full"
+                                  required
+                                />
+                              </div>
+                              <div className="w-full">
+                                <label className="block text-gray-700 dark:text-gray-200">
+                                  Funding Goal
+                                </label>
+                                <input
+                                  type="number"
+                                  value={selectedPitch?.fundingGoal || ""}
+                                  onChange={(e) =>
+                                    setSelectedPitch({
+                                      ...selectedPitch,
+                                      fundingGoal: parseFloat(e.target.value),
+                                    })
+                                  }
+                                  className="border p-2 rounded w-full"
+                                  required
+                                />
+                              </div>
+                            </div>
 
-              {/* Key Info Display */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 0l8-8m-4 4v8m-4-4H4" />
-                  </svg>
-                  <p className="text-gray-500 dark:text-gray-400">Funding Goal: R{pitch.fundingGoal?.toFixed(2)}</p>
-                </div>
+                            <div>
+                              <label className="block text-gray-700 dark:text-gray-200">
+                                Description
+                              </label>
+                              <textarea
+                                value={selectedPitch?.description || ""}
+                                onChange={(e) =>
+                                  setSelectedPitch({
+                                    ...selectedPitch,
+                                    description: e.target.value,
+                                  })
+                                }
+                                className="border p-2 rounded w-full"
+                                required
+                              />
+                            </div>
 
-                <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4h16M4 8h16M4 12h16m-7 4h7M4 16h7" />
-                  </svg>
-                  <p className="text-gray-500 dark:text-gray-400">Current Funding: R{pitch.currentFunding?.toFixed(2)}</p>
-                </div>
+                            {/* Read-Only Video Section */}
+                            <div>
+                              <label className="block text-gray-700 dark:text-gray-200">
+                                Video (view only)
+                              </label>
+                              {pitch.videoUrl ? (
+                                <div className="mt-2">
+                                  <video
+                                    src={pitch.videoUrl}
+                                    controls
+                                    className="w-full max-w-full rounded-lg border border-gray-300 dark:border-gray-700"
+                                    style={{ maxHeight: "500px" }}
+                                  />
+                                  <p className="text-gray-500 dark:text-gray-400 mt-2">
+                                    You cannot edit the video. To change it, delete the pitch and create a new one.
+                                  </p>
+                                </div>
+                              ) : (
+                                <p className="text-gray-500 dark:text-gray-400">
+                                  No video available.
+                                </p>
+                              )}
+                            </div>
 
-                <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 6l12 12m-12 0L18 6" />
-                  </svg>
-                  <p className="text-gray-500 dark:text-gray-400">Status: {pitch.status || "N/A"}</p>
-                </div>
+                            {/* Read-Only Attachments Section */}
+                            <div>
+                              <label className="block text-gray-700 dark:text-gray-200">
+                                Attachments (view only)
+                              </label>
+                              {pitch.attachments && pitch.attachments.length > 0 ? (
+                                <div className="mt-2">
+                                  <ul className="space-y-3">
+                                    {pitch.attachments.map((attachment, index) => (
+                                      <li
+                                        key={index}
+                                        className="flex items-center space-x-2"
+                                      >
+                                        <FaDownload className="text-blue-600" />
+                                        <a
+                                          href={attachment}
+                                          download
+                                          className="text-blue-700 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 font-medium transition-colors duration-300"
+                                        >
+                                          {attachment.split("/").pop()}
+                                        </a>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                  <p className="text-gray-500 dark:text-gray-400 mt-2">
+                                    You cannot edit the attachments. To change them, delete the pitch and create a new one.
+                                  </p>
+                                </div>
+                              ) : (
+                                <p className="text-gray-500 dark:text-gray-400">
+                                  No attachments available.
+                                </p>
+                              )}
+                            </div>
 
-                <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 19.071L4 20.192l1.414 1.414L6.535 20.6M15 12V3l3 3M6 3l3 3M3 12h18M3 15v6h18v-6" />
-                  </svg>
-                  <p className="text-gray-500 dark:text-gray-400">Location: {pitch.city}, {pitch.country}</p>
-                </div>
-              </div>
-            </div>
+                            {/* Save/Cancel Buttons */}
+                            <div>
+                              <button
+                                type="submit"
+                                disabled={loading}
+                                className={`bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors ${loading ? "cursor-not-allowed" : ""}`}
+                              >
+                              {loading ? <LoadingDots /> : "Save"}
+                             </button>
+                              <button
+                                type="button"
+                                onClick={() => setIsEditing(false)}
+                                className="bg-gray-500 text-white px-4 py-2 rounded ml-4 hover:bg-gray-600 transition-colors"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="p-6 rounded-lg flex-grow">
+                            <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-200 mb-2">
+                              {pitch.title}
+                            </h4>
+                            <div className="text-sm text-gray-600 dark:text-gray-400 flex flex-wrap items-center">
+                              <span className="flex items-center mr-4">
+                                <FaCalendarAlt className="mr-1" />
+                                Last edited:{" "}
+                                {new Date(pitch.updatedAt).toLocaleString()}
+                              </span>
+                              <span className="flex items-center mr-4">
+                                <FaMoneyBillWave className="mr-1" />
+                                Funding Goal: R{pitch.fundingGoal?.toFixed(2)}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex gap-2 mt-4 md:mt-0">
+                            <button
+                              onClick={() => {
+                                setSelectedPitch(pitch);
+                                setIsEditing(true);
+                              }}
+                              className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => handleDelete(pitch.id)}
+                              disabled={loading}
+                              className={`bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors  ${loading ? "cursor-not-allowed" : ""}`}
+                            >
+                             {loading ? <LoadingDots /> : "Delete"}
+                            </button>
+                            <button
+                              onClick={() => handleViewDetails(pitch.id)}
+                              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+                            >
+                              {expandedPitchId === pitch.id
+                                ? "Hide Details"
+                                : "View Details"}
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </div>
 
-            {/* Buttons */}
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  setSelectedPitch(pitch);
-                  setIsEditing(true);
-                }}
-                className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => handleDelete(pitch.id)}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
-              >
-                Delete
-              </button>
-              <button
-                onClick={() => handleViewDetails(pitch.id)}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
-              >
-                {expandedPitchId === pitch.id ? "Hide Details" : "View Details"}
-              </button>
-            </div>
-          </>
-        )}
-      </div>
+                    {/* Expandable Details Section */}
+                    {expandedPitchId === pitch.id && !isEditing && (
+                      <div className="mt-6 p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto rounded-lg">
+                        {/* Pitch Details */}
+                        <p className="text-gray-900 dark:text-gray-100 text-2xl font-bold mb-4">
+                          Details for:{" "}
+                          <span className="text-indigo-600">{pitch.title}</span>
+                        </p>
+                        <p className="text-gray-700 dark:text-gray-300 text-lg mb-4">
+                          {pitch.description ||
+                            "No description provided for this pitch."}
+                        </p>
 
-      {/* Expandable Details Section */}
-      {expandedPitchId === pitch.id && !isEditing && (
-        <div className="mt-6 p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto rounded-lg">
-          <p className="text-gray-900 dark:text-gray-100 text-2xl font-bold mb-4">
-            Details for: <span className="text-indigo-600">{pitch.title}</span>
-          </p>
-          <p className="text-gray-700 dark:text-gray-300 text-lg mb-4">
-            {pitch.description || "No description provided for this pitch."}
-          </p>
+                        {/* Video Section */}
+                        {pitch.videoUrl && (
+                          <div className="mb-6">
+                            <video
+                              src={pitch.videoUrl}
+                              controls
+                              className="w-full max-w-full rounded-lg border border-gray-300 dark:border-gray-700"
+                              style={{ maxHeight: "500px" }}
+                            />
+                            <p className="text-gray-600 dark:text-gray-400 text-sm flex items-center mt-2">
+                              <FaVideo className="mr-2" /> Video Preview
+                            </p>
+                          </div>
+                        )}
 
-          {pitch.videoUrl && (
-            <div className="mb-6">
-              <video
-                src={pitch.videoUrl}
-                controls
-                className="w-full max-w-full rounded-lg border border-gray-300 dark:border-gray-700"
-                style={{ maxHeight: '500px' }}
-              />
-              <p className="text-gray-600 dark:text-gray-400 text-sm flex items-center mt-2">
-                <FaVideo className="mr-2" /> Video Preview
-              </p>
-            </div>
-          )}
-
-          {pitch.attachments && pitch.attachments.length > 0 && (
-            <div className="mt-6">
-              <p className="text-gray-900 dark:text-gray-100 text-xl font-semibold mb-3 flex items-center">
-                <FaDownload className="mr-2" /> Attachments:
-              </p>
-              <ul className="space-y-3">
-                {pitch.attachments.map((attachment, index) => (
-                  <li key={index} className="flex items-center space-x-2">
-                    <FaDownload className="text-blue-600" />
-                    <a
-                      href={attachment}
-                      download
-                      className="text-blue-700 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 font-medium transition-colors duration-300"
-                    >
-                      {attachment.split('/').pop()}
-                    </a>
+                        {/* Attachments Section */}
+                        {pitch.attachments && pitch.attachments.length > 0 && (
+                          <div className="mt-6">
+                            <p className="text-gray-900 dark:text-gray-100 text-xl font-semibold mb-3 flex items-center">
+                              <FaDownload className="mr-2" /> Attachments:
+                            </p>
+                            <ul className="space-y-3">
+                              {pitch.attachments.map((attachment, index) => (
+                                <li
+                                  key={index}
+                                  className="flex items-center space-x-2"
+                                >
+                                  <FaDownload className="text-blue-600" />
+                                  <a
+                                    href={attachment}
+                                    download
+                                    className="text-blue-700 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 font-medium transition-colors duration-300"
+                                  >
+                                    {attachment.split("/").pop()}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      )}
-    </li>
-  ))
-) : (
-  <p className="text-gray-500 dark:text-gray-400">No pitches available.</p>
-)}
-
-
+                ))
+              ) : (
+                <p>No pitches available.</p>
+              )}
             </ul>
           </div>
-        </div>
-        
-        
         )}
-
         {activeTab === "add" && (
           <div className="mt-8">
-            <h3 className="text-3xl font-bold mb-6">Add New Pitch</h3>
+            <h3 className="text-3xl font-bold mb-6">Create New Pitch</h3>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -553,70 +504,43 @@ export default function PitchesPage() {
                   required
                 />
               </div>
-              <div>
-                <label className="block text-gray-700">Funding Goal</label>
-                <input
-                  type="number"
-                  value={newPitch.fundingGoal || ""}
-                  onChange={(e) => setNewPitch({ ...newPitch, fundingGoal: parseFloat(e.target.value) })}
-                  className="border p-2 rounded w-full"
-                  required
-                />
-
-              </div>
-              <div>
-                <label className="block text-gray-700">Current Funding</label>
-                <input
-                  type="number"
-                  value={newPitch.currentFunding || ""}
-                  onChange={(e) => setNewPitch({ ...newPitch, currentFunding: parseFloat(e.target.value) })}
-                  className="border p-2 rounded w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Stage</label>
-                <select
-                  name="stage" 
-                  onChange={handleChange}
-                  className="border p-2 rounded w-full"
-                  required
-                >
-                  <option value="">Select Stage</option>
-                  <option value="Idea">Idea</option>
-                  <option value="Prototype">Prototype</option>
-                  <option value="MVP">MVP</option>
-                  <option value="Growth">Growth</option>
-                  <option value="Scaling">Scaling</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-gray-700">Country</label>
-                <input
-                  type="text"
-                  value={newPitch.country}
-                  onChange={(e) => setNewPitch({ ...newPitch, country: e.target.value })}
-                  className="border p-2 rounded w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">City</label>
-                <input
-                  type="text"
-                  value={newPitch.city}
-                  onChange={(e) => setNewPitch({ ...newPitch, city: e.target.value })}
-                  className="border p-2 rounded w-full"
-                  required
-                />
+              <div className="mb-6">
+                <label htmlFor="fundingGoal" className="block text-gray-700 dark:text-gray-200 font-medium mb-2">
+                  Funding Goal (in Rands)
+                </label>
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 dark:text-gray-400">
+                    R
+                  </span>
+                  <input
+                    type="number"
+                    id="fundingGoal"
+                    name="fundingGoal"
+                    value={newPitch.fundingGoal}
+                    onChange={(e) => setNewPitch({ ...newPitch, fundingGoal: parseFloat(e.target.value) || 0 })}
+                    placeholder="Enter the funding goal"
+                    className="pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    min="0"
+                    required
+                  />
+                </div>
               </div>
               <div>
                 <label className="block text-gray-700">Video File</label>
                 <input
                   type="file"
-                  onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0] || null;
+                    setVideoFile(file);
+                  }}
                   className="border p-2 rounded w-full"
                 />
+                {videoFile && (
+                  <video controls className="mt-2 w-full">
+                    <source src={URL.createObjectURL(videoFile)} type={videoFile.type} />
+                    Your browser does not support the video tag.
+                  </video>
+                )}
               </div>
               <div>
                 <label className="block text-gray-700">Attachments</label>
@@ -626,23 +550,31 @@ export default function PitchesPage() {
                   onChange={(e) => setAttachmentFiles(Array.from(e.target.files || []))}
                   className="border p-2 rounded w-full"
                 />
+                {attachmentFiles.length > 0 && (
+                  <div className="mt-2">
+                    {attachmentFiles.map((file, index) => (
+                      <div key={index} className="flex items-center justify-between mb-2">
+                        <a href={URL.createObjectURL(file)} target="_blank" rel="noopener noreferrer" className="text-blue-600">
+                          {file.name}
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
               <div>
                 <button
                   type="submit"
-                  className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
+                  disabled={loading}
+                  className={`bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors ${loading ? "cursor-not-allowed" : ""}`}
                 >
-                  Create Pitch
+                  {loading ? <LoadingDots /> : "Create Pitch"}
                 </button>
               </div>
             </form>
           </div>
         )}
-
-       
       </div>
     </div>
   );
-};
-
-
+}

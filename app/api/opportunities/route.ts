@@ -1,20 +1,20 @@
-// src/app/api/opportunities/route.ts
-
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { currentUser } from '@clerk/nextjs/server';
 
 const prisma = new PrismaClient();
 
-export async function GET() {
+export async function GET(request: Request) {
   const user = await currentUser();
 
   if (!user) {
+    console.error("No user found. Please log in.");
     return NextResponse.json({ error: "User not found. Please log in." }, { status: 401 });
   }
 
   try {
-    // Fetch the investor's user data from the database
+    console.log(`Current User Clerk ID: ${user.id}`);
+
     const dbUser = await prisma.user.findUnique({
       where: {
         clerkId: user.id,
@@ -22,49 +22,48 @@ export async function GET() {
     });
 
     if (!dbUser) {
-      return NextResponse.json({ error: "User not found in database." }, { status: 404 });
+      console.error("No corresponding database user found.");
+      return NextResponse.json({ error: "Database user not found." }, { status: 404 });
     }
 
-    // Fetch all entrepreneur profiles
-    const entrepreneurs = await prisma.entrepreneurProfile.findMany({
-      include: {
-        user: true,
-        pitches: {
-          orderBy: {
-            createdAt: 'desc',
-          },
-          take: 1, // Fetch the latest pitch
-        },
-      },
-    });
+    const userId = dbUser.id;
+    console.log(`User ID for Query: ${userId}`);
 
-    // Fetch accepted friend requests of the current investor
-    const acceptedFriends = await prisma.friendRequest.findMany({
+    const friendRequests = await prisma.friendRequest.findMany({
       where: {
-        status: 'ACCEPTED',
         OR: [
-          { senderId: dbUser.id },
-          { receiverId: dbUser.id },
+          { senderId: userId },
+          { receiverId: userId },
         ],
       },
     });
 
-    // Get friend IDs
-    const friendIds = acceptedFriends.map((friendRequest) => {
-      return friendRequest.senderId === dbUser.id
-        ? friendRequest.receiverId
-        : friendRequest.senderId;
+    const excludedUserIds = friendRequests.flatMap(request =>
+      [request.senderId, request.receiverId].filter(id => id !== userId)
+    );
+
+    console.log("Users with sent or received friend requests:", excludedUserIds);
+
+    const users = await prisma.user.findMany({
+      where: {
+        id: {
+          not: userId,
+          notIn: excludedUserIds,
+        },
+        role: 'ENTREPRENEUR',
+        entrepreneurProfile: {
+          isNot: null,
+        },
+      },
+      include: {
+        entrepreneurProfile: true,
+        investorProfile: true,
+      },
     });
 
-    // Return profiles and friendship status
-    const results = entrepreneurs.map((entrepreneur) => ({
-      entrepreneur,
-      isFriend: friendIds.includes(entrepreneur.userId),
-    }));
-
-    return NextResponse.json(results);
+    return NextResponse.json(users);
   } catch (error) {
-    console.error('Error fetching opportunities:', error);
-    return NextResponse.json({ error: 'Failed to fetch opportunities.' }, { status: 500 });
+    console.error('Error fetching users:', error);
+    return NextResponse.json({ error: "Failed to fetch users" }, { status: 500 });
   }
 }

@@ -58,10 +58,8 @@ export const Navbar = () => {
 
   const handleLinkClick = (href: string) => {
     if (isSmallScreen && menuOpen) {
-      // Full page reload for small screens when the menu is open
       window.location.href = href;
     } else {
-      // Client-side navigation for larger screens or when the menu is closed
       router.push(href);
     }
   };
@@ -152,7 +150,7 @@ export const Navbar = () => {
   );
 
   return (
-    <NextUINavbar maxWidth="xl" position="sticky" className="bg-gray-300 dark:bg-gray-800">
+    <NextUINavbar maxWidth="xl" position="sticky" className="bg-gray-300 dark:bg-gray-900">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <Link className="flex justify-start items-center gap-1" href="/">
@@ -163,7 +161,6 @@ export const Navbar = () => {
               height={32} 
               className="w-8 h-8 invert-on-dark" 
             />
-            <p className="font-bold text-2xl text-gray-800 dark:text-gray-300">EaglesRing</p>
           </Link>
         </NavbarBrand>
 

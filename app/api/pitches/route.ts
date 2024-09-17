@@ -97,12 +97,6 @@ export async function POST(request: NextRequest) {
         title,
         description,
         fundingGoal,
-        currentFunding,
-        stage,
-        country: locationCountry,
-        city: locationCity,
-        tags,
-        status,
         attachments: attachmentFiles || [],  // Ensure attachmentFiles is handled
         entrepreneurId: entrepreneurProfile.id,
         videoUrl: videoFile // Assuming videoFile is a URL or needs conversion
